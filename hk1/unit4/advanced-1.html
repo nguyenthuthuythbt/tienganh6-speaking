@@ -1,0 +1,1778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Speaking Quest – Which Route Would You Take?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#070b14; --bg2:#0d1626; --card:rgba(8,14,28,.92); --ink:#f6c35e; --dim:#e6cf9c; --line:rgba(246,195,94,.42);
+  --teal:#55cdea; --teal-d:#98e0f3; --teal-l:rgba(80,200,235,.15); --coral:#ee8a4a; --coral-l:rgba(238,138,74,.15);
+  --gold:#ffc94d; --gold-l:rgba(251,191,36,.15); --mint:#55cdea; --mint-l:rgba(80,200,235,.16); --rose:#f2a066; --rose-l:rgba(240,138,168,.16);
+  --violet:#b99cf0; --violet-l:rgba(185,156,240,.16); --sky:#8fa8f8; --sky-l:rgba(143,168,248,.16);
+  --panel:#03060c; --slate8:#101c30; --slate7:#1d3350;
+  --shadow:0 20px 45px rgba(0,0,0,.45); --shadow-s:0 8px 18px rgba(0,0,0,.35);
+  --head:'Fredoka','Nunito','Segoe UI',system-ui,sans-serif; --body:'Nunito','Segoe UI',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{font-size:17px}
+body{margin:0;font-family:var(--body);color:var(--ink);background:linear-gradient(135deg,#070b14 0%,#0d1626 50%,#070b14 100%);background-attachment:fixed;min-height:100vh;font-size:1.05rem;line-height:1.5}
+button{font-family:inherit;cursor:pointer;border:0}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+.top{position:sticky;top:0;z-index:20;display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:10px 20px;background:rgba(4,7,14,.94);backdrop-filter:blur(12px);border-bottom:4px solid var(--gold)}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--head);font-weight:700;font-size:1.25rem;color:var(--gold)}
+.brand .logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#ffc94d,#f97316);display:grid;place-items:center;color:#03060c;font-size:1.2rem;box-shadow:0 6px 14px rgba(249,115,22,.4)}
+.credit{margin:34px auto 22px;text-align:center;font-family:var(--head);font-weight:600;font-size:.95rem;color:var(--dim);letter-spacing:.3px}.credit b{color:var(--gold)}
+.brand small{display:block;font-family:var(--body);font-weight:700;color:var(--dim);font-size:.75rem;letter-spacing:.4px}
+.sp{flex:1}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;font-weight:800;font-size:.9rem;white-space:nowrap}
+.lv-pill{background:var(--lv-l,var(--sky-l));color:var(--lv,var(--sky))}
+.icon-btn{width:40px;height:40px;border-radius:12px;background:var(--slate8);border:1px solid var(--line);font-size:1.1rem;display:grid;place-items:center;color:var(--ink);box-shadow:var(--shadow-s)}
+.icon-btn:hover{transform:translateY(-2px)}
+main{max-width:1180px;margin:0 auto;padding:22px 18px 60px}
+.screen{display:none;animation:rise .35s ease}
+.screen.active{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card{background:var(--card);backdrop-filter:blur(14px);border:2px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:24px}
+h1,h2,h3{font-family:var(--head);margin:0;color:var(--ink)}
+h1{font-size:2.5rem;line-height:1.15;font-weight:700;background:linear-gradient(90deg,#ffd873,#fdba74,#fef08a);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:1.5rem}
+h3{font-size:1.2rem}
+.eyebrow{font-weight:900;letter-spacing:1.4px;font-size:.82rem;text-transform:uppercase;color:var(--gold)}
+.stepb{white-space:nowrap;background:var(--gold);color:#03060c;font-family:var(--head);font-weight:700;padding:5px 14px;border-radius:12px;font-size:1.05rem}
+.sec{font-size:1.45rem;color:var(--gold);font-weight:700}
+.sec.sky{color:#b3c4fa}.sec.em{color:#98e0f3}.sec.pu{color:#d8b4fe}
+.panel-title{border-bottom:1px solid rgba(100,116,139,.5);padding-bottom:10px}
+.muted{color:var(--dim)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 24px;border-radius:16px;font-weight:900;font-size:1.05rem;transition:.15s;white-space:nowrap}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:scale(.97)}
+.btn[disabled]{opacity:.45;cursor:not-allowed;transform:none}
+.btn-primary{background:linear-gradient(180deg,#ffe392 0%,#ffc94d 50%,#e8a02a 100%);color:#03060c;border:2px solid #98e0f3;box-shadow:0 10px 22px rgba(16,185,129,.3)}
+.btn-coral{background:linear-gradient(90deg,#ffc94d,#ee8a4a);color:#03060c;border:2px solid #ffd873;box-shadow:0 10px 22px rgba(238,138,74,.3)}
+.btn-ghost{background:var(--slate8);color:var(--ink);border:2px solid var(--slate7)}
+.btn-ghost:hover{border-color:var(--gold)}
+.btn-lg{padding:16px 34px;font-size:1.2rem}
+
+/* welcome */
+.hero{display:grid;grid-template-columns:1.05fr 1fr;gap:22px;align-items:stretch}
+.hero-art{border-radius:24px;overflow:hidden;background:#cfeefa;border:3px solid var(--gold);position:relative;align-self:start}
+.hero-art svg{width:100%;height:auto;aspect-ratio:360/250;display:block}
+.hero-copy .eyebrow{margin-bottom:6px}
+.topic-sub{font-size:1.4rem;font-weight:700;color:#b3c4fa;margin:6px 0 14px;font-family:var(--head)}
+.req{list-style:none;margin:0 0 6px;padding:0;display:grid;gap:8px}
+.req li{display:flex;gap:10px;align-items:flex-start;font-size:1.05rem}
+.req li::before{content:'✓';flex:none;width:24px;height:24px;border-radius:50%;background:var(--mint-l);color:var(--mint);font-weight:900;display:grid;place-items:center;font-size:.9rem;margin-top:2px}
+.form{display:grid;gap:14px;margin-top:6px}
+.form label{font-weight:800;font-size:.95rem;color:var(--dim);display:block;margin-bottom:5px}
+.form input[type=text]{width:100%;padding:13px 16px;border-radius:14px;border:2px solid var(--slate7);font:inherit;font-weight:900;font-size:1.2rem;background:var(--panel);color:#ffd873}
+.form input[type=text]:focus{border-color:var(--gold)}
+.row2{display:grid;grid-template-columns:2fr 1fr;gap:12px}
+.levels{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.lvbtn{--c:var(--sky);--cl:var(--sky-l);background:var(--slate8);border:2px solid var(--slate7);border-radius:18px;padding:12px 6px 10px;text-align:center;transition:.15s;color:var(--ink)}
+.lvbtn b{display:block;font-family:var(--head);font-size:1.7rem;color:var(--c);line-height:1.1}
+.lvbtn span{display:block;font-size:.78rem;font-weight:800;color:var(--dim)}
+.lvbtn:hover{transform:translateY(-3px);border-color:var(--c)}
+.lvbtn.on{background:var(--cl);border-color:var(--c);box-shadow:0 0 24px color-mix(in srgb,var(--c) 45%,transparent)}
+.lvbtn[data-l=A1]{--c:#55cdea;--cl:rgba(80,200,235,.18)}.lvbtn[data-l=A2]{--c:#8fa8f8;--cl:rgba(143,168,248,.18)}.lvbtn[data-l=B1]{--c:#b99cf0;--cl:rgba(185,156,240,.18)}.lvbtn[data-l=B2]{--c:#ee8a4a;--cl:rgba(238,138,74,.18)}
+.lvdesc{font-size:.95rem;color:var(--dim);margin-top:8px;min-height:2.6em}
+.support{display:flex;gap:8px;align-items:center;font-size:.9rem;font-weight:700;padding:9px 14px;border-radius:14px}
+.support.ok{background:var(--mint-l);color:#98e0f3}.support.warn{background:var(--gold-l);color:#ffd873}
+
+/* stage */
+.stage{display:grid;grid-template-columns:1.05fr 1fr;gap:20px;align-items:start}
+.panel-title{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.panel-title .eyebrow{margin:0}
+.clues{display:grid;gap:12px}
+.clue{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;border-radius:18px;background:rgba(2,6,23,.45);border:2px solid var(--slate7);transition:.3s}
+.lantern{flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-family:var(--head);font-weight:700;font-size:1.3rem;background:var(--slate7);color:#d4bd8a;transition:.3s}
+.clue.lit{background:var(--gold-l);border-color:var(--gold)}
+.clue.lit .lantern{background:radial-gradient(circle at 35% 30%,#ffe08a,var(--gold));color:#1c1400;box-shadow:0 0 0 6px rgba(245,184,61,.22),0 0 18px rgba(245,184,61,.6)}
+.clue .q{font-weight:800;font-size:1.3rem;line-height:1.3}
+.clue .vi{font-size:.92rem;color:var(--dim);margin-top:2px}
+.clue .sc{margin-top:8px;font-size:1.02rem;font-weight:800;color:#98e0f3;background:var(--teal-l);padding:7px 12px;border-radius:12px}
+.stepper{display:flex;gap:8px;margin:14px 0 4px}
+.step{flex:1;text-align:center;padding:9px 6px;border-radius:14px;font-weight:800;font-size:.92rem;background:var(--slate8);color:#d4bd8a;transition:.3s}
+.step.on{background:var(--mint-l);color:#98e0f3}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.tab{padding:7px 14px;border-radius:999px;background:var(--slate8);font-weight:800;font-size:.88rem;color:var(--dim)}
+.tab.on{background:var(--gold);color:#03060c}
+.words{display:flex;flex-wrap:wrap;gap:8px}
+.w{padding:8px 16px;border-radius:14px;background:var(--slate8);color:#e2e8f0;font-weight:800;font-size:1.1rem;border:1px solid var(--slate7)}
+.w:hover{background:var(--gold);color:#03060c;transform:translateY(-2px)}
+.w::after{content:' 🔈';font-size:.8rem;opacity:.6}
+.ul{display:grid;gap:7px}
+.ul div{padding:9px 14px;border-radius:12px;background:var(--violet-l);color:#d8b4fe;font-weight:800;font-size:1.02rem}
+.sticky{position:sticky;top:76px}
+.mic-card{text-align:center}
+.mic-wrap{position:relative;width:200px;height:200px;margin:6px auto 4px}
+.mic-wrap svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:#1d3350;stroke-width:10}
+.ring-ok{fill:none;stroke:#0f766e;stroke-width:10}
+.ring-fg{fill:none;stroke:var(--gold);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset .12s linear}
+.mic{position:absolute;inset:26px;border-radius:50%;background:linear-gradient(145deg,#ffc94d,#f97316);color:#03060c;font-size:3.1rem;display:grid;place-items:center;box-shadow:0 14px 28px rgba(249,115,22,.45);transition:.2s}
+.mic:hover{transform:scale(1.05)}
+.mic.rec{background:linear-gradient(145deg,#f43f5e,#f2a066);color:#fff;animation:pulse 1.2s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(229,86,109,.45),0 14px 28px rgba(229,86,109,.4)}70%{box-shadow:0 0 0 22px rgba(229,86,109,0),0 14px 28px rgba(229,86,109,.4)}100%{box-shadow:0 0 0 0 rgba(229,86,109,0),0 14px 28px rgba(229,86,109,.4)}}
+.time{font-family:var(--head);font-weight:700;font-size:2.4rem;color:#f2a066}
+.time small{font-size:1rem;color:var(--dim);font-weight:600}
+.status{font-weight:800;color:var(--dim);min-height:1.6em}
+.wave{width:100%;height:54px;display:block;margin:8px 0;border-radius:14px;background:var(--panel)}
+.live{min-height:96px;max-height:170px;overflow:auto;text-align:left;padding:12px 16px;border-radius:16px;background:var(--panel);border:2px dashed var(--slate7);font-size:1.15rem;font-weight:700}
+.live .interim{color:#d4bd8a}
+.live:empty::before{content:'Your words will appear here…';color:#a99a70;font-weight:600}
+.actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.typed{display:none;margin-top:12px;text-align:left}
+.typed textarea{width:100%;min-height:130px;border-radius:14px;border:2px solid var(--slate7);padding:12px 14px;font:inherit;font-weight:700;font-size:1.05rem;color:#ffd873;background:var(--panel)}
+.linkbtn{background:none;color:#b3c4fa;font-weight:800;text-decoration:underline;font-size:.92rem;padding:6px}
+
+/* illustration motion */
+.hero-art img{width:100%;aspect-ratio:360/250;object-fit:cover;display:block}
+.cl{animation:drift 30s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translateX(34px)}}
+.tw{animation:tw 2.6s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes tw{0%,100%{opacity:.35;transform:scale(.7)}50%{opacity:1;transform:scale(1.15)}}
+.bob{animation:bob 3.2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+.flt{animation:flt 5s ease-in-out infinite}
+@keyframes flt{0%,100%{transform:translate(0,0)}50%{transform:translate(18px,-10px)}}
+.smk{animation:smk 4s ease-out infinite;transform-box:fill-box}
+@keyframes smk{0%{transform:translate(0,0) scale(.6);opacity:.8}100%{transform:translate(14px,-34px) scale(1.8);opacity:0}}
+.fall{animation:fall 1.2s linear infinite}
+@keyframes fall{0%{transform:translateY(-8px);opacity:0}30%{opacity:1}100%{transform:translateY(28px);opacity:0}}
+.pulse{stroke-dasharray:140;animation:pls 2.4s linear infinite}
+@keyframes pls{from{stroke-dashoffset:140}to{stroke-dashoffset:-140}}
+/* cue card (shown while recording) */
+.cue-box{display:flex;gap:14px;align-items:flex-start;padding:14px 18px;border-radius:20px;border:2px solid var(--slate7);background:rgba(2,6,23,.5);transition:.3s}
+.cue-box .cue-n{flex:none;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:var(--head);font-weight:700;font-size:1.3rem;background:var(--gold);color:#03060c}
+.cue-box b{font-family:var(--head);letter-spacing:1.2px;font-size:.95rem;color:var(--gold)}
+.cue-box p{margin:2px 0 0;font-size:1.35rem;font-weight:800;line-height:1.35}
+.cue-box.on{border-color:var(--mint);background:var(--mint-l)}
+.cue-box.on .cue-n{background:var(--mint)}
+.cue-h{display:flex;align-items:center;gap:12px;margin:14px 0 4px}
+.cue-h .cue-n{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-family:var(--head);font-weight:700;font-size:1.3rem;background:var(--gold);color:#03060c}
+.cue-h b{font-family:var(--head);letter-spacing:1.2px;font-size:.95rem;color:var(--gold)}
+.mm{position:relative;min-height:450px;margin:6px 0 14px;border-radius:22px;background:radial-gradient(circle at 50% 50%,rgba(251,191,36,.10),transparent 60%),rgba(2,6,23,.45);border:2px dashed var(--slate7)}
+.mm svg{position:absolute;inset:0;width:100%;height:100%}
+.mm svg line{stroke:#34567a;stroke-width:3;stroke-linecap:round;vector-effect:non-scaling-stroke;transition:.3s}
+.mm svg line.lit{stroke:var(--gold)}
+.mm-center{position:absolute;z-index:2;left:50%;top:50%;transform:translate(-50%,-50%);width:104px;height:104px;border-radius:50%;display:grid;place-items:center;text-align:center;padding:10px;font-family:var(--head);font-weight:700;font-size:1.1rem;line-height:1.15;color:#03060c;background:linear-gradient(145deg,#ffc94d,#ee8a4a);box-shadow:0 0 0 7px rgba(251,191,36,.2),0 10px 24px rgba(0,0,0,.4)}
+.mm-node{position:absolute;transform:translate(-50%,-50%);width:44%;min-width:128px;padding:10px 12px 10px 12px;border-radius:18px;background:#101c30;border:2px solid var(--slate7);text-align:center;transition:.3s;z-index:1}
+.mm-node .n{position:absolute;left:-10px;top:-10px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-family:var(--head);font-weight:700;background:var(--slate7);color:#f0dcae;font-size:1rem}
+.mm-node b{display:block;font-family:var(--head);font-size:1.12rem;line-height:1.2;color:#b3c4fa}
+.mm-node span{display:block;margin-top:4px;font-size:.98rem;font-weight:800;color:#f0dcae;line-height:1.35}
+.mm-node.lit{background:#3b3320;border-color:var(--gold);box-shadow:0 0 22px rgba(251,191,36,.35)}
+.mm-node.lit .n{background:var(--gold);color:#1c1400}
+.mm-node.lit b{color:#ffd873}
+/* result */
+.res-top{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:center}
+.ring-score{position:relative;width:190px;height:190px}
+.ring-score svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring-score .num{position:absolute;inset:0;display:grid;place-content:center;text-align:center;font-family:var(--head)}
+.ring-score .num b{font-size:3.4rem;line-height:1;color:#ffd873}
+.ring-score .num span{font-size:1rem;color:var(--dim);font-weight:700}
+.stars{font-size:2rem;letter-spacing:4px}
+.stars .off{filter:grayscale(1);opacity:.25}
+.rankline{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+.fit{padding:10px 16px;border-radius:14px;font-weight:800;margin-top:6px}
+.fit.up,.fit.ok{background:var(--mint-l);color:#98e0f3}.fit.near{background:var(--gold-l);color:#ffd873}.fit.low{background:var(--rose-l);color:#fda4af}
+.sheetst{font-size:.92rem;font-weight:800;margin-top:8px}
+
+.cefr{margin-top:18px;padding:20px 22px;border-radius:22px;background:linear-gradient(135deg,rgba(143,168,248,.14),rgba(251,191,36,.12));border:2px solid var(--line)}
+.cefr h3{margin:2px 0 4px;font-family:var(--head);font-size:1.5rem}
+.ladder{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:34px 0 8px}
+.ladder .st{padding:12px 4px;border-radius:14px;text-align:center;font-family:var(--head);font-weight:700;font-size:1.25rem;background:var(--slate7);color:var(--dim);border:2px solid transparent}
+.ladder .st small{display:block;font-family:var(--body);font-size:.72rem;font-weight:800;opacity:.85}
+.ladder .st.done{background:var(--mint-l);color:#98e0f3}
+.ladder .st.here{background:var(--gold-l);color:#ffd873;border-color:#ffc94d;box-shadow:0 0 0 3px rgba(251,191,36,.25)}
+.ladder .pin{position:absolute;top:-30px;transform:translateX(-50%);font-weight:900;font-size:.82rem;background:#ffc94d;color:#1a1a1a;padding:3px 10px;border-radius:99px;white-space:nowrap}
+.ladder .pin:after{content:"";position:absolute;left:50%;bottom:-6px;margin-left:-6px;border:6px solid transparent;border-top-color:#ffc94d;border-bottom:0}
+.cefr .rows{display:grid;gap:10px;margin-top:14px}
+.cefr .row{display:grid;grid-template-columns:170px 1fr;gap:12px;padding:12px 14px;border-radius:16px;background:rgba(15,23,42,.45)}
+.cefr .row .lv{font-family:var(--head);font-size:1.3rem;color:#ffc94d}
+.cefr .row .lv small{display:block;font-family:var(--body);font-size:.8rem;color:var(--dim);font-weight:800}
+.cefr .row p{margin:2px 0;font-size:.95rem}.cefr .row .can{font-weight:700}.cefr .row .nx{color:#b3c4fa}
+.cefr .note{margin-top:12px;font-size:.85rem;color:var(--dim);font-style:italic}
+@media(max-width:700px){.cefr .row{grid-template-columns:1fr}}
+.crits{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px}
+.crit{padding:16px 18px;border-radius:20px;background:var(--card);border:2px solid var(--line);box-shadow:var(--shadow-s)}
+.crit .h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.crit .h b{font-family:var(--head);font-size:1.15rem}
+.crit .sc{font-family:var(--head);font-weight:700;font-size:1.5rem}
+.bar{height:12px;border-radius:99px;background:var(--slate7);margin:8px 0;overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;transition:width .8s}
+.crit p{margin:4px 0;font-size:.98rem}
+.crit .en{color:var(--dim);font-size:.88rem;font-style:italic}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
+.tip{display:flex;gap:12px;padding:12px 14px;border-radius:16px;background:var(--coral-l);margin-bottom:10px}
+.tip .ic{font-size:1.5rem}
+.tip b{display:block;font-size:.8rem;letter-spacing:.8px;text-transform:uppercase;color:#fdba74}
+.tip .ex{margin-top:4px;font-weight:800;color:#98e0f3}
+.good{display:flex;gap:10px;padding:11px 14px;border-radius:16px;background:var(--mint-l);margin-bottom:10px;font-weight:700;color:#98e0f3}
+.trans{font-size:1.15rem;line-height:1.9;font-weight:600}
+.hl-link{background:rgba(143,168,248,.25);color:#b3c4fa;border-radius:6px;padding:1px 4px;font-weight:800}
+.hl-bank{background:rgba(80,200,235,.22);color:#98e0f3;border-radius:6px;padding:1px 4px;font-weight:800}
+.hl-err{background:rgba(240,138,168,.25);color:#fda4af;border-radius:6px;padding:1px 4px;text-decoration:underline wavy #e5566d;font-weight:800;cursor:help}
+.seg.low{text-decoration:underline wavy var(--coral);text-underline-offset:5px}
+.legend{display:flex;gap:10px;flex-wrap:wrap;font-size:.85rem;margin:8px 0}
+.legend span{padding:3px 10px;border-radius:8px;font-weight:800}
+audio{width:100%;margin-top:10px}
+.mini-cl{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.mini-cl div{display:flex;gap:8px;align-items:center;padding:8px 14px;border-radius:14px;background:var(--slate8);font-weight:800;font-size:.95rem}
+.mini-cl div.y{background:var(--mint-l);color:#98e0f3}.mini-cl div.n{background:var(--rose-l);color:#fda4af}
+.bottom-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:26px}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:50;background:rgba(2,6,23,.85);display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+.modal.open{display:flex}
+.sheet{background:#101c30;border:4px solid var(--gold);color:var(--ink);border-radius:26px;max-width:820px;width:100%;max-height:92vh;overflow:auto;padding:26px;box-shadow:0 30px 70px rgba(0,0,0,.35)}
+.sheet .close{float:right}
+.sample p{margin:0 0 10px;padding:12px 14px 12px 16px;border-radius:14px;font-size:1.2rem;font-weight:700;line-height:1.55;border-left:6px solid var(--slate7);background:var(--panel)}
+.sample p.intro{border-color:#55cdea}.sample p.main{border-color:#8fa8f8}.sample p.conclusion{border-color:#ee8a4a}
+.sample p small{display:block;font-size:.72rem;letter-spacing:1.2px;text-transform:uppercase;font-weight:900;color:var(--dim);margin-bottom:2px}
+.sample p.speaking{background:var(--gold-l);border-color:var(--gold)}
+.sample mark{background:rgba(143,168,248,.25);color:#b3c4fa;border-radius:6px;padding:0 4px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(30px);background:#03060c;border:2px solid var(--gold);color:#fff;padding:12px 22px;border-radius:14px;font-weight:800;opacity:0;pointer-events:none;transition:.3s;z-index:80;max-width:92vw}
+.toast.show{opacity:1;transform:translateX(-50%)}
+.confetti{position:fixed;inset:0;pointer-events:none;z-index:60}
+input.wide{width:100%;padding:12px 14px;border-radius:12px;border:2px solid var(--slate7);background:var(--panel);color:#ffd873;font:inherit;font-weight:700}
+
+@media(max-width:900px){
+  html{font-size:16px}
+  .hero,.stage,.grid2,.crits,.res-top{grid-template-columns:1fr}
+  .sticky{position:static}
+  h1{font-size:1.9rem}
+  .res-top{justify-items:center;text-align:center}
+  .rankline{justify-content:center}
+}
+@media(max-width:480px){.levels{grid-template-columns:repeat(2,1fr)}.row2{grid-template-columns:1fr}.top{padding:8px 12px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* theme: deep jade background, amber text, colourful buttons */
+body{background:url(../../assets/bg.jpg) center/cover fixed no-repeat #0b1424!important}
+.top{z-index:20!important}
+h1{background:linear-gradient(180deg,#ffe9a8,#ffc94d 60%,#e8a02a)!important;-webkit-background-clip:text!important;background-clip:text!important}
+.card,.u,.mic-card,.lvbtn,.tab{background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,0) 40%),var(--card)!important;border:1px solid var(--line)!important;box-shadow:inset 0 1px 0 rgba(255,240,200,.18),0 12px 30px rgba(0,0,0,.35)!important}
+input,textarea,select{background:#03060c!important;color:#ffd873!important;border:1px solid rgba(246,195,94,.4)!important}
+input::placeholder,textarea::placeholder{color:#b9a672!important}
+.btn,.b{box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 8px 18px rgba(0,0,0,.35)!important}
+.btn-primary{color:#2a1700!important;border:1px solid #ffe9a8!important}
+.btn-coral{color:#2a0f00!important;border:1px solid #ffd2b0!important}
+.b{color:#2a1700}
+.b.adv{background:linear-gradient(180deg,#9fd0f2,#4a9fd8 65%,#2d6fae)!important;color:#06182c!important;border:1px solid #cfe7f8}
+.top{border-bottom:2px solid #ffc94d!important;box-shadow:0 6px 22px rgba(0,0,0,.4)}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><div class="logo">🎤</div><div>Speaking Quest<small id="brandSub"></small></div></div>
+  <div class="sp"></div>
+  <span class="chip lv-pill" id="lvPill" style="display:none"></span>
+  <button class="icon-btn" id="btnHome" title="Home" aria-label="Home">🏠</button>
+  <button class="icon-btn" id="btnSound" title="Sound on/off" aria-label="Toggle sound">🔊</button>
+  <button class="icon-btn" id="btnCfg" title="Teacher settings (Google Sheet)" aria-label="Teacher settings">⚙️</button>
+</header>
+
+<main>
+  <!-- WELCOME -->
+  <section class="screen active" id="s-welcome">
+    <div class="card hero">
+      <div class="hero-art" id="heroArt"></div>
+      <div class="hero-copy">
+        <div class="eyebrow" id="eyTopic"></div>
+        <h1 id="hTitle"></h1>
+        <div class="topic-sub" id="hSub"></div>
+        <ul class="req" id="reqList"></ul>
+        <div class="form">
+          <div class="row2">
+            <div><label for="inName">Your name · Họ và tên</label><input id="inName" type="text" maxlength="40" autocomplete="off" placeholder="e.g. Nguyen Minh Anh"></div>
+            <div><label for="inClass">Class · Lớp</label><input id="inClass" type="text" maxlength="12" autocomplete="off" placeholder="e.g. 7A1"></div>
+          </div>
+          <div>
+            <label>Choose your level · Chọn trình độ</label>
+            <div class="levels" id="levels">
+              <button class="lvbtn" data-l="A1"><b>A1</b><span>Starter</span></button>
+              <button class="lvbtn" data-l="A2"><b>A2</b><span>Elementary</span></button>
+              <button class="lvbtn" data-l="B1"><b>B1</b><span>Intermediate</span></button>
+              <button class="lvbtn" data-l="B2"><b>B2</b><span>Upper-Inter.</span></button>
+            </div>
+            <div class="lvdesc" id="lvDesc"></div>
+          </div>
+          <div class="support" id="support"></div>
+          <div class="support warn" id="examBanner" style="display:none"></div>
+          <div class="support warn" id="fileWarn" style="display:none;align-items:flex-start;flex-direction:column;gap:4px"></div>
+          <button class="btn btn-coral btn-lg" id="btnStart">🚀 Start the mission</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAGE -->
+  <section class="screen" id="s-stage">
+    <div class="stage">
+      <div>
+        <div class="card">
+          <div class="panel-title"><span class="stepb">STEP 1</span><h2 class="sec sky" id="step1H">READ THE 4 CLUES</h2></div>
+          <div id="viewPrep">
+            <div class="clues" id="clues"></div>
+            <div class="stepper" id="stepper">
+              <div class="step" data-s="intro">👋 Introduction</div><div class="step" data-s="main">💡 Main points</div><div class="step" data-s="concl">🏁 Conclusion</div>
+            </div>
+          </div>
+          <div id="viewCue" style="display:none"></div>
+        </div>
+        <div class="card" style="margin-top:18px">
+          <div class="panel-title"><span class="stepb" style="background:#8fa8f8">STEP 2</span><h2 class="sec em">PICK YOUR WORDS <small class="muted" style="font-size:.8rem">· chạm để nghe</small></h2></div>
+          <div class="tabs" id="bankTabs"></div>
+          <div class="words" id="bankWords"></div>
+          <div class="panel-title" style="margin-top:18px"><span class="stepb" style="background:#b99cf0">+</span><h2 class="sec pu">USEFUL LANGUAGE</h2></div>
+          <div class="ul" id="useful"></div>
+        </div>
+      </div>
+      <div class="sticky">
+        <div class="card mic-card">
+          <div class="panel-title" style="justify-content:center"><span class="stepb" style="background:#55cdea">STEP 3</span><h2 class="sec">RECORD YOUR TALK</h2></div><div class="eyebrow" id="stageLv"></div>
+          <div class="mic-wrap">
+            <svg viewBox="0 0 120 120"><circle class="ring-bg" cx="60" cy="60" r="54"/><circle class="ring-ok" id="ringOk" cx="60" cy="60" r="54"/><circle class="ring-fg" id="ringFg" cx="60" cy="60" r="54"/></svg>
+            <button class="mic" id="btnMic" aria-label="Start or stop recording">🎤</button>
+          </div>
+          <div class="time"><span id="tNow">0:00</span> <small id="tTarget">/ 1:00 · target 45–60 s</small></div>
+          <div class="status" id="status">Tap the microphone and start talking!</div>
+          <canvas class="wave" id="wave" width="600" height="54"></canvas>
+          <div class="live" id="live"></div>
+          <div class="typed" id="typedBox">
+            <label class="muted" for="typedTxt"><b>Type what you said</b> (this browser cannot recognise speech – Chrome/Edge works best):</label>
+            <textarea id="typedTxt" placeholder="Hello everyone. Today I'm going to talk about …"></textarea>
+            <div class="actions"><button class="btn btn-primary" id="btnTyped">Score my talk</button></div>
+          </div>
+          <div class="actions">
+            <button class="btn btn-ghost" id="btnReset">↺ Reset</button>
+            <button class="btn btn-ghost" id="btnPeek">📖 Peek at model talk</button>
+          </div>
+          <button class="linkbtn" id="btnMicTest">🔧 Test microphone</button>
+          <div class="bar" id="testBar" style="display:none;margin:8px 0"><i id="testLvl" style="width:0;background:linear-gradient(90deg,#55cdea,#ffc94d)"></i></div>
+          <div class="status" id="testMsg" style="font-size:.95rem"></div>
+          <button class="linkbtn" id="btnTypeMode">Can’t use the microphone? Type instead</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section class="screen" id="s-result"><div id="resultBody"></div></section>
+</main>
+
+<div class="modal" id="mSample"><div class="sheet" id="sampleSheet"></div></div>
+<div class="modal" id="mCfg"><div class="sheet" style="max-width:560px">
+  <button class="btn btn-ghost close" data-close="mCfg">✕</button>
+  <h2>⚙️ Teacher settings</h2>
+  <p class="muted">Paste the <b>Web app URL</b> of your Google Apps Script to save every student’s score to your Google Sheet (see <code>resources/google-sheets-setup.md</code>).</p>
+  <input class="wide" id="cfgUrl" placeholder="https://script.google.com/macros/s/…/exec">
+  <p class="muted" style="margin:12px 0 6px">Secret code · <b>Mã bí mật</b> (must match <code>SECRET</code> in Code.gs; leave empty if not used):</p>
+  <input class="wide" id="cfgToken" type="password" autocomplete="off" placeholder="e.g. lop6-2026-xyz">
+  <div class="actions" style="justify-content:flex-start">
+    <button class="btn btn-primary" id="cfgSave">Save</button>
+    <button class="btn btn-ghost" id="cfgTest">Send test row</button>
+    <button class="btn btn-ghost" id="cfgCsv">⬇ Download scores (CSV)</button>
+  </div>
+  <p class="muted" id="cfgMsg" style="font-weight:800"></p>
+</div></div>
+<div class="toast" id="toast"></div>
+<canvas class="confetti" id="confetti"></canvas>
+
+<script>/* Speaking Quest – scoring engine (Cambridge-style, 4 criteria x 0-5).
+   Pure JS, no DOM. Works in browsers and Node:  window.SpeakingEngine / module.exports.
+   Input is a transcript (from Web Speech API or typed) + timing/audio metrics.
+   It is an ESTIMATE to guide practice – not a replacement for a human examiner. */
+(function (root) {
+  'use strict';
+
+  /* ---------- level expectations ---------- */
+  var LEVELS = {
+    A1: { name: 'Starter',      minWords: 35,  targetWords: 55,  minSec: 25, wpm: [30, 90],   bank: 3, linkers: 2, uniq: 22, sub: 1, pen: 0.10, tol: 8, pLo: 0.45 },
+    A2: { name: 'Elementary',   minWords: 55,  targetWords: 80,  minSec: 35, wpm: [50, 110],  bank: 5, linkers: 3, uniq: 32, sub: 2, pen: 0.14, tol: 6, pLo: 0.50 },
+    B1: { name: 'Intermediate', minWords: 80,  targetWords: 105, minSec: 45, wpm: [70, 130],  bank: 7, linkers: 4, uniq: 45, sub: 3, pen: 0.18, tol: 5, pLo: 0.55 },
+    B2: { name: 'Upper-Inter.', minWords: 100, targetWords: 125, minSec: 50, wpm: [90, 155],  bank: 9, linkers: 5, uniq: 58, sub: 4, pen: 0.24, tol: 4, pLo: 0.60 }
+  };
+
+  var WEIGHTS = { gv: 2, dm: 1, ic: 1, pr: 2 };
+  var LINKERS = ['and', 'but', 'because', 'so', 'also', 'first', 'firstly', 'second', 'secondly', 'third', 'then', 'next',
+    'after that', 'finally', 'lastly', 'for example', 'for instance', 'however', 'although', 'when', 'which', 'who', 'if',
+    'too', 'as well', 'in addition', 'besides', 'moreover', "that's why", 'while', 'another', 'one more'];
+  var SUB_RE = /\b(because|although|when|which|who|if|while|that's why|so that)\b/g;
+  var INTRO_RE = /\b(today|i'?m going to (talk|tell)|i am going to (talk|tell)|i want to (talk|tell)|i'?d like to (talk|tell)|i would like to (talk|tell)|let me (talk|tell|introduce)|hello|hi everyone|good (morning|afternoon)|my name is|i will (talk|tell))\b/;
+  var CONCL_RE = /\b(in short|that'?s all|that is all|thank you|thanks for listening|to sum up|in conclusion|to conclude|that'?s my talk|that'?s everything)\b/;
+
+  var DESC = {
+    gv: [
+      ['No assessable language.', 'Chưa đủ lời nói để chấm.'],
+      ['Only isolated words or memorised phrases.', 'Mới nói được từ lẻ hoặc cụm học thuộc.'],
+      ['Basic vocabulary; frequent errors make meaning hard to follow.', 'Từ vựng cơ bản; nhiều lỗi làm câu khó hiểu.'],
+      ['Adequate vocabulary; simple structures mostly correct, some errors.', 'Từ vựng đủ dùng; câu đơn khá đúng, còn vài lỗi.'],
+      ['Good range of vocabulary and structures; few errors, meaning is clear.', 'Từ vựng, cấu trúc khá đa dạng; ít lỗi, nghĩa rõ.'],
+      ['Wide range of vocabulary and accurate grammar for the level.', 'Từ vựng phong phú, ngữ pháp chính xác so với trình độ.']],
+    dm: [
+      ['No assessable language.', 'Chưa đủ lời nói để chấm.'],
+      ['Very short, no clear organisation.', 'Bài nói quá ngắn, chưa có bố cục.'],
+      ['Some ideas, but few clues answered and little linking.', 'Có vài ý nhưng thiếu nhiều gợi ý, ít từ nối.'],
+      ['Most clues answered; basic linking (and, but, because).', 'Trả lời phần lớn gợi ý; dùng từ nối cơ bản.'],
+      ['Almost all clues answered; clear introduction/conclusion; good linking.', 'Gần đủ ý; có mở – kết bài; nối ý tốt.'],
+      ['Well-organised: Introduction → Main points → Conclusion, varied linking words.', 'Bài nói mạch lạc: Mở – Thân – Kết, từ nối đa dạng.']],
+    pr: [
+      ['No assessable language.', 'Chưa đủ lời nói để chấm.'],
+      ['Often very difficult to understand.', 'Rất khó nghe hiểu.'],
+      ['Understood with effort; many sounds unclear.', 'Nghe hiểu được nhưng khó; nhiều âm chưa rõ.'],
+      ['Generally understandable; some sounds or word stress unclear.', 'Nhìn chung dễ hiểu; một số âm, trọng âm chưa rõ.'],
+      ['Clear and easy to understand; only minor slips.', 'Rõ ràng, dễ hiểu; chỉ sai nhẹ.'],
+      ['Very clear pronunciation with natural stress and rhythm.', 'Phát âm rất rõ, trọng âm và nhịp điệu tự nhiên.']],
+    ic: [
+      ['No assessable language.', 'Chưa đủ lời nói để chấm.'],
+      ['Long pauses, very hesitant or far too short.', 'Ngắt quãng nhiều hoặc nói quá ngắn.'],
+      ['Hesitant; speed or length well below the target.', 'Còn ngập ngừng; tốc độ/độ dài thấp hơn yêu cầu.'],
+      ['Keeps going with some pauses; near the target time.', 'Nói liên tục, có ngắt nghỉ; gần đủ thời gian.'],
+      ['Fairly fluent; natural speed and good use of time.', 'Khá trôi chảy; tốc độ tự nhiên, đủ thời gian.'],
+      ['Fluent and confident; fills the 45–60 s with a natural pace.', 'Trôi chảy, tự tin; nói đủ 45–60 giây.']]
+  };
+  var NAMES = {
+    gv: ['Grammar & Vocabulary', 'Ngữ pháp & Từ vựng'],
+    dm: ['Discourse Management', 'Bố cục & Mạch lạc'],
+    pr: ['Pronunciation', 'Phát âm'],
+    ic: ['Interactive Communication', 'Giao tiếp & Trôi chảy']
+  };
+
+
+  /* ---------- CEFR descriptors ----------
+     RANGE / ACCURACY / FLUENCY / COHERENCE: Council of Europe, CEFR "Table 3 (CEFR 3.3) – Qualitative aspects of spoken language use"
+     (descriptors shortened, Vietnamese = translation). PHONOLOGY: CEFR phonological control scale (paraphrased).
+     INTERACTION (turn-taking, asking/answering) cannot be judged in a one-minute monologue → reported as "not assessed". */
+  var CEFR_ORDER = ['A1', 'A2', 'B1', 'B2'];
+  var ASPECTS = ['range', 'accuracy', 'fluency', 'coherence', 'phonology'];
+  var ASPECT_NAMES = { range: ['Range', 'Vốn từ & cấu trúc'], accuracy: ['Accuracy', 'Độ chính xác (ngữ pháp)'], fluency: ['Fluency', 'Trôi chảy'], coherence: ['Coherence', 'Mạch lạc, liên kết ý'], phonology: ['Phonology', 'Phát âm'], interaction: ['Interaction', 'Tương tác'] };
+  var CEFR = {
+    range: {
+      A1: ['Has a very basic repertoire of words and simple phrases related to personal details and particular concrete situations.', 'Có vốn từ và cụm từ đơn giản rất cơ bản về thông tin cá nhân và tình huống cụ thể.'],
+      A2: ['Uses basic sentence patterns with memorised phrases, groups of a few words and formulae to communicate limited information in simple everyday situations.', 'Dùng mẫu câu cơ bản với cụm từ học thuộc, nhóm vài từ để truyền đạt thông tin hạn chế trong tình huống quen thuộc.'],
+      B1: ['Has enough language to get by, with sufficient vocabulary to express him/herself with some hesitation and circumlocution on topics such as family, hobbies and interests.', 'Có đủ ngôn ngữ để diễn đạt về gia đình, sở thích… dù còn ngập ngừng và phải nói vòng.'],
+      B2: ['Has a sufficient range of language to give clear descriptions and express viewpoints on most general topics, without much conspicuous searching for words, using some complex sentence forms.', 'Có vốn ngôn ngữ đủ để mô tả rõ ràng, nêu quan điểm về hầu hết chủ đề chung, ít phải tìm từ, dùng được một số câu phức.']
+    },
+    accuracy: {
+      A1: ['Shows only limited control of a few simple grammatical structures and sentence patterns in a memorised repertoire.', 'Chỉ kiểm soát được một vài cấu trúc, mẫu câu đơn giản đã học thuộc.'],
+      A2: ['Uses some simple structures correctly, but still systematically makes basic mistakes.', 'Dùng đúng một số cấu trúc đơn giản nhưng vẫn mắc lỗi cơ bản một cách có hệ thống.'],
+      B1: ['Uses reasonably accurately a repertoire of frequently used “routines” and patterns associated with more predictable situations.', 'Dùng khá chính xác các mẫu câu thường gặp trong tình huống dễ đoán.'],
+      B2: ['Shows a relatively high degree of grammatical control. Does not make errors which cause misunderstanding, and can correct most of his/her mistakes.', 'Kiểm soát ngữ pháp khá cao, không mắc lỗi gây hiểu lầm và tự sửa được phần lớn lỗi.']
+    },
+    fluency: {
+      A1: ['Can manage very short, isolated, mainly pre-packaged utterances, with much pausing to search for expressions and to repair communication.', 'Nói được những câu rất ngắn, rời rạc, phần lớn học thuộc; dừng nhiều để tìm từ.'],
+      A2: ['Can make him/herself understood in very short utterances, even though pauses, false starts and reformulation are very evident.', 'Nói được những câu rất ngắn để người nghe hiểu, dù ngắt nghỉ, nói lại, bắt đầu sai còn rất rõ.'],
+      B1: ['Can keep going comprehensibly, even though pausing for grammatical and lexical planning and repair is very evident, especially in longer stretches of free production.', 'Nói tiếp được và vẫn hiểu được, dù việc dừng lại để nghĩ ngữ pháp, từ vựng và tự sửa còn rất rõ, nhất là khi nói dài.'],
+      B2: ['Can produce stretches of language with a fairly even tempo; although hesitant as he/she searches for patterns and expressions, there are few noticeably long pauses.', 'Nói được những đoạn dài với nhịp khá đều; có lúc ngập ngừng nhưng ít khi dừng lâu.']
+    },
+    coherence: {
+      A1: ['Can link words or groups of words with very basic linear connectors like “and” or “then”.', 'Nối từ hoặc cụm từ bằng các từ nối rất cơ bản như “and”, “then”.'],
+      A2: ['Can link groups of words with simple connectors like “and”, “but” and “because”.', 'Nối các nhóm từ bằng từ nối đơn giản như “and”, “but”, “because”.'],
+      B1: ['Can link a series of shorter, discrete simple elements into a connected, linear sequence of points.', 'Nối một loạt ý ngắn, rời thành chuỗi các ý liên kết với nhau theo thứ tự.'],
+      B2: ['Can use a limited number of cohesive devices to link his/her utterances into clear, coherent discourse, though there may be some “jumpiness” in a long contribution.', 'Dùng một số phương tiện liên kết để nối lời nói thành bài mạch lạc, dù bài dài đôi lúc còn “nhảy ý”.']
+    },
+    phonology: {
+      A1: ['Pronunciation of a very limited repertoire of learnt words and phrases can be understood with some effort.', 'Phát âm một số ít từ, cụm đã học có thể hiểu được nhưng người nghe phải cố gắng.'],
+      A2: ['Pronunciation is generally clear enough to be understood, but listeners will need to ask for repetition from time to time.', 'Phát âm nhìn chung đủ rõ để hiểu, nhưng thỉnh thoảng người nghe phải nhờ nhắc lại.'],
+      B1: ['Pronunciation is clearly intelligible even if a foreign accent is sometimes evident and occasional mispronunciations occur.', 'Phát âm rõ, dễ hiểu dù đôi khi còn giọng nước ngoài và thỉnh thoảng phát âm sai.'],
+      B2: ['Has acquired a clear, natural pronunciation and intonation.', 'Phát âm và ngữ điệu rõ ràng, khá tự nhiên.']
+    }
+  };
+  var CEFR_BELOW = ['Not yet at A1: only a few words or very short phrases.', 'Chưa đạt A1: mới nói được vài từ hoặc cụm rất ngắn.'];
+
+  /* position on the A1(1) … B2(4) ladder. A talk can only prove the level that was attempted (as in Cambridge exams):
+     band 3 = just meets it, band 5 = very secure and ready to try the next level, band 1 = slightly below it. */
+  function ladderPos(level, band) { return clamp(CEFR_ORDER.indexOf(level) + 1 + 0.25 + (band - 3) / 4, 0, 4.99, true); }
+  function posLabel(pos) {
+    if (pos < 1) return { level: 'Pre-A1', idx: 0, rising: pos >= 0.5 };
+    var i = Math.min(3, Math.floor(pos + 1e-6) - 1), f = pos - Math.floor(pos + 1e-6);
+    return { level: CEFR_ORDER[i], idx: i + 1, rising: f >= 0.5 && i < 3, top: i === 3 && pos >= 4.75 };
+  }
+  function cefrOf(rep) {
+    var lv = rep.level, out = { pos: null, level: null, rising: false, enough: rep.words >= 20, crit: {}, aspects: ASPECTS, names: ASPECT_NAMES, source: 'Council of Europe – CEFR Table 3 (Qualitative aspects of spoken language use)' };
+    var bands = { range: rep.rangeBand, accuracy: rep.accBand, fluency: rep.criteria.ic.score, coherence: rep.criteria.dm.score, phonology: rep.criteria.pr.score };
+    var sum = 0, n = 0;
+    ASPECTS.forEach(function (k) {
+      if (bands[k] == null) { out.crit[k] = null; return; }
+      var pos = ladderPos(lv, bands[k]), pl = posLabel(pos), cur = pl.idx >= 1 ? CEFR_ORDER[pl.idx - 1] : null, nxt = pl.idx >= 1 && pl.idx < 4 ? CEFR_ORDER[pl.idx] : (pl.idx === 0 ? 'A1' : null);
+      out.crit[k] = { band: bands[k], pos: pos, level: pl.level, rising: pl.rising, can: cur ? CEFR[k][cur] : CEFR_BELOW, next: nxt ? { level: nxt, text: CEFR[k][nxt] } : null };
+      sum += pos; n++;
+    });
+    out.interaction = null;       /* needs a conversation partner – not assessed in a monologue */
+    var overall = n ? sum / n : 0, ol = posLabel(overall);
+    out.pos = Math.round(overall * 100) / 100; out.level = ol.level; out.rising = ol.rising; out.top = !!ol.top;
+    out.label = ol.level + (ol.rising ? '→' + (ol.idx < 4 ? CEFR_ORDER[ol.idx] : '') : '');
+    var weak = ASPECTS.filter(function (k) { return out.crit[k]; }).sort(function (x, y) { return out.crit[x].pos - out.crit[y].pos; })[0];
+    out.focus = weak || null;
+    return out;
+  }
+
+  /* ---------- helpers ---------- */
+  function esc(s) { return String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+  function low(t) { return String(t || '').toLowerCase().replace(/[\u2018\u2019]/g, "'"); }
+  function tokens(t) { return low(t).match(/[a-z0-9']+/g) || []; }
+  function clamp(x, a, b) { return Math.max(a == null ? 0 : a, Math.min(b == null ? 1 : b, x)); }
+  function half(x) { return Math.round(x * 2) / 2; }
+  function htmlEsc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+
+  function itemRe(item) {
+    var b = String(item).toLowerCase().trim();
+    if (!b || /[…\/]/.test(b)) return null;
+    var sp = b.indexOf(' '), head = sp < 0 ? b : b.slice(0, sp), tail = sp < 0 ? '' : b.slice(sp);
+    function forms(w) {
+      var f = [esc(w), esc(w) + '(?:s|es|ed|d|ing)'];
+      if (/e$/.test(w)) f.push(esc(w.slice(0, -1)) + '(?:ing|ed)');
+      if (/y$/.test(w)) f.push(esc(w.slice(0, -1)) + '(?:ies|ied)');
+      var irr = { make: 'made|making', take: 'took|taking|taken', do: 'did|doing|done', eat: 'ate|eaten|eating', drink: 'drank|drunk|drinking', put: 'putting', stay: 'stayed|staying', keep: 'kept|keeping', give: 'gave|giving', raise: 'raised|raising', grow: 'grew|grown|growing' };
+      if (irr[w]) f.push(irr[w]);
+      return f.join('|');
+    }
+    return new RegExp('\\b(?:' + forms(head) + ')' + esc(tail) + '\\b', 'g');
+  }
+  function bankItems(data) {
+    var b = data.wordBank || {}, out = [];
+    ['nouns', 'verbs', 'adjectives', 'prepositions'].forEach(function (k) { (b[k] || []).forEach(function (w) { out.push(w); }); });
+    return out;
+  }
+
+  /* ---------- grammar rules (checked on the raw transcript, lower-cased, same length) ---------- */
+  function third(v) { return v === 'have' ? 'has' : v === 'do' ? 'does' : v === 'go' ? 'goes' : /[^aeiou]y$/.test(v) ? v.slice(0, -1) + 'ies' : /(s|sh|ch|x)$/.test(v) ? v + 'es' : v + 's'; }
+  function base(v) { return v === 'has' ? 'have' : v === 'does' ? 'do' : v === 'goes' ? 'go' : /ies$/.test(v) ? v.slice(0, -3) + 'y' : /(ches|shes|sses|xes)$/.test(v) ? v.slice(0, -2) : v.replace(/s$/, ''); }
+
+  var POSS = { i: 'my', he: 'his', she: 'her', we: 'our', they: 'their' };
+  function beFor(p) { return p === 'i' ? 'am' : (p === 'he' || p === 'she' || p === 'it') ? 'is' : 'are'; }
+  function plural(n) { return n === 'person' ? 'people' : n === 'child' ? 'children' : /[^aeiou]y$/.test(n) ? n.slice(0, -1) + 'ies' : /(s|sh|ch|x)$/.test(n) ? n + 'es' : n + 's'; }
+  function ing(v) {
+    var irr = { run: 'running', swim: 'swimming', sit: 'sitting', get: 'getting', put: 'putting', stop: 'stopping', plan: 'planning', cycle: 'cycling', ride: 'riding', make: 'making', take: 'taking', have: 'having', live: 'living', write: 'writing', dance: 'dancing', relax: 'relaxing', share: 'sharing', come: 'coming' };
+    return irr[v] || (/[^e]e$/.test(v) ? v.slice(0, -1) + 'ing' : v + 'ing');
+  }
+  function pastOf(v) {
+    if (v === 'is' || v === 'am') return 'was'; if (v === 'are') return 'were';
+    var b = base(v), irr = { go: 'went', make: 'made', take: 'took', have: 'had', do: 'did', feel: 'felt', see: 'saw', meet: 'met', give: 'gave', sell: 'sold', bring: 'brought', teach: 'taught', sing: 'sang', eat: 'ate', buy: 'bought', get: 'got', come: 'came', pick: 'picked', put: 'put' };
+    return irr[b] || (/e$/.test(b) ? b + 'd' : /[^aeiou]y$/.test(b) ? b.slice(0, -1) + 'ied' : b + 'ed');
+  }
+  var SING_N = 'classroom|student|teacher|friend|classmate|book|room|tree|flower|subject|club|desk|chair|lamp|window|kid|vegetable|hour|minute|day|week|month|year|skill|benefit|project|volunteer|village|house|bedroom|brother|sister|lesson|game|bike|picture|poster|building|floor|hobby|animal|ticket|member|activity|person|child';
+  var NUMQ = 'two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|hundred|many|several|these|those|both|[2-9]|[1-9][0-9]+';
+  var ADJ = 'happy|sad|tall|short|kind|friendly|funny|big|small|beautiful|interesting|boring|good|nice|busy|tired|healthy|strong|proud|helpful|useful|creative|patient|relaxing|clever|careful|caring|shy|confident|comfortable|difficult|important|great|wonderful|lovely|cute|handsome|slim|thin|fat|sleepy|hungry|lazy|famous|popular|meaningful|cosy|polite|honest|generous|talkative';
+  var ING_LIST = 'playing|going|learning|studying|doing|reading|helping|eating|watching|having|making|taking|getting|living|cooking|sleeping|joining|collecting|planting|cleaning|swimming|talking|speaking|sharing|relaxing|trying';
+  var NOT_NOUN = /^(i|you|we|they|he|she|it|who|that|there|people|children|men|women|family|class|team|police|staff|and|or|but|because|so|also|then|when|if|what|where|how)$/;
+  var VERBS = 'have|do|go|like|play|study|live|want|help|love|read|speak|talk|share|enjoy|need|make|take|come|get|wear|work|watch|join|sleep|relax|tidy|cook|listen|teach|look|tell|call|know|think|ride|cycle|visit|buy|use|see|feel|meet|ask|give|bring|sing|dance|draw|swim|run|write|eat|drink|grow';
+  var VERBS_S = 'has|does|goes|likes|plays|studies|lives|wants|helps|loves|reads|speaks|talks|shares|enjoys|needs|makes|takes|comes|gets|wears|works|watches|joins|sleeps|relaxes|tidies|cooks|listens|teaches|looks|tells|calls|knows|thinks|rides|cycles|visits|buys|uses|sees|feels|meets|asks|gives|brings|sings|dances|draws|swims|runs|writes|eats|drinks|grows';
+  var RULES = [
+    { re: new RegExp('\\b(he|she|it)\\s+((?:also|always|usually|often|never|really|just|sometimes|still)\\s+)?(' + VERBS + ')\\b', 'g'),
+      msg: 'Chủ ngữ he/she/it → động từ thêm -s/-es', fix: function (m) { return m[1] + ' ' + (m[2] || '') + third(m[3]); } },
+    { re: new RegExp('\\b(i|we|they|you)\\s+(' + VERBS_S + ')\\b', 'g'),
+      msg: 'Chủ ngữ I/we/they/you → dùng động từ nguyên thể (không -s)', fix: function (m) { return m[1] + ' ' + base(m[2]); } },
+    { re: /\b(he|she|it)\s+(are|am)\b/g, msg: 'he/she/it đi với "is"', fix: function (m) { return m[1] + ' is'; } },
+    { re: /\bi\s+(is|are)\b/g, msg: 'I đi với "am"', fix: function () { return 'I am'; } },
+    { re: /\b(we|they|you)\s+(is|am)\b/g, msg: 'we/they/you đi với "are"', fix: function (m) { return m[1] + ' are'; } },
+    { re: /\b(i am|he is|she is|they are|we are|you are|it is)\s+(have|go|play|study|live|read|help|love|likes|has|goes|plays|studies)\b/g,
+      msg: 'Không dùng am/is/are trước động từ thường', fix: function (m) { var p = m[1].split(' ')[0]; return p + ' ' + (/^(he|she|it)$/.test(p) ? third(base(m[2])) : base(m[2])); } },
+    { re: /\bthere\s+(have|has)\b/g, msg: '"There have" sai → There is / There are', fix: function () { return 'there is/are'; } },
+    { re: /\bi\s+very\s+(like|love)\b/g, msg: 'Nói "I really like…" hoặc "I like … very much"', fix: function (m) { return 'I really ' + m[1]; } },
+    { re: new RegExp('\\b(doesn\'t|does not|don\'t|do not|didn\'t|did not|can|can\'t|must|should|will|would)\\s+(' + VERBS_S + ')\\b', 'g'),
+      msg: 'Sau trợ động từ / modal dùng động từ nguyên thể', fix: function (m) { return m[1] + ' ' + base(m[2]); } },
+    { re: /\ba\s+([aeiou]\w*)/g, test: function (m) { return !/^(uni|use|usu|eur|one|once|util|ubiq)/.test(m[1]) && !/\b(route|plan|option|part|map|exercise)\s+$/.test(String(m.input || '').slice(0, m.index)); },
+      msg: 'Trước nguyên âm dùng "an"', fix: function (m) { return 'an ' + m[1]; } },
+    { re: /\ban\s+([bcdfghjklmnpqrstvwxyz]\w*)/g, test: function (m) { return !/^(hour|honest|honou?r|heir)/.test(m[1]); },
+      msg: 'Trước phụ âm dùng "a"', fix: function (m) { return 'a ' + m[1]; } },
+    { re: /\b(furnitures|homeworks|informations|peoples|childrens|advices)\b/g, msg: 'Danh từ không đếm được / số nhiều bất quy tắc', fix: function (m) { return m[1].replace(/s$/, ''); } },
+    { re: /\b(last (?:week|month|summer|year|spring|winter|weekend)|yesterday)\b[^.!?]{0,45}?\b(we|i|they|my (?:class|friends|classmates))\s+(go|collect|donate|clean|plant|help|join|raise|make|take|have|do|feel|see|meet|give|visit|pick|paint|sell|bring|carry|sort|pack|cook|sing|teach)\b/g,
+      msg: 'Có “last …/yesterday” → dùng thì quá khứ đơn (V-ed hoặc bất quy tắc)', fix: function (m) { var v = m[3], irr = { go: 'went', make: 'made', take: 'took', have: 'had', do: 'did', feel: 'felt', see: 'saw', meet: 'met', give: 'gave', sell: 'sold', bring: 'brought', teach: 'taught', sing: 'sang' }; return m[2] + ' ' + (irr[v] || (/e$/.test(v) ? v + 'd' : /[^aeiou]y$/.test(v) ? v.slice(0, -1) + 'ied' : v + 'ed')); } },
+    { re: /\b(didn't|did not)\s+(went|made|took|had|did|felt|saw|met|gave|collected|donated|helped|cleaned|planted|joined|raised)\b/g,
+      msg: 'Sau did/didn\'t dùng động từ nguyên thể', fix: function (m) { var b = { went: 'go', made: 'make', took: 'take', had: 'have', did: 'do', felt: 'feel', saw: 'see', met: 'meet', gave: 'give' }; return m[1] + ' ' + (b[m[2]] || m[2].replace(/(ed)$/, '')); } },
+    { re: /\b(goed|maked|taked|haved|buyed|eated|felted|gived|teached|singed)\b/g, msg: 'Động từ bất quy tắc: go→went, make→made, take→took, have→had, buy→bought, eat→ate, give→gave, teach→taught, sing→sang', fix: function (m) { return { goed: 'went', maked: 'made', taked: 'took', haved: 'had', buyed: 'bought', eated: 'ate', felted: 'felt', gived: 'gave', teached: 'taught', singed: 'sang' }[m[1]]; } },
+    { re: /\b(should|shouldn't|must|can|will|would)\s+to\s+(\w+)/g, msg: 'Sau modal (should/must/can…) không có “to”', fix: function (m) { return m[1] + ' ' + m[2]; } },
+    { re: /\bi\s+am\s+agree\b/g, msg: 'Nói “I agree” (không có am)', fix: function () { return 'I agree'; } },
+    { re: /\b(my|your|his|her|our|their|the|this|that|its)\s+((?:[a-z]+\s)?[a-z]+)\s+(have|like|play|study|live|go|help|love|want|need|make|take|come|get|teach|share|enjoy|speak|talk|sleep|relax|cook|listen|join)\b(?!\s+(is|was|are|were|will|has|had|of|room|and|or)\b)/g,
+      test: function (m) { var w = m[2].split(' '), n = w[w.length - 1]; if (w.some(function (x) { return /^(can|could|will|would|should|must|may|might|do|does|did|don't|doesn't|didn't|cannot|can't|won't|always|usually|often|never|also|really|sometimes|just|not|to|and|or|both|all)$/.test(x); })) return false; if (/s$/.test(n) && !/^(class|glass|bus|boss|dress|business)$/.test(n)) return false; return !NOT_NOUN.test(n) && !(w.length === 2 && NOT_NOUN.test(w[0])); },
+      msg: 'Chủ ngữ số ít (my school, my friend…) → động từ thêm -s/-es', fix: function (m) { var w = m[2].split(' '); return m[1] + ' ' + m[2] + ' ' + third(m[3]); } },
+    { re: /\bthere\s+(is|was)\s+(many|several|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|twenty|thirty|forty|fifty|hundred|a few|few|[2-9]|[1-9][0-9]+)\b/g,
+      msg: 'There + are (danh từ số nhiều)', fix: function (m) { return 'there ' + (m[1] === 'was' ? 'were' : 'are') + ' ' + m[2]; } },
+    { re: /\bthere\s+(are|were)\s+(a|an|one)\b/g, msg: 'There + is (danh từ số ít)', fix: function (m) { return 'there ' + (m[1] === 'were' ? 'was' : 'is') + ' ' + m[2]; } },
+    { re: new RegExp('\\b(' + NUMQ + ')\\s+(' + SING_N + ')\\b(?!\\s+(old|long|trip|walk|drive|course|break)\\b)', 'g'),
+      msg: 'Sau số lượng (two, thirty, many…) danh từ phải ở dạng số nhiều', fix: function (m) { return m[1] + ' ' + plural(m[2]); } },
+    { re: new RegExp('\\b(i|you|we|they|he|she|it)\\s+((?:very|so|really|too|quite)\\s+)?(' + ADJ + ')\\b', 'g'),
+      msg: 'Thiếu động từ be (am/is/are) trước tính từ', fix: function (m) { return m[1] + ' ' + beFor(m[1]) + ' ' + (m[2] || '') + m[3]; } },
+    { re: /\b(am|is|are)\s+(play|study|go|do|eat|drink|read|write|help|have|live|watch|cook|sleep|learn|join|collect|plant|donate|talk|speak|share|relax|try|recommend|swim|cycle|sing|dance|draw)\b(?!\s+(is|was)\b)/g,
+      msg: 'Không dùng am/is/are với động từ nguyên thể (dùng hiện tại đơn hoặc -ing)', fix: function (m) { return m[2] + ' / ' + m[1] + ' ' + ing(m[2]); } },
+    { re: /\b(like|likes|love|loves|enjoy|enjoys|hate|hates)\s+(play|read|go|watch|do|study|cook|swim|sing|dance|draw|listen|eat|drink|learn|help|talk|run|cycle|ride|collect|take|make|spend|speak|join)\b(?!\s+(is|was|are|were|room|time|music|class|club|lessons|period)\b)/g,
+      msg: 'Sau like/love/enjoy dùng V-ing (hoặc to + V)', fix: function (m) { return m[1] + ' ' + ing(m[2]); } },
+    { re: new RegExp('\\b(want|wants|wanted|need|needs|hope|hopes|decide|decided|plan|plans|would like)\\s+(' + ING_LIST + ')\\b', 'g'),
+      msg: 'Sau want/need/hope/plan/would like dùng to + động từ nguyên thể', fix: function (m) { return m[1] + ' to + V'; } },
+    { re: /\bto\s+(goes|plays|studies|has|does|likes|helps|makes|takes|comes|gets|watches|reads|speaks|talks|eats|drinks|learns|lives|wants|needs|loves|cooks|sleeps|relaxes|shares|joins)\b/g,
+      msg: 'Sau “to” dùng động từ nguyên thể (không -s)', fix: function (m) { return 'to ' + base(m[1]); } },
+    { re: new RegExp('\\b(can|could|will|would|should|must|may|might)\\s+(' + ING_LIST + ')\\b', 'g'),
+      msg: 'Sau can/should/will… dùng động từ nguyên thể (không -ing)', fix: function (m) { return m[1] + ' + V'; } },
+    { re: new RegExp('\\bdoes\\s+(he|she|it)\\s+(' + VERBS_S + ')\\b', 'g'), msg: 'Sau does dùng động từ nguyên thể', fix: function (m) { return 'does ' + m[1] + ' ' + base(m[2]); } },
+    { re: /\bdid\s+(he|she|it|i|you|we|they)\s+(went|made|took|had|felt|saw|met|gave|played|helped|collected|donated|cleaned|planted|joined|raised|visited|liked|loved|did)\b/g, msg: 'Sau did dùng động từ nguyên thể', fix: function (m) { return 'did ' + m[1] + ' + V'; } },
+    { re: /\b(he|she|it)\s+(don't|do not)\b/g, msg: 'he/she/it → doesn\'t', fix: function (m) { return m[1] + " doesn't"; } },
+    { re: /\b(i|we|they|you)\s+(doesn't|does not)\b/g, msg: 'I/we/they/you → don\'t', fix: function (m) { return m[1] + " don't"; } },
+    { re: /\b(i|we|they|you)\s+(not|no)\s+(like|have|go|play|want|know|eat|drink|study|speak|watch|need|love)\b/g, msg: 'Phủ định dùng don\'t + V', fix: function (m) { return m[1] + " don't " + m[3]; } },
+    { re: /\b(he|she|it)\s+(not|no)\s+(like|have|go|play|want|know|eat|drink|study|speak|watch|need|love)\b/g, msg: 'Phủ định dùng doesn\'t + V', fix: function (m) { return m[1] + " doesn't " + m[3]; } },
+    { re: /\b(i|we|they|he|she)\s+very\s+(like|love|enjoy|want|need)\b/g, msg: 'Nói “really like” hoặc “like … very much”', fix: function (m) { return m[1] + ' really ' + m[2]; } },
+    { re: /\b(last (?:week|month|summer|year|spring|winter|weekend|night)|yesterday|\w+ ago)\b[^.!?]{0,16}?\b(i|we|they|he|she)\s+(is|are|am|has|have|does|do|goes|go|plays|play|collects|collect|helps|help|feels|feel|joins|join|cleans|clean|plants|plant|donates|donate|makes|make|takes|take|visits|visit|meets|meet|gives|give|sees|see|brings|bring|sells|sell|picks|pick|paints|paint|raises|raise|sorts|sort|packs|pack|cooks|cook|sings|sing|teaches|teach)\b/g,
+      msg: 'Có “last …/yesterday/… ago” → dùng thì quá khứ đơn', fix: function (m) { return m[2] + ' ' + pastOf(m[3]); } },
+    { re: /\b(every day|every week|usually|always|often)\s+(?:i|we|they|he|she)\s+(went|played|did|had|studied|watched|ate)\b/g, msg: 'Thói quen/thường xuyên → hiện tại đơn (không dùng quá khứ)', fix: function (m) { return '(dùng hiện tại đơn)'; } },
+    { re: /\b(is|am|was)\s+(?:very\s+)?(teacher|student|doctor|nurse|engineer|farmer|driver|singer|boy|girl|man|woman|classmate|member|volunteer|friend)\b/g, msg: 'Thiếu mạo từ a/an trước danh từ số ít', fix: function (m) { return m[1] + ' a ' + m[2]; } },
+    { re: /\b(have|has|had)\s+(dog|cat|bike|brother|sister|computer|hobby|lamp|desk|bed|pet|friend|book|garden|laptop|phone|car|house|ticket)\b/g, msg: 'Thiếu mạo từ a/an trước danh từ số ít', fix: function (m) { return m[1] + ' a ' + m[2]; } },
+    { re: /\bin\s+(monday|tuesday|wednesday|thursday|friday|saturday|sunday)s?\b/g, msg: 'Thứ trong tuần dùng on (on Monday)', fix: function (m) { return 'on ' + m[1]; } },
+    { re: /\bat\s+(?:the\s+)?(morning|afternoon|evening)\b/g, msg: 'Buổi trong ngày dùng in the (in the morning)', fix: function (m) { return 'in the ' + m[1]; } },
+    { re: /\bin\s+(?:the\s+)?weekends?\b/g, msg: 'Cuối tuần dùng at/on the weekend', fix: function () { return 'at the weekend'; } },
+    { re: /\b(?:on|in)\s+(\d{1,2})\s*(?:o'clock|am|pm)\b/g, msg: 'Giờ cụ thể dùng at (at 7 o\'clock)', fix: function (m) { return 'at ' + m[1] + " o'clock"; } },
+    { re: /\bby\s+foot\b/g, msg: 'Đi bộ = on foot', fix: function () { return 'on foot'; } },
+    { re: /\b(good|bad|clever|excellent)\s+in\b/g, msg: 'good at (không dùng in)', fix: function (m) { return m[1] + ' at'; } },
+    { re: /\b(live|lives|lived)\s+at\s+(ha noi|hanoi|ho chi minh|hue|da nang|vietnam|the city|the countryside|a village|the village|a city|a town)\b/g, msg: 'Thành phố/làng dùng in (live in …)', fix: function (m) { return m[1] + ' in ' + m[2]; } },
+    { re: /\b([a-z]+)\s+(locate|locates|located)\s+(in|at|on)\b/g, test: function (m) { return !/^(is|are|was|were|be|been|being)$/.test(m[1]); },
+      msg: 'Dùng “is located in …” (thiếu is/dạng bị động)', fix: function (m) { return m[1] + ' is located ' + m[3]; } },
+    { re: /\bdiscuss\s+about\b/g, msg: 'discuss + danh từ (không có about)', fix: function () { return 'discuss'; } },
+    { re: /\b(childs|mans|womans|foots|tooths|mouses|persons)\b/g, msg: 'Danh từ số nhiều bất quy tắc', fix: function (m) { return { childs: 'children', mans: 'men', womans: 'women', foots: 'feet', tooths: 'teeth', mouses: 'mice', persons: 'people' }[m[1]]; } },
+    { re: /\bpeople\s+(is|was)\b/g, msg: 'people đi với are/were', fix: function (m) { return 'people ' + (m[1] === 'was' ? 'were' : 'are'); } },
+    { re: /\b(a|one)\s+people\b/g, msg: 'a person / people', fix: function () { return 'a person'; } },
+    { re: /\bmore\s+(better|easier|bigger|worse|happier)\b|\bmost\s+(best|biggest)\b/g, msg: 'Không dùng more/most với so sánh đã đổi dạng', fix: function (m) { return m[1] || m[2]; } },
+    { re: /\b(i|he|she|we|they)\s+(name|friend|school|class|house|hobby|teacher|room|family|mother|father|brother|sister|favourite)\b/g,
+      test: function (m) { return !(/^(they|we)$/.test(m[1]) && /^(name)$/.test(m[2])); }, msg: 'Dùng tính từ sở hữu my/his/her/our/their', fix: function (m) { return POSS[m[1]] + ' ' + m[2]; } },
+    { re: /\b(i|he|she|we|they)\s+(have|has)\s+(\d+|ten|eleven|twelve|thirteen|fourteen|fifteen)\s+years?\s+old\b/g, msg: 'Tuổi dùng be: I am 12 years old', fix: function (m) { return m[1] + ' ' + beFor(m[1]) + ' ' + m[3] + ' years old'; } },
+    { re: /\b(am|is|are)\s+(\d+|ten|eleven|twelve|thirteen|fourteen|fifteen)\s+year\s+old\b/g, msg: 'years old (số nhiều)', fix: function (m) { return m[1] + ' ' + m[2] + ' years old'; } },
+    { re: /\b(friends|classmates|teachers|parents|students|flowers|books|trees|classrooms|subjects|clubs|vegetables|fruits|shoes|clothes|children|kids|brothers|sisters)\s+(is|was)\b/g, msg: 'Danh từ số nhiều đi với are/were', fix: function (m) { return m[1] + ' ' + (m[2] === 'was' ? 'were' : 'are'); } },
+    { re: /\b(school|friend|classmate|teacher|room|house|garden|park|library|playground|subject|club|hobby|bedroom|kitchen|village)\s+(are|were)\b/g,
+      test: function (m, lt) { return !/\b(and|or|with)\s+(the\s+|my\s+|a\s+|our\s+)?$/.test(lt.slice(Math.max(0, m.index - 14), m.index)); },
+      msg: 'Danh từ số ít đi với is/was', fix: function (m) { return m[1] + ' ' + (m[2] === 'were' ? 'was' : 'is'); } },
+    { re: /\bmany\s+(water|homework|furniture|money|information|advice|rubbish|time|food|music|milk|rice|sugar|weather)\b/g, msg: 'Danh từ không đếm được dùng much', fix: function (m) { return 'much ' + m[1]; } },
+    { re: /\bmuch\s+(friends|students|books|people|things|flowers|trees|classmates|teachers|hobbies|subjects|clubs|vegetables|fruits|kids)\b/g, msg: 'Danh từ đếm được số nhiều dùng many', fix: function (m) { return 'many ' + m[1]; } },
+    { re: /\bgo to home\b/g, msg: 'Nói "go home" (không có "to")', fix: function () { return 'go home'; } },
+    { re: /\blisten\s+music\b/g, msg: '"listen to" music', fix: function () { return 'listen to music'; } }
+  ];
+  function findErrors(text) {
+    var lt = low(text), out = [];
+    RULES.forEach(function (r) {
+      r.re.lastIndex = 0;
+      var m;
+      while ((m = r.re.exec(lt))) {
+        if (r.test && !r.test(m, lt)) continue;
+        out.push({ start: m.index, end: m.index + m[0].length, bad: text.substr(m.index, m[0].length), good: r.fix(m), msg: r.msg });
+        if (m[0].length === 0) r.re.lastIndex++;
+      }
+    });
+    out.sort(function (a, b) { return a.start - b.start; });
+    var res = [], last = -1;
+    out.forEach(function (e) { if (e.start >= last) { res.push(e); last = e.end; } });
+    return res;
+  }
+
+  /* ---------- live helpers (used while recording) ---------- */
+  function clueCoverage(text, data) {
+    var norm = tokens(text).join(' ');
+    return (data.clues || []).map(function (c) {
+      var hit = 0;
+      (c.groups || []).forEach(function (g) { try { if (new RegExp(g, 'i').test(norm)) hit++; } catch (e) { } });
+      var need = c.min || 1;
+      return { id: c.id, hits: hit, need: need, covered: hit >= need };
+    });
+  }
+  function structure(text) {
+    var t = tokens(text);
+    return { intro: INTRO_RE.test(t.slice(0, 30).join(' ')), conclusion: CONCL_RE.test(t.slice(-25).join(' ')) };
+  }
+
+  /* ---------- main analysis ---------- */
+  function analyze(o) {
+    var data = o.data, L = LEVELS[o.level] || LEVELS.A1;
+    var segs = (o.segments || []).filter(function (s) { return s && s.text && s.text.trim(); });
+    var full = segs.map(function (s) { return s.text.trim(); }).join(' ');
+    var toks = tokens(full), norm = toks.join(' '), words = toks.length;
+    var dur = o.duration || 0;
+    var typed = !!o.typed;
+    var wpm = dur > 5 ? Math.round(words / (dur / 60)) : null;
+
+    /* STRICT MARKING: only speech the recogniser could clearly identify earns credit (clues, structure, linkers, vocabulary).
+       Segments below the confidence gate are heard but not counted – clear, accurate speaking is what is being trained. */
+    var gate = L.pLo;                                         /* A1 .45 · A2 .5 · B1 .55 · B2 .6 */
+    var clearFull = segs.filter(function (sg) { return sg.conf == null || sg.conf <= 0 || sg.conf >= gate; }).map(function (sg) { return sg.text.trim(); }).join(' ');
+    var ctoks = tokens(clearFull), cnorm = ctoks.join(' ');
+
+    /* clues, structure, linkers */
+    var coverage = clueCoverage(clearFull, data);
+    var covN = coverage.filter(function (c) { return c.covered; }).length;
+    var covFrac = coverage.length ? covN / coverage.length : 0;
+    var st = structure(clearFull);
+    var linkersUsed = LINKERS.filter(function (l) { return new RegExp('\\b' + esc(l) + '\\b').test(cnorm); });
+    var subCount = (cnorm.match(SUB_RE) || []).length;
+
+    /* vocabulary */
+    var bank = bankItems(data), used = [], missing = [];
+    bank.forEach(function (w) { var re = itemRe(w); if (!re) return; (re.test(cnorm) ? used : missing).push(w); });
+    var uniq = {}; ctoks.forEach(function (t) { uniq[t.replace(/'/g, '')] = 1; });
+    var uniqN = Object.keys(uniq).length;
+
+    /* grammar errors */
+    var errors = [];
+    segs.forEach(function (s, i) { findErrors(s.text).forEach(function (e) { e.seg = i; errors.push(e); }); });
+
+    /* --- Grammar & Vocabulary --- */
+    /* vocabulary credit. Word-bank words count in full. Other words count (half a point) when they are topic words for THIS game
+       (data.topicWords: synonyms/related words) within the level the student chose (that level or one below) and not repeated.
+       Only words in clearly recognised segments count (strict marking). */
+    function stem(w) { return w.replace(/(ing|ed|es|s)$/, ''); }
+    var order = ['A1', 'A2', 'B1', 'B2'], li = order.indexOf(o.level);
+    /* tiers follow the general CEFR order A1<A2<B1<B2: words at the student's level (or one below) earn 0.5; words ABOVE the chosen level are a
+       "stretch" and earn a full point as a bonus (praised on the result screen). */
+    var topicMap = {};
+    order.forEach(function (t, ti) { ((data.topicWords || {})[t] || []).forEach(function (w) { var k = stem(w.toLowerCase()); if (!topicMap[k] || ti > topicMap[k].ti) topicMap[k] = { w: w, tier: t, ti: ti }; }); });
+    var clearToks = {};
+    ctoks.forEach(function (t) { clearToks[t.replace(/'/g, '')] = 1; });
+    var usedStems = used.map(function (u) { return stem(u.toLowerCase()); });
+    var ownAll = Object.keys(clearToks).filter(function (w) { var st = stem(w); return topicMap[st] && usedStems.indexOf(st) < 0 && used.every(function (u) { return u.toLowerCase().indexOf(w) < 0; }); });
+    var own = ownAll.filter(function (w) { var m = topicMap[stem(w)]; return m.ti <= li && m.ti >= Math.max(0, li - 1); });
+    var stretch = ownAll.filter(function (w) { return topicMap[stem(w)].ti > li; }).map(function (w) { return { word: w, tier: topicMap[stem(w)].tier }; });
+    var vocabCredit = used.length + 0.5 * Math.min(own.length, 2 * L.bank) + 1 * Math.min(stretch.length, 3);
+    var vocab = clamp(vocabCredit / L.bank), variety = clamp(uniqN / L.uniq), complex = clamp(subCount / L.sub);
+    /* grammar accuracy: errors per 100 words, relative to what the level tolerates (50% accuracy at L.tol errors/100 words) */
+    var errPer100 = words ? errors.length / words * 100 : 0;
+    var accuracy = 1 / (1 + errPer100 / L.tol);
+    var gvRaw = (0.4 * vocab + 0.3 * variety + 0.3 * complex) * accuracy;
+    var gv = half(clamp(gvRaw) * 5);
+    var rangeBand = half(clamp(0.4 * vocab + 0.3 * variety + 0.3 * complex) * 5), accBand = half(accuracy * 5);
+    if (words < L.minWords * 0.4) gv = Math.min(gv, 2);
+
+    /* --- Discourse Management --- */
+    var dmRaw = 0.15 * (st.intro ? 1 : 0) + 0.15 * (st.conclusion ? 1 : 0) + 0.25 * clamp(linkersUsed.length / L.linkers) +
+      0.35 * covFrac + 0.10 * clamp(words / L.targetWords);
+    var dm = half(clamp(dmRaw) * 5);
+    if (covFrac < 0.5) dm = Math.min(dm, 3);
+    if (words < L.minWords * 0.4) dm = Math.min(dm, 1.5);
+
+    /* --- Pronunciation (null when recognition confidence is unavailable) --- */
+    var confs = segs.filter(function (s) { return s.conf != null && s.conf > 0; });
+    var pr = null, avgConf = null, lowSegs = [];
+    if (!typed && confs.length) {
+      avgConf = confs.reduce(function (a, s) { return a + s.conf; }, 0) / confs.length;
+      var good = confs.filter(function (s) { return s.conf >= 0.7; }).length / confs.length;
+      /* intelligibility: a foreign accent is fine if the listener still gets the message – so besides recognition confidence,
+         count how much of the intended content (the clues) was understood */
+      var prRaw = 0.7 * clamp((avgConf - L.pLo) / (0.92 - L.pLo)) + 0.3 * good;
+      pr = half(clamp(prRaw) * 5);
+      if (words < L.minWords * 0.4) pr = Math.min(pr, 2);
+      segs.forEach(function (s, i) { if (s.conf != null && s.conf > 0 && s.conf < 0.7) lowSegs.push(i); });
+    }
+
+    /* --- Interactive Communication / delivery --- */
+    var ic, wpmScore = null, pauseScore = null, durScore = null;
+    var lenFit = clamp(words / L.targetWords);
+    if (dur > 5) {
+      var lo = L.wpm[0], hi = L.wpm[1];
+      wpmScore = wpm >= lo && wpm <= hi ? 1 : wpm < lo ? Math.pow(clamp(wpm / lo), 1.5) : Math.max(0.5, 1 - (wpm - hi) / hi);
+      var sr = o.silenceRatio;
+      pauseScore = sr == null ? 0.7 : clamp(1 - (sr - 0.2) / 0.4);
+      durScore = dur >= L.minSec ? 1 : clamp(dur / L.minSec);
+      ic = half(clamp(0.4 * wpmScore + 0.3 * pauseScore + 0.3 * durScore) * 5);
+    } else { ic = half(clamp(0.7 * lenFit) * 5); }
+    if (words < L.minWords * 0.4) ic = Math.min(ic, 1.5);
+
+    /* totals */
+    /* Grammar & Vocabulary counts double (this is a language-accuracy class test); change WEIGHTS to taste */
+    var num = WEIGHTS.gv * gv + WEIGHTS.dm * dm + WEIGHTS.ic * ic, den = 5 * (WEIGHTS.gv + WEIGHTS.dm + WEIGHTS.ic);
+    if (pr != null) { num += WEIGHTS.pr * pr; den += 5 * WEIGHTS.pr; }
+    var total20 = num / den * 20;
+    total20 = Math.min(total20, 20 * (0.3 + 0.7 * accuracy));            /* many grammar errors cap the overall score */
+    /* strict caps: answering only some of the clues, or being hard to recognise, limits the overall score (out of 10: 0 clues 1.5 · 1/4 → 3.5 · 2/4 → 5.5 · 3/4 → 7.5 · all → 10) */
+    var covCap10 = coverage.length ? [1.5, 3.5, 5.5, 7.5, 10][Math.min(4, Math.round(covFrac * 4))] : 10;
+    total20 = Math.min(total20, covCap10 * 2);
+    if (pr != null) total20 = Math.min(total20, 20 * (0.35 + 0.65 * pr / 5));      /* pronunciation 5 → no cap · 2.5 → 67% · 0 → 35% */
+    total20 = half(total20);
+    var score10 = Math.round(total20 / 2 * 10) / 10;
+    var stars = score10 >= 8 ? 3 : score10 >= 6 ? 2 : score10 >= 4 ? 1 : 0;
+
+    var rank = score10 >= 9 ? ['Speaking Champion', '🏆'] : score10 >= 7.5 ? ['Star Speaker', '⭐'] : score10 >= 6 ? ['Confident Talker', '💬'] : score10 >= 4 ? ['Explorer', '🧭'] : ['Starter', '🌱'];
+    var xp = Math.round(total20 * 10 + covN * 25 + stars * 30 + Math.min(stretch.length, 5) * 20);
+
+    var rep = {
+      level: o.level, words: words, wpm: wpm, duration: Math.round(dur), typed: typed, avgConf: avgConf,
+      criteria: {
+        gv: { score: gv, max: 5 }, dm: { score: dm, max: 5 },
+        pr: { score: pr, max: 5 }, ic: { score: ic, max: 5 }
+      },
+      total20: total20, score10: score10, stars: stars, rank: rank, xp: xp,
+      coverage: coverage, covN: covN, intro: st.intro, conclusion: st.conclusion,
+      linkersUsed: linkersUsed, subCount: subCount, bankUsed: used, bankMissing: missing, ownWords: own, stretchWords: stretch, vocabCredit: vocabCredit,
+      errors: errors, errPer100: Math.round(errPer100 * 10) / 10, accuracy: accuracy, lowSegs: lowSegs, uniq: uniqN, silenceRatio: o.silenceRatio == null ? null : o.silenceRatio,
+      wpmScore: wpmScore, pauseScore: pauseScore, durScore: durScore, L: L, rangeBand: rangeBand, accBand: accBand
+    };
+    ['gv', 'dm', 'pr', 'ic'].forEach(function (k) {
+      var c = rep.criteria[k]; c.name = NAMES[k];
+      c.desc = c.score == null ? ['Not assessed in this browser (needs speech recognition).', 'Chưa chấm được (trình duyệt không hỗ trợ nhận diện giọng nói – hãy dùng Chrome/Edge).'] : DESC[k][Math.min(5, Math.floor(c.score + 0.0001))];
+    });
+    rep.levelFit = levelFit(rep);
+    rep.cefr = cefrOf(rep);
+    var t = tips(rep, data, segs);
+    rep.tips = t.tips; rep.strengths = t.strengths;
+    return rep;
+  }
+
+  function levelFit(r) {
+    var s = r.total20, order = ['A1', 'A2', 'B1', 'B2'], i = order.indexOf(r.level);
+    if (s >= 17 && i < 3 && r.errors.length === 0) return { code: 'up', vi: 'Xuất sắc! Em đã sẵn sàng thử level ' + order[i + 1] + '.', en: 'Excellent – try ' + order[i + 1] + ' next!' };
+    if (s >= 14) return { code: 'ok', vi: 'Đạt chuẩn ' + r.level + '. Tiếp tục luyện để nói tự nhiên hơn.', en: 'You meet the ' + r.level + ' standard.' };
+    if (s >= 10) return { code: 'near', vi: 'Gần đạt ' + r.level + '. Sửa các điểm bên dưới rồi nói lại nhé.', en: 'Almost at ' + r.level + '.' };
+    return { code: 'low', vi: i > 0 ? 'Em nên luyện thêm hoặc thử level ' + order[i - 1] + ' trước.' : 'Hãy xem bài nói mẫu, rồi nói lại từng ý một nhé.', en: 'Keep practising – listen to the model talk first.' };
+  }
+
+  /* ---------- feedback ---------- */
+  function tips(r, data, segs) {
+    var T = [], S = [], L = r.L, lv = r.level;
+    var clues = data.clues || [];
+    function add(sev, icon, area, vi, ex) { T.push({ sev: sev, icon: icon, area: area, vi: vi, ex: ex || '' }); }
+
+    if (r.words < L.minWords * 0.4) add(0, '🎙️', 'Interactive Communication', 'Bài nói còn quá ngắn. Mục tiêu: ' + L.targetWords + '+ từ, nói ít nhất ' + L.minSec + ' giây.', 'Hãy trả lời lần lượt 4 gợi ý, mỗi ý 1–2 câu.');
+
+    r.coverage.forEach(function (c, i) {
+      if (!c.covered && clues[i]) {
+        var sc = (clues[i].scaffold || {})[lv] || '';
+        add(1, '🧩', 'Discourse Management', 'Chưa trả lời rõ ý ' + (i + 1) + ': “' + clues[i].text + '”', sc ? 'Gợi ý câu: ' + sc : '');
+      }
+    });
+    if (!r.intro) add(1, '👋', 'Discourse Management', 'Thiếu phần mở bài (Introduction).', 'Hello everyone. Today I’m going to talk about …');
+    if (!r.conclusion) add(1, '🏁', 'Discourse Management', 'Thiếu phần kết bài (Conclusion).', 'In short, … That’s all. Thank you for listening.');
+    if (r.linkersUsed.length < L.linkers) {
+      var suggest = ['because', 'also', 'first', 'but', 'so', 'finally', 'for example', 'although', 'which'].filter(function (x) { return r.linkersUsed.indexOf(x) < 0; }).slice(0, 4);
+      add(2, '🔗', 'Discourse Management', 'Dùng ít từ nối (' + r.linkersUsed.length + '/' + L.linkers + '). Thêm: ' + suggest.join(', ') + '.', 'First, … Also, … I like it because … Finally, …');
+    }
+    if (lv === 'B2' && r.subCount < 3) add(2, '🧠', 'Grammar & Vocabulary', 'Level B2 cần câu phức: thử although / which / who / if / when.', 'My school, which is near my house, is quite big although it is old.');
+    if (r.errors.length >= 3) add(0, '🔎', 'Grammar & Vocabulary', 'Cô thấy ' + r.errors.length + ' lỗi ngữ pháp trong bài nói của em (' + r.errPer100 + ' lỗi/100 từ).', 'Hãy sửa các lỗi bên dưới rồi nói lại.');
+    r.errors.slice(0, 6).forEach(function (e) {
+      add(1, '✏️', 'Grammar & Vocabulary', e.msg + '.  “' + e.bad + '” → “' + e.good + '”');
+    });
+    if (r.vocabCredit < L.bank && r.bankMissing.length) {
+      add(2, '📚', 'Grammar & Vocabulary', 'Nói thêm từ vựng về chủ đề, vừa sức level ' + lv + ' – dùng từ trong Word bank hoặc từ đồng nghĩa phù hợp đều được (hiện ' + r.bankUsed.length + ' từ Word bank + ' + r.ownWords.length + ' từ đồng nghĩa/liên quan). Gợi ý: ' + r.bankMissing.slice(0, 5).join(', ') + '.');
+    }
+    if (r.criteria.pr.score != null && r.criteria.pr.score < 3.5) {
+      var pf = (data.pronFocus || []).slice(0, 3).map(function (p) { return p.word + ' ' + (p.ipa || ''); }).join(' · ');
+      add(1, '🔊', 'Pronunciation', 'Có vài câu cô nghe chưa rõ (gạch cam trong bài)' + (r.covN >= 3 ? '; ý chính của em thì cô vẫn hiểu' : '') + '. Nói chậm hơn, tròn vành rõ chữ, đọc rõ âm cuối (-s, -ed, -t) để người nghe không phải đoán.', pf ? 'Luyện các từ: ' + pf : '');
+    }
+    if (r.wpm != null) {
+      if (r.wpm < L.wpm[0]) add(2, '🐢', 'Interactive Communication', 'Tốc độ nói chậm (' + r.wpm + ' từ/phút, mục tiêu ' + L.wpm[0] + '–' + L.wpm[1] + '). Chuẩn bị ý trước để ít ngập ngừng.');
+      else if (r.wpm > L.wpm[1] + 20) add(3, '⚡', 'Interactive Communication', 'Em nói hơi nhanh (' + r.wpm + ' từ/phút). Nói chậm lại, ngắt nghỉ giữa các ý.');
+    }
+    if (r.duration && r.duration < L.minSec) add(2, '⏱️', 'Interactive Communication', 'Em nói ' + r.duration + ' giây – cần ít nhất ' + L.minSec + ' giây (mục tiêu 45–60 giây). Thêm 1 chi tiết hoặc 1 lý do cho mỗi ý.');
+    if (r.pauseScore != null && r.pauseScore < 0.5) add(2, '⏸️', 'Interactive Communication', 'Em ngừng khá lâu giữa chừng. Nếu quên từ, hãy nói “well…” / “let me think…” rồi nói tiếp.');
+
+    T.sort(function (a, b) { return a.sev - b.sev; });
+    T = T.slice(0, 9);
+
+    /* strengths */
+    var best = ['gv', 'dm', 'pr', 'ic'].filter(function (k) { return r.criteria[k].score != null; })
+      .sort(function (a, b) { return r.criteria[b].score - r.criteria[a].score; });
+    best.slice(0, 2).forEach(function (k) {
+      if (r.criteria[k].score >= 3) S.push(NAMES[k][1] + ' (' + r.criteria[k].score + '/5): ' + r.criteria[k].desc[1]);
+    });
+    if (r.stretchWords && r.stretchWords.length) S.push('🌟 Điểm thưởng từ vựng! Em dùng từ cao hơn level ' + lv + ': ' + r.stretchWords.slice(0, 4).map(function (x) { return x.word + ' (' + x.tier + ')'; }).join(', ') + ' (+' + Math.min(r.stretchWords.length, 5) * 20 + ' XP). Giỏi lắm!');
+    if (r.covN === r.coverage.length) S.push('Em đã trả lời đủ ' + r.coverage.length + ' gợi ý của đề.');
+    if (r.intro && r.conclusion) S.push('Bài nói có đủ mở bài và kết bài.');
+    if (!S.length) S.push('Em đã dám nói – đó là bước quan trọng nhất! Hãy nghe bài mẫu rồi thử lại.');
+    return { tips: T, strengths: S };
+  }
+
+  /* ---------- transcript highlighting ---------- */
+  function highlight(segs, data, errors) {
+    var bank = bankItems(data).map(itemRe).filter(Boolean);
+    var linkRes = LINKERS.map(function (l) { return new RegExp('\\b' + esc(l) + '\\b', 'g'); });
+    var html = '';
+    segs.forEach(function (s, si) {
+      var text = s.text, lt = low(text), n = text.length, f = new Array(n), tip = new Array(n), i;
+      for (i = 0; i < n; i++) f[i] = 0;
+      function mark(re, v) { re.lastIndex = 0; var m; while ((m = re.exec(lt))) { for (var k = m.index; k < m.index + m[0].length; k++) if (f[k] < v) f[k] = v; if (!m[0].length) re.lastIndex++; } }
+      bank.forEach(function (re) { mark(re, 1); });
+      linkRes.forEach(function (re) { mark(re, 2); });
+      (errors || []).filter(function (e) { return e.seg === si; }).forEach(function (e) { for (var k = e.start; k < e.end; k++) { f[k] = 3; tip[k] = e.msg + ' → ' + e.good; } });
+      var out = '', cur = -1, buf = '';
+      function flush() {
+        if (!buf) return;
+        var cls = ['', 'hl-bank', 'hl-link', 'hl-err'][cur];
+        out += cls ? '<span class="' + cls + '"' + (cur === 3 ? ' title="' + htmlEsc(tip[curStart] || '') + '"' : '') + '>' + htmlEsc(buf) + '</span>' : htmlEsc(buf);
+        buf = '';
+      }
+      var curStart = 0;
+      for (i = 0; i < n; i++) { if (f[i] !== cur) { flush(); cur = f[i]; curStart = i; } buf += text[i]; }
+      flush();
+      var low_ = s.conf != null && s.conf > 0 && s.conf < 0.7;
+      html += '<span class="seg' + (low_ ? ' low' : '') + '"' + (low_ ? ' title="Câu này nghe chưa rõ (' + Math.round(s.conf * 100) + '%)"' : '') + '>' + out + '</span> ';
+    });
+    return html;
+  }
+
+  var api = { CEFR: CEFR, CEFR_ORDER: CEFR_ORDER, LEVELS: LEVELS, LINKERS: LINKERS, analyze: analyze, clueCoverage: clueCoverage, structure: structure, findErrors: findErrors, highlight: highlight, tokens: tokens, bankItems: bankItems };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  root.SpeakingEngine = api;
+})(typeof window !== 'undefined' ? window : this);
+</script>
+<script>/* Speaking Quest – illustration library.
+   Rich vector scenes (gradients, soft shadows, depth, light and gentle motion) built from reusable parts.
+   window.SQ_ART = { school, home, friends, hobbies, health, community, leisure, countryside, club }   (each is an <svg> string, viewBox 360x250)
+   Add a scene: write a function that returns scene(innerSvg) and register it at the bottom. */
+(function () {
+  'use strict';
+  var uid = 0;
+  function id(p) { return p + (++uid); }
+
+  /* ----- shared defs ----- */
+  var DEFS = '<defs>' +
+    '<linearGradient id="aSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4fb3f0"/><stop offset=".55" stop-color="#9fdcfa"/><stop offset="1" stop-color="#e9f8ff"/></linearGradient>' +
+    '<radialGradient id="aSun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fffbe0"/><stop offset=".3" stop-color="#ffe685" stop-opacity=".95"/><stop offset="1" stop-color="#ffd166" stop-opacity="0"/></radialGradient>' +
+    '<linearGradient id="aHillA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fd3a4"/><stop offset="1" stop-color="#6cbf8a"/></linearGradient>' +
+    '<linearGradient id="aHillB" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fcb7f"/><stop offset="1" stop-color="#4daf65"/></linearGradient>' +
+    '<linearGradient id="aGrass" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fcf6b"/><stop offset="1" stop-color="#3f9f55"/></linearGradient>' +
+    '<linearGradient id="aBrick" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7ad84"/><stop offset="1" stop-color="#e4825f"/></linearGradient>' +
+    '<linearGradient id="aWarm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff0cf"/><stop offset="1" stop-color="#f6cc8c"/></linearGradient>' +
+    '<linearGradient id="aRoof" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ef6a6a"/><stop offset="1" stop-color="#b93a52"/></linearGradient>' +
+    '<linearGradient id="aGlass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#e8f7ff"/><stop offset=".5" stop-color="#9ed8f7"/><stop offset="1" stop-color="#5fb4e8"/></linearGradient>' +
+    '<linearGradient id="aLit" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff6c4"/><stop offset="1" stop-color="#ffc857"/></linearGradient>' +
+    '<radialGradient id="aFol" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#8ee68a"/><stop offset=".6" stop-color="#4fbf6a"/><stop offset="1" stop-color="#2f9a52"/></radialGradient>' +
+    '<linearGradient id="aTrunk" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b57a4c"/><stop offset="1" stop-color="#8a5532"/></linearGradient>' +
+    '<linearGradient id="aWood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d9a468"/><stop offset="1" stop-color="#b57a45"/></linearGradient>' +
+    '<linearGradient id="aPath" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f2e6c9"/><stop offset="1" stop-color="#dac79b"/></linearGradient>' +
+    '<radialGradient id="aApple" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#ff8a7a"/><stop offset=".6" stop-color="#e53e3e"/><stop offset="1" stop-color="#b02a37"/></radialGradient>' +
+    '<radialGradient id="aOrange" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#ffc46b"/><stop offset=".6" stop-color="#fb9a2c"/><stop offset="1" stop-color="#d97706"/></radialGradient>' +
+    '<radialGradient id="aGrape" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#d6a6ff"/><stop offset=".6" stop-color="#9b5de5"/><stop offset="1" stop-color="#6d3bb5"/></radialGradient>' +
+    '<linearGradient id="aWater" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#b9e7ff"/><stop offset=".5" stop-color="#7ccaf5"/><stop offset="1" stop-color="#4aa6dd"/></linearGradient>' +
+    '<linearGradient id="aTerra" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#f0a070"/><stop offset=".6" stop-color="#dd7a45"/><stop offset="1" stop-color="#b85b2e"/></linearGradient>' +
+    '<linearGradient id="aMount" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fc8d8"/><stop offset="1" stop-color="#7fb4a2"/></linearGradient>' +
+    '<linearGradient id="aMount2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fb6a0"/><stop offset="1" stop-color="#5aa27c"/></linearGradient>' +
+    '<filter id="aBlur" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="2.2"/></filter>' +
+    '</defs>';
+
+  /* ----- parts ----- */
+  function cloud(x, y, s, dur) {
+    return '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><g class="cl" style="animation-duration:' + dur + 's"><ellipse cx="0" cy="5" rx="36" ry="8" fill="#dff1fb"/><ellipse cx="-18" cy="-2" rx="17" ry="12" fill="#fff"/><ellipse cx="8" cy="-8" rx="22" ry="15" fill="#fff"/><ellipse cx="26" cy="0" rx="15" ry="10" fill="#fff"/></g></g>';
+  }
+  function sun(x, y, r) {
+    return '<circle cx="' + x + '" cy="' + y + '" r="' + (r * 2.6) + '" fill="url(#aSun)"/><circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="#ffe27a"/><circle cx="' + (x - r * .25) + '" cy="' + (y - r * .25) + '" r="' + (r * .6) + '" fill="#fff5b8" opacity=".8"/>';
+  }
+  function tree(x, y, s) {
+    return '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><ellipse cx="4" cy="2" rx="30" ry="6" fill="#1d5b34" opacity=".28" filter="url(#aBlur)"/>' +
+      '<path d="M-5 0 L-3 -34 L3 -34 L5 0Z" fill="url(#aTrunk)"/>' +
+      '<circle cx="-16" cy="-44" r="19" fill="#2f9a52"/><circle cx="16" cy="-46" r="20" fill="#2f9a52"/><circle cx="0" cy="-62" r="22" fill="#3aa85a"/>' +
+      '<circle cx="-12" cy="-48" r="17" fill="url(#aFol)"/><circle cx="14" cy="-50" r="18" fill="url(#aFol)"/><circle cx="-2" cy="-66" r="20" fill="url(#aFol)"/>' +
+      '<circle cx="-9" cy="-72" r="6" fill="#d9ffd0" opacity=".45"/></g>';
+  }
+  function bush(x, y, s) {
+    return '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><ellipse cx="0" cy="2" rx="24" ry="4" fill="#1d5b34" opacity=".25"/><circle cx="-12" cy="-6" r="10" fill="url(#aFol)"/><circle cx="2" cy="-10" r="13" fill="url(#aFol)"/><circle cx="15" cy="-5" r="9" fill="url(#aFol)"/></g>';
+  }
+  function flower(x, y, c, s) {
+    s = s || 1; var p = '';
+    for (var i = 0; i < 5; i++) { var a = i * 72; p += '<ellipse cx="0" cy="-4" rx="2.4" ry="4" fill="' + c + '" transform="rotate(' + a + ')"/>'; }
+    return '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><path d="M0 0 V10" stroke="#3a9a50" stroke-width="1.6"/>' + p + '<circle r="2.2" fill="#ffd166"/></g>';
+  }
+  function flowers(list) { return list.map(function (f) { return flower(f[0], f[1], f[2], f[3]); }).join(''); }
+  function sparkle(x, y, s, d) {
+    return '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><path class="tw" style="animation-delay:' + d + 's" d="M0 -8 Q1 -1 8 0 Q1 1 0 8 Q-1 1 -8 0 Q-1 -1 0 -8Z" fill="#fff6b0"/></g>';
+  }
+  function heart(x, y, s, c) {
+    return '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><g class="bob"><path d="M0 8 C-14 -2 -12 -14 -4 -14 C-1 -14 0 -11 0 -10 C0 -11 1 -14 4 -14 C12 -14 14 -2 0 8Z" fill="' + (c || '#ff5c7a') + '"/><path d="M-6 -9 C-9 -8 -9 -4 -8 -3" stroke="#fff" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".7"/></g></g>';
+  }
+  function fence(x0, x1, y, h, col) {
+    var o = '';
+    for (var x = x0; x < x1; x += 9) o += '<path d="M' + x + ' ' + y + ' V' + (y - h) + ' L' + (x + 3.5) + ' ' + (y - h - 4) + ' L' + (x + 7) + ' ' + (y - h) + ' V' + y + 'Z" fill="' + (col || '#fff') + '" stroke="#d9e2ec" stroke-width=".6"/>';
+    return o + '<rect x="' + x0 + '" y="' + (y - h * .7) + '" width="' + (x1 - x0) + '" height="3" fill="' + (col || '#fff') + '" stroke="#d9e2ec" stroke-width=".5"/><rect x="' + x0 + '" y="' + (y - h * .25) + '" width="' + (x1 - x0) + '" height="3" fill="' + (col || '#fff') + '" stroke="#d9e2ec" stroke-width=".5"/>';
+  }
+
+  /* kid: origin = centre of the feet, ~105 units tall.  o: {skin:[light,dark], hair, hairStyle:'short|long|pony', top, bottom, bag, hat, vest, pose:'stand|wave|hug|jump|hold', flip} */
+  function kid(o) {
+    var g = id('k'), sk = o.skin || ['#ffe3cb', '#f0b088'], top = o.top || '#3b9ae1', bot = o.bottom || '#1d3350', hair = o.hair || '#2b2f45';
+    var s = '<g transform="translate(' + o.x + ' ' + o.y + ') scale(' + ((o.flip ? -1 : 1) * o.s) + ' ' + o.s + ')">' +
+      '<defs><radialGradient id="' + g + '" cx=".35" cy=".3" r=".85"><stop offset="0" stop-color="' + sk[0] + '"/><stop offset="1" stop-color="' + sk[1] + '"/></radialGradient></defs>' +
+      '<ellipse cx="0" cy="2" rx="24" ry="5" fill="#173b25" opacity=".28" filter="url(#aBlur)"/>';
+    var pose = o.pose || 'stand';
+    /* legs + shoes */
+    if (pose === 'jump') {
+      s += '<path d="M-5 -36 L-19 -9" stroke="' + bot + '" stroke-width="10" stroke-linecap="round"/><path d="M5 -36 L19 -9" stroke="' + bot + '" stroke-width="10" stroke-linecap="round"/>' +
+        '<ellipse cx="-21" cy="-6" rx="10" ry="5" fill="#f6c35e" transform="rotate(-20 -21 -6)"/><ellipse cx="21" cy="-6" rx="10" ry="5" fill="#f6c35e" transform="rotate(20 21 -6)"/><path d="M-30 -4 H-12 M12 -4 H30" stroke="#e5566d" stroke-width="2.2"/>';
+    } else {
+      s += '<rect x="-12" y="-38" width="10" height="32" rx="5" fill="' + bot + '"/><rect x="2" y="-38" width="10" height="32" rx="5" fill="' + bot + '"/>' +
+        '<ellipse cx="-8" cy="-4" rx="10" ry="5" fill="#f6c35e"/><ellipse cx="9" cy="-4" rx="10" ry="5" fill="#f6c35e"/><path d="M-17 -2 H1 M0 -2 H18" stroke="#f0dcae" stroke-width="2"/>';
+    }
+    if (o.bag) s += '<rect x="-20" y="-68" width="12" height="32" rx="6" fill="' + o.bag + '"/><rect x="-18" y="-62" width="8" height="6" rx="2" fill="#fff" opacity=".35"/>';
+    /* arms behind torso */
+    function arm(d, hx, hy) { return '<path d="' + d + '" stroke="' + top + '" stroke-width="9" stroke-linecap="round" fill="none"/><circle cx="' + hx + '" cy="' + hy + '" r="4.6" fill="url(#' + g + ')"/>'; }
+    var arms = '';
+    if (pose === 'jump') arms = arm('M-15 -64 Q-30 -76 -34 -98', -34, -99) + arm('M15 -64 Q30 -76 34 -98', 34, -99);
+    else if (pose === 'wave') arms = arm('M-15 -62 Q-20 -48 -19 -38', -19, -35) + arm('M15 -64 Q30 -72 30 -94', 30, -96);
+    else if (pose === 'hug') arms = arm('M-15 -62 Q-20 -48 -19 -38', -19, -35) + arm('M15 -62 Q30 -62 40 -66', 41, -66);
+    else if (pose === 'hold') arms = arm('M-15 -62 Q-18 -48 -8 -42', -6, -42) + arm('M15 -62 Q24 -50 14 -42', 12, -42);
+    else arms = arm('M-15 -62 Q-21 -48 -19 -37', -19, -34) + arm('M15 -62 Q21 -48 19 -37', 19, -34);
+    s += arms;
+    /* torso */
+    s += '<rect x="-16" y="-72" width="32" height="40" rx="12" fill="' + top + '"/><rect x="-16" y="-72" width="14" height="40" rx="8" fill="#fff" opacity=".16"/><rect x="6" y="-72" width="10" height="40" rx="6" fill="#000" opacity=".1"/>';
+    if (o.vest) s += '<rect x="-15" y="-70" width="30" height="36" rx="10" fill="' + o.vest + '"/><rect x="-15" y="-56" width="30" height="3.4" fill="#fff" opacity=".9"/><rect x="-15" y="-47" width="30" height="3.4" fill="#fff" opacity=".9"/><path d="M0 -70 V-34" stroke="#00000030" stroke-width="1.4"/>';
+    /* neck + head */
+    s += '<rect x="-4.5" y="-76" width="9" height="9" rx="3" fill="' + sk[1] + '"/><circle cx="-15.5" cy="-85" r="3.6" fill="url(#' + g + ')"/><circle cx="15.5" cy="-85" r="3.6" fill="url(#' + g + ')"/>';
+    var hs = o.hairStyle || 'short';
+    if (hs === 'long') s += '<path d="M-17 -90 Q-23 -68 -14 -58 L-6 -62 L-8 -90Z" fill="' + hair + '"/><path d="M17 -90 Q23 -68 14 -58 L6 -62 L8 -90Z" fill="' + hair + '"/>';
+    if (hs === 'pony') s += '<g class="bob"><path d="M14 -98 Q30 -96 26 -76 Q22 -88 14 -90Z" fill="' + hair + '"/></g>';
+    s += '<circle cx="0" cy="-85" r="16" fill="url(#' + g + ')"/>';
+    /* hair cap */
+    if (hs === 'short') s += '<path d="M-17 -86 Q-19 -104 0 -103 Q19 -104 17 -86 Q10 -95 0 -94 Q-9 -94 -17 -86Z" fill="' + hair + '"/><path d="M-6 -102 Q2 -104 9 -99" stroke="#fff" stroke-width="2" fill="none" opacity=".25" stroke-linecap="round"/>';
+    else s += '<path d="M-17 -85 Q-19 -105 0 -104 Q19 -105 17 -85 Q12 -96 2 -95 Q-8 -92 -12 -86 Q-14 -84 -17 -85Z" fill="' + hair + '"/><path d="M-7 -103 Q2 -105 10 -100" stroke="#fff" stroke-width="2" fill="none" opacity=".25" stroke-linecap="round"/>';
+    if (hs === 'pony') s += '<rect x="13" y="-95" width="5" height="4" rx="2" fill="#ff6b8b"/>';
+    /* face */
+    s += '<ellipse cx="-6.2" cy="-83" rx="2.5" ry="3.2" fill="#2b2f45"/><ellipse cx="6.2" cy="-83" rx="2.5" ry="3.2" fill="#2b2f45"/><circle cx="-5.4" cy="-84.2" r=".95" fill="#fff"/><circle cx="7" cy="-84.2" r=".95" fill="#fff"/>' +
+      '<path d="M-9 -89 Q-6 -91 -3 -89.5 M3 -89.5 Q6 -91 9 -89" stroke="' + hair + '" stroke-width="1.5" fill="none" stroke-linecap="round"/>' +
+      '<path d="M-.8 -81 Q0 -79 .9 -80.5" stroke="' + sk[1] + '" stroke-width="1.4" fill="none" stroke-linecap="round"/>' +
+      '<path d="M-5 -76 Q0 -71 5 -76 Q0 -74 -5 -76Z" fill="#c2415b" stroke="#c2415b" stroke-width="1.2" stroke-linejoin="round"/>' +
+      '<ellipse cx="-10.5" cy="-77.5" rx="3.2" ry="2" fill="#ff8fa3" opacity=".5"/><ellipse cx="10.5" cy="-77.5" rx="3.2" ry="2" fill="#ff8fa3" opacity=".5"/>';
+    if (o.hat) s += '<ellipse cx="0" cy="-95" rx="27" ry="6.5" fill="#f1cf86"/><path d="M-15 -96 Q-14 -112 0 -112 Q14 -112 15 -96Z" fill="#f6dc9a"/><path d="M-15 -97 H15" stroke="#e5566d" stroke-width="3.2"/>';
+    return s + '</g>';
+  }
+
+  function scene(inner) {
+    return '<svg viewBox="0 0 360 250" xmlns="http://www.w3.org/2000/svg" role="img">' + DEFS + '<rect width="360" height="250" fill="url(#aSky)"/>' + inner + '</svg>';
+  }
+  function hills() {
+    return '<path d="M0 150 Q55 118 120 140 T240 132 T360 142 V215 H0Z" fill="url(#aHillA)"/><path d="M0 176 Q90 142 180 168 T360 156 V225 H0Z" fill="url(#aHillB)"/>';
+  }
+
+  /* ----- scenes ----- */
+  function school() {
+    var win = function (x, y, w, h) { return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="2" fill="url(#aGlass)" stroke="#fff" stroke-width="2.4"/><path d="M' + (x + w / 2) + ' ' + y + ' V' + (y + h) + ' M' + x + ' ' + (y + h / 2) + ' H' + (x + w) + '" stroke="#fff" stroke-width="1.6"/><path d="M' + (x + 2) + ' ' + (y + h - 3) + ' L' + (x + w * .5) + ' ' + (y + 3) + '" stroke="#fff" stroke-width="1.5" opacity=".6"/>'; };
+    var o = sun(310, 44, 15) + cloud(70, 44, 1, 34) + cloud(250, 78, .8, 42) + hills() + '<rect y="198" width="360" height="52" fill="url(#aGrass)"/><path d="M118 250 L152 198 L208 198 L242 250Z" fill="url(#aPath)"/>';
+    o += tree(26, 204, 1.05) + tree(338, 204, .95);
+    /* building */
+    o += '<rect x="36" y="128" width="62" height="70" fill="url(#aBrick)"/><rect x="262" y="128" width="62" height="70" fill="url(#aBrick)"/><rect x="262" y="128" width="62" height="70" fill="#000" opacity=".1"/>' +
+      '<rect x="32" y="120" width="70" height="10" rx="2" fill="#c8455a"/><rect x="258" y="120" width="70" height="10" rx="2" fill="#a83a4e"/>' +
+      '<rect x="92" y="98" width="176" height="100" fill="url(#aBrick)"/><rect x="92" y="98" width="30" height="100" fill="#fff" opacity=".1"/>' +
+      '<polygon points="84,100 180,52 276,100" fill="url(#aRoof)"/><polygon points="92,98 180,56 268,98" fill="#fff" opacity=".18"/><rect x="84" y="97" width="192" height="6" rx="2" fill="#fff4e6"/>' +
+      '<circle cx="180" cy="80" r="13" fill="#fff" stroke="#c8455a" stroke-width="3"/><path d="M180 80 V71 M180 80 L186 84" stroke="#1c2b4a" stroke-width="2.4" stroke-linecap="round"/>' +
+      '<rect x="178.6" y="22" width="2.8" height="32" fill="#7b8794"/><path d="M181 24 Q196 20 211 25 Q198 30 181 38Z" fill="#e53e3e"/><path d="M196 27 l1.8 4 4.2.4 -3.2 2.8 1 4.2 -3.8-2.2 -3.8 2.2 1-4.2 -3.2-2.8 4.2-.4Z" fill="#ffd23f" transform="scale(.7) translate(82 10)"/>';
+    o += win(104, 114, 20, 26) + win(132, 114, 20, 26) + win(208, 114, 20, 26) + win(236, 114, 20, 26) + win(104, 154, 20, 26) + win(132, 154, 20, 26) + win(208, 154, 20, 26) + win(236, 154, 20, 26) +
+      win(46, 142, 16, 24) + win(72, 142, 16, 24) + win(272, 142, 16, 24) + win(298, 142, 16, 24);
+    o += '<rect x="160" y="130" width="40" height="68" fill="#fff4e6"/><rect x="156" y="126" width="48" height="6" fill="#fff"/><rect x="164" y="152" width="32" height="46" rx="3" fill="#0f9aa0"/><path d="M180 152 V198" stroke="#0b7d83" stroke-width="2"/><circle cx="176" cy="178" r="1.6" fill="#ffd166"/><circle cx="184" cy="178" r="1.6" fill="#ffd166"/>' +
+      '<rect x="150" y="196" width="60" height="4" fill="#e6dcc8"/><rect x="144" y="199" width="72" height="4" fill="#d8cdb6"/>' +
+      '<rect x="164" y="138" width="32" height="8" rx="2" fill="#e53e3e"/><rect x="170" y="140" width="20" height="4" fill="#fff" opacity=".55"/>';
+    o += bush(110, 200, .9) + bush(250, 200, .9) + bush(60, 200, .8) + bush(300, 200, .8);
+    o += flowers([[84, 205, '#ff7a8a', 1], [96, 208, '#ffd166', 1], [262, 206, '#ff7a8a', 1], [276, 208, '#fff', 1]]);
+    o += kid({ x: 118, y: 236, s: .78, top: '#ff7a59', bottom: '#1d3350', hairStyle: 'pony', hair: '#2b2f45', bag: '#9a78e0', pose: 'wave' }) +
+      kid({ x: 244, y: 238, s: .8, top: '#3b9ae1', bottom: '#34567a', hair: '#2b2f45', skin: ['#ffdcc0', '#eca97f'], bag: '#ffc94d' });
+    o += sparkle(40, 90, .8, 0) + sparkle(320, 110, .6, 1.2);
+    return scene(o);
+  }
+
+  function home() {
+    var win = function (x, y) { return '<rect x="' + (x - 3) + '" y="' + (y - 3) + '" width="36" height="36" rx="3" fill="#fff"/><rect x="' + x + '" y="' + y + '" width="30" height="30" rx="2" fill="url(#aLit)"/><path d="M' + (x + 15) + ' ' + y + ' V' + (y + 30) + ' M' + x + ' ' + (y + 15) + ' H' + (x + 30) + '" stroke="#fff" stroke-width="2"/><path d="M' + x + ' ' + y + ' q6 14 0 30 M' + (x + 30) + ' ' + y + ' q-6 14 0 30" stroke="#ef6a6a" stroke-width="3" fill="none" opacity=".75"/><rect x="' + (x - 5) + '" y="' + (y + 33) + '" width="40" height="8" rx="2" fill="#a86b3c"/><circle cx="' + (x + 4) + '" cy="' + (y + 33) + '" r="3.2" fill="#ff7a8a"/><circle cx="' + (x + 13) + '" cy="' + (y + 32) + '" r="3.2" fill="#ffd166"/><circle cx="' + (x + 22) + '" cy="' + (y + 33) + '" r="3.2" fill="#ff7a8a"/><circle cx="' + (x + 30) + '" cy="' + (y + 32) + '" r="3" fill="#fff"/>'; };
+    var o = sun(58, 46, 15) + cloud(250, 40, 1.05, 38) + cloud(150, 70, .7, 46) + hills() + '<rect y="196" width="360" height="54" fill="url(#aGrass)"/>';
+    o += tree(36, 204, 1.1);
+    /* house */
+    o += '<rect x="240" y="136" width="56" height="62" fill="#e8b878"/><polygon points="232,138 268,104 304,138" fill="url(#aRoof)"/><polygon points="240,136 268,110 296,136" fill="#000" opacity=".12"/><rect x="262" y="150" width="14" height="22" rx="2" fill="url(#aGlass)" stroke="#fff" stroke-width="2"/>' +
+      '<rect x="88" y="112" width="152" height="86" fill="url(#aWarm)"/><rect x="88" y="112" width="26" height="86" fill="#fff" opacity=".22"/>' +
+      '<rect x="206" y="48" width="20" height="46" fill="#b5563c"/><rect x="203" y="44" width="26" height="7" rx="2" fill="#8e3f2c"/><path d="M208 62 H224 M208 72 H224 M208 82 H224" stroke="#8e3f2c" stroke-width="1.2"/>' +
+      '<circle class="smk" cx="216" cy="38" r="5" fill="#fff" opacity=".7"/><circle class="smk" style="animation-delay:1.3s" cx="218" cy="38" r="4" fill="#fff" opacity=".6"/><circle class="smk" style="animation-delay:2.4s" cx="214" cy="38" r="6" fill="#fff" opacity=".5"/>' +
+      '<polygon points="76,114 164,52 252,114" fill="url(#aRoof)"/><path d="M92 106 L164 58 L236 106" stroke="#fff" stroke-width="2" fill="none" opacity=".3"/><path d="M104 100 H224 M118 88 H210 M132 76 H196" stroke="#8a2a3c" stroke-width="1.4" opacity=".35"/>' +
+      '<polygon points="76,114 164,52 164,60 84,114" fill="#fff" opacity=".12"/>' +
+      '<circle cx="164" cy="90" r="11" fill="#fff"/><circle cx="164" cy="90" r="8.5" fill="url(#aLit)"/><path d="M164 81.5 V98.5 M155.5 90 H172.5" stroke="#fff" stroke-width="1.6"/>';
+    o += win(106, 134) + win(194, 134);
+    o += '<rect x="147" y="150" width="34" height="48" rx="3" fill="#fff"/><path d="M150 198 V160 Q164 142 178 160 V198Z" fill="#0f9aa0"/><path d="M150 198 V160 Q164 142 178 160" stroke="#0b7d83" stroke-width="1.6" fill="none"/><circle cx="172" cy="178" r="2" fill="#ffd166"/><rect x="157" y="162" width="14" height="12" rx="6" fill="url(#aGlass)"/>' +
+      '<circle cx="188" cy="160" r="9" fill="url(#aSun)"/><rect x="185.5" y="154" width="5" height="9" rx="2" fill="#ffd166"/>' +
+      '<rect x="138" y="196" width="52" height="4" fill="#e6dcc8"/><rect x="132" y="199" width="64" height="4" fill="#d6cab0"/>';
+    o += '<path d="M148 203 Q130 226 100 250 H190 Q168 226 180 203Z" fill="url(#aPath)" opacity=".95"/>' + fence(14, 82, 206, 18) + fence(250, 330, 206, 18);
+    o += bush(92, 200, .9) + bush(236, 200, .9);
+    o += flowers([[104, 214, '#ff7a8a', 1.1], [118, 218, '#ffd166', 1.1], [206, 216, '#ff7a8a', 1.1], [220, 213, '#fff', 1.1], [244, 220, '#ffd166', 1], [96, 224, '#fff', 1]]);
+    o += kid({ x: 272, y: 240, s: .78, top: '#9a78e0', bottom: '#34567a', hairStyle: 'long', hair: '#7a4a2a', pose: 'wave' });
+    o += sparkle(48, 100, .7, .6);
+    return scene(o);
+  }
+
+  function friends() {
+    var o = sun(62, 46, 14) + cloud(240, 46, 1, 36) + cloud(120, 82, .7, 44) + hills() + '<rect y="196" width="360" height="54" fill="url(#aGrass)"/>';
+    o += tree(36, 206, 1.1) + tree(332, 206, 1.05) + tree(92, 200, .7);
+    o += '<path d="M0 232 Q120 206 240 222 T360 214 V250 H0Z" fill="url(#aPath)"/>';
+    /* bench */
+    o += '<g transform="translate(296 222)"><rect x="-30" y="-24" width="60" height="5" rx="2" fill="url(#aWood)"/><rect x="-30" y="-16" width="60" height="5" rx="2" fill="url(#aWood)"/><rect x="-30" y="-6" width="60" height="6" rx="2" fill="#a86b3c"/><rect x="-26" y="0" width="4" height="12" fill="#5b4a3a"/><rect x="22" y="0" width="4" height="12" fill="#5b4a3a"/></g>';
+    /* balloons */
+    function balloon(x, y, c) { return '<g class="bob"><path d="M' + x + ' ' + (y + 18) + ' Q' + (x - 10) + ' ' + (y + 60) + ' ' + (x + 6) + ' ' + (y + 96) + '" stroke="#d4bd8a" stroke-width="1" fill="none"/><ellipse cx="' + x + '" cy="' + y + '" rx="12" ry="15" fill="' + c + '"/><ellipse cx="' + (x - 4) + '" cy="' + (y - 5) + '" rx="3.2" ry="5" fill="#fff" opacity=".5"/><path d="M' + (x - 3) + ' ' + (y + 15) + ' h6 l-3 4Z" fill="' + c + '"/></g>'; }
+    o += balloon(70, 112, '#ff6b8b') + balloon(92, 96, '#ffd23f') + balloon(290, 106, '#4fb3f0');
+    o += heart(180, 60, 1.5) + heart(150, 78, .8, '#ffa3b5') + heart(212, 80, .9, '#ff8fa3') + sparkle(126, 60, 1, 0) + sparkle(236, 52, .9, .8) + sparkle(250, 96, .7, 1.4) + sparkle(110, 96, .7, .4);
+    o += flowers([[46, 226, '#ff7a8a', 1.2], [60, 232, '#fff', 1.2], [320, 238, '#ffd166', 1.2], [334, 232, '#ff7a8a', 1.2], [20, 238, '#ffd166', 1.1]]);
+    o += kid({ x: 152, y: 238, s: 1.18, top: '#3b9ae1', bottom: '#1d3350', hair: '#2b2f45', skin: ['#ffdcc0', '#eca97f'], pose: 'hug' }) +
+      kid({ x: 212, y: 240, s: 1.12, top: '#ff7a59', bottom: '#34567a', hairStyle: 'pony', hair: '#7a4a2a', pose: 'wave' });
+        return scene(o);
+  }
+
+  function hobbies() {
+    var o = sun(310, 42, 14) + cloud(80, 42, 1, 36) + cloud(220, 70, .7, 44);
+    o += '<path d="M0 138 Q80 112 170 130 T360 122 V200 H0Z" fill="url(#aHillA)"/>';
+    /* back fence */
+    var f = '<rect y="132" width="360" height="62" fill="url(#aGrass)" opacity=".0"/>';
+    for (var x = 0; x < 360; x += 15) f += '<path d="M' + x + ' 194 V138 L' + (x + 6) + ' 132 L' + (x + 12) + ' 138 V194Z" fill="url(#aWood)" stroke="#9a6a3a" stroke-width=".6"/>';
+    f += '<rect y="150" width="360" height="4" fill="#a86b3c"/><rect y="176" width="360" height="4" fill="#a86b3c"/>';
+    o += f + '<rect y="192" width="360" height="58" fill="url(#aGrass)"/>';
+    /* sunflowers */
+    function sunflower(x, h, s) {
+      var p = ''; for (var i = 0; i < 14; i++) p += '<ellipse cx="0" cy="-12" rx="4.4" ry="9" fill="' + (i % 2 ? '#ffd23f' : '#ffc01f') + '" transform="rotate(' + (i * 25.7) + ')"/>';
+      return '<g transform="translate(' + x + ' 200)"><path d="M0 0 V-' + h + '" stroke="#3f9f55" stroke-width="3.4"/><ellipse cx="-9" cy="-' + (h * .45) + '" rx="10" ry="5" fill="#4fbf6a" transform="rotate(-25 -9 -' + (h * .45) + ')"/><ellipse cx="9" cy="-' + (h * .3) + '" rx="10" ry="5" fill="#3aa85a" transform="rotate(25 9 -' + (h * .3) + ')"/><g transform="translate(0 -' + h + ') scale(' + s + ')">' + p + '<circle r="9" fill="#8a4b24"/><circle r="9" fill="url(#aTrunk)" opacity=".6"/><circle cx="-2" cy="-2" r="3" fill="#b97a44"/></g></g>';
+    }
+    o += sunflower(26, 78, 1.1) + sunflower(52, 62, .9);
+    /* raised bed */
+    o += '<path d="M120 196 L132 178 H300 L312 196Z" fill="#3f2a1d"/><path d="M132 178 H300 L296 184 H136Z" fill="#6b4a33"/>' +
+      '<rect x="114" y="194" width="204" height="30" rx="4" fill="url(#aWood)"/><rect x="114" y="194" width="204" height="6" rx="3" fill="#e6b377"/><path d="M114 208 H318" stroke="#9a6a3a" stroke-width="1.2"/><path d="M164 194 V224 M214 194 V224 M264 194 V224" stroke="#9a6a3a" stroke-width="1"/>';
+    /* plants in bed */
+    function tomato(x) { return '<g transform="translate(' + x + ' 182)"><path d="M0 0 V-34" stroke="#3f9f55" stroke-width="2.6"/><ellipse cx="-9" cy="-14" rx="10" ry="5" fill="#4fbf6a" transform="rotate(-25 -9 -14)"/><ellipse cx="9" cy="-22" rx="10" ry="5" fill="#3aa85a" transform="rotate(25 9 -22)"/><ellipse cx="-8" cy="-32" rx="9" ry="4.6" fill="#4fbf6a" transform="rotate(-30 -8 -32)"/><ellipse cx="7" cy="-38" rx="9" ry="4.6" fill="#5fd07c" transform="rotate(28 7 -38)"/><circle cx="-6" cy="-8" r="5.2" fill="url(#aApple)"/><circle cx="7" cy="-14" r="4.6" fill="url(#aApple)"/><circle cx="-3" cy="-24" r="4.2" fill="url(#aOrange)"/></g>'; }
+    function lettuce(x) { return '<g transform="translate(' + x + ' 184)"><ellipse cx="0" cy="-4" rx="13" ry="8" fill="#6fcf6b"/><ellipse cx="-3" cy="-9" rx="9" ry="6" fill="#8ee68a"/><ellipse cx="3" cy="-12" rx="6" ry="4.6" fill="#b6f5a8"/></g>'; }
+    function carrot(x) { return '<g transform="translate(' + x + ' 184)"><path d="M-6 0 L-10 -14 M0 0 L0 -18 M6 0 L10 -14" stroke="#3f9f55" stroke-width="3" stroke-linecap="round"/><ellipse cx="0" cy="-2" rx="5" ry="2.4" fill="#fb9a2c"/></g>'; }
+    o += tomato(150) + lettuce(180) + carrot(200) + tomato(232) + lettuce(262) + carrot(284);
+    /* pots */
+    function pot(x, y, c, s) { return '<g transform="translate(' + x + ' ' + y + ') scale(' + s + ')"><ellipse cx="0" cy="2" rx="17" ry="4" fill="#173b25" opacity=".28"/><path d="M-14 -20 H14 L10 0 H-10Z" fill="url(#aTerra)"/><rect x="-16" y="-25" width="32" height="7" rx="2" fill="#e08a58"/><path d="M0 -25 V-40" stroke="#3f9f55" stroke-width="2"/><ellipse cx="-7" cy="-34" rx="7" ry="3.4" fill="#4fbf6a" transform="rotate(-25 -7 -34)"/><ellipse cx="7" cy="-31" rx="7" ry="3.4" fill="#3aa85a" transform="rotate(25 7 -31)"/><circle cx="0" cy="-44" r="7" fill="' + c + '"/><circle cx="-3" cy="-46" r="2.4" fill="#fff" opacity=".45"/></g>'; }
+    o += pot(324, 232, '#ff7a8a', 1.05) + pot(346, 224, '#b99cf0', .85);
+    /* watering can + water */
+    o += '<g transform="translate(112 168)"><ellipse cx="14" cy="58" rx="22" ry="4" fill="#173b25" opacity=".25"/><path d="M0 12 H26 L24 52 H2Z" fill="#4aa6dd"/><path d="M0 12 H13 L12 52 H2Z" fill="#fff" opacity=".2"/><ellipse cx="13" cy="12" rx="13" ry="3.4" fill="#2a86c3"/><path d="M2 20 Q-12 20 -10 36 Q-8 46 2 44" stroke="#2a86c3" stroke-width="4" fill="none"/><path d="M26 30 L52 10" stroke="#2a86c3" stroke-width="5" stroke-linecap="round"/><ellipse cx="53" cy="9" rx="5" ry="6" fill="#1f6fa6" transform="rotate(-35 53 9)"/></g>';
+    o += '<g fill="#8fd6ff"><circle class="fall" cx="170" cy="176" r="2"/><circle class="fall" style="animation-delay:.3s" cx="176" cy="172" r="1.8"/><circle class="fall" style="animation-delay:.6s" cx="182" cy="178" r="2"/><circle class="fall" style="animation-delay:.9s" cx="173" cy="170" r="1.6"/></g>';
+    o += kid({ x: 64, y: 240, s: .95, top: '#22b07d', bottom: '#34567a', hairStyle: 'pony', hair: '#7a4a2a', hat: true, pose: 'hold' });
+    /* seed packet + trowel */
+    o += '<g transform="translate(335 246) rotate(-8)"><rect x="-16" y="-18" width="22" height="16" rx="2" fill="#fff"/><rect x="-16" y="-18" width="22" height="6" fill="#4fbf6a"/><circle cx="-5" cy="-7" r="3.4" fill="#ffd23f"/></g>';
+    o += '<g class="flt"><ellipse cx="206" cy="124" rx="5" ry="3.2" fill="#ff8fa3" transform="rotate(-30 206 124)"/><ellipse cx="212" cy="124" rx="5" ry="3.2" fill="#ffc0cb" transform="rotate(30 212 124)"/></g>' + sparkle(120, 112, .8, .3) + sparkle(300, 100, .7, 1);
+    return scene(o);
+  }
+
+  function health() {
+    var o = sun(60, 48, 16) + cloud(250, 40, 1, 38) + cloud(140, 74, .7, 46) + hills() + '<rect y="190" width="360" height="60" fill="url(#aGrass)"/>';
+    o += tree(300, 200, .9) + tree(214, 196, .6) + '<path d="M0 226 Q140 196 260 212 T360 206 V250 H0Z" fill="url(#aPath)"/>';
+    /* fruit basket */
+    o += '<g transform="translate(86 224)"><ellipse cx="0" cy="8" rx="60" ry="8" fill="#173b25" opacity=".25"/>' +
+      '<circle cx="-26" cy="-26" r="17" fill="url(#aApple)"/><path d="M-26 -42 q2 -8 8 -9" stroke="#6b4a33" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M-22 -45 q8 -8 14 -2 q-6 6 -14 2Z" fill="#4fbf6a"/><ellipse cx="-31" cy="-32" rx="3.6" ry="5.4" fill="#fff" opacity=".4"/>' +
+      '<circle cx="10" cy="-30" r="16" fill="url(#aOrange)"/><circle cx="5" cy="-36" r="3.6" fill="#fff" opacity=".4"/><path d="M10 -46 q3 -2 6 0" stroke="#3f9f55" stroke-width="2.2" fill="none"/>' +
+      '<path d="M26 -34 Q50 -48 56 -22 Q44 -30 30 -20Z" fill="#ffd23f"/><path d="M28 -32 Q48 -42 52 -24" stroke="#e0a800" stroke-width="1.4" fill="none"/>' +
+      '<g><circle cx="-6" cy="-52" r="6.6" fill="url(#aGrape)"/><circle cx="6" cy="-52" r="6.6" fill="url(#aGrape)"/><circle cx="0" cy="-43" r="6.6" fill="url(#aGrape)"/><circle cx="-12" cy="-44" r="6" fill="url(#aGrape)"/><circle cx="12" cy="-44" r="6" fill="url(#aGrape)"/><path d="M0 -60 q4 -6 9 -5" stroke="#3f9f55" stroke-width="2" fill="none"/></g>' +
+      '<path d="M-52 -18 H52 L44 12 Q0 22 -44 12Z" fill="#d9a468"/><path d="M-52 -18 H52" stroke="#b57a45" stroke-width="4"/><path d="M-46 -8 H46 M-44 2 H44" stroke="#b57a45" stroke-width="2" opacity=".6"/><path d="M-30 -16 V10 M-10 -16 V14 M10 -16 V14 M30 -16 V10" stroke="#b57a45" stroke-width="1.6" opacity=".5"/></g>';
+    /* water bottle */
+    o += '<g transform="translate(160 224)"><ellipse cx="0" cy="6" rx="16" ry="4" fill="#173b25" opacity=".25"/><rect x="-5" y="-66" width="10" height="8" rx="2" fill="#2a86c3"/><path d="M-7 -58 H7 L9 -50 Q14 -44 14 -36 V0 Q0 6 -14 0 V-36 Q-14 -44 -9 -50Z" fill="url(#aWater)" opacity=".95"/><path d="M-14 -22 Q0 -16 14 -24 V0 Q0 6 -14 0Z" fill="#3b95d6" opacity=".55"/><rect x="-14" y="-34" width="28" height="12" fill="#fff" opacity=".9"/><path d="M-4 -28 l3 -4 3 4 -3 4Z" fill="#22b07d"/><path d="M-9 -48 q-2 10 -2 30" stroke="#fff" stroke-width="2.4" fill="none" opacity=".6" stroke-linecap="round"/></g>';
+    /* dumbbells */
+    o += '<g transform="translate(206 236)"><rect x="-18" y="-4" width="36" height="5" rx="2" fill="#d4bd8a"/><rect x="-26" y="-12" width="10" height="20" rx="3" fill="#34567a"/><rect x="16" y="-12" width="10" height="20" rx="3" fill="#34567a"/><rect x="-31" y="-8" width="6" height="12" rx="2" fill="#a99a70"/><rect x="25" y="-8" width="6" height="12" rx="2" fill="#a99a70"/><rect x="-24" y="-11" width="3" height="16" rx="1.4" fill="#fff" opacity=".25"/></g>';
+    /* heart + pulse */
+    o += heart(150, 70, 1.3) + '<path class="pulse" d="M176 70 H196 L202 56 L210 86 L216 70 H236" stroke="#ff5c7a" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>' + sparkle(120, 54, .8, 0) + sparkle(246, 100, .7, .9);
+    o += kid({ x: 288, y: 240, s: 1.0, top: '#ee8a4a', bottom: '#101c30', hair: '#2b2f45', skin: ['#ffdcc0', '#eca97f'], pose: 'jump' });
+    o += '<path d="M268 150 q4 -6 8 0" stroke="#8fa8f8" stroke-width="2.4" fill="none" stroke-linecap="round" class="tw"/><circle class="fall" cx="258" cy="126" r="2" fill="#8fd6ff"/><circle class="fall" style="animation-delay:.7s" cx="316" cy="132" r="2" fill="#8fd6ff"/>';
+    return scene(o);
+  }
+
+  function community() {
+    var o = sun(306, 44, 14) + cloud(70, 42, 1, 36) + cloud(200, 66, .7, 44);
+    o += '<path d="M0 142 L58 84 L108 126 L170 70 L238 130 L292 92 L360 140 V200 H0Z" fill="url(#aMount)"/><path d="M170 70 L196 96 L184 100 L170 92 L156 104 L148 92Z" fill="#fff" opacity=".7"/><path d="M0 164 Q70 126 150 156 T300 146 T360 152 V210 H0Z" fill="url(#aMount2)"/>';
+    /* village houses */
+    function house(x, y, w, c) { return '<g transform="translate(' + x + ' ' + y + ')"><rect x="0" y="-' + (w * .55) + '" width="' + w + '" height="' + (w * .55) + '" fill="' + c + '"/><polygon points="-3,-' + (w * .55) + ' ' + (w / 2) + ',-' + (w * 1.0) + ' ' + (w + 3) + ',-' + (w * .55) + '" fill="#c8455a"/><rect x="' + (w * .4) + '" y="-' + (w * .32) + '" width="' + (w * .2) + '" height="' + (w * .32) + '" fill="#8a5a3a"/><rect x="' + (w * .1) + '" y="-' + (w * .42) + '" width="' + (w * .16) + '" height="' + (w * .14) + '" fill="#ffe27a"/></g>'; }
+    o += house(220, 164, 22, '#ffe3b3') + house(250, 160, 18, '#f8d2a0') + house(276, 166, 24, '#fff0cf') + house(190, 168, 16, '#f8d2a0');
+    o += '<rect y="196" width="360" height="54" fill="url(#aGrass)"/><path d="M0 232 Q120 208 240 224 T360 216 V250 H0Z" fill="url(#aPath)" opacity=".9"/>';
+    o += tree(30, 204, .9) + tree(338, 204, .85);
+    /* sapling + soil mound */
+    o += '<g transform="translate(176 224)"><ellipse cx="0" cy="2" rx="26" ry="6" fill="#5a3a26"/><path d="M-22 2 Q0 -14 22 2Z" fill="#7a5238"/><path d="M0 -6 V-44" stroke="#8a5532" stroke-width="3.4"/><ellipse cx="-12" cy="-30" rx="12" ry="6" fill="#4fbf6a" transform="rotate(-30 -12 -30)"/><ellipse cx="12" cy="-38" rx="12" ry="6" fill="#5fd07c" transform="rotate(30 12 -38)"/><ellipse cx="-6" cy="-48" rx="10" ry="5" fill="#3aa85a" transform="rotate(-20 -6 -48)"/><ellipse cx="6" cy="-54" rx="9" ry="4.6" fill="#8ee68a" transform="rotate(20 6 -54)"/></g>';
+    /* shovel */
+    o += '<g transform="translate(140 232) rotate(14)"><rect x="-1.6" y="-62" width="3.2" height="52" fill="#a86b3c"/><rect x="-5" y="-66" width="10" height="4" rx="2" fill="#7a5238"/><path d="M-8 -10 H8 L5 6 Q0 10 -5 6Z" fill="#d4bd8a"/></g>';
+    /* bin + trash bag */
+    o += '<g transform="translate(320 234)"><ellipse cx="0" cy="4" rx="22" ry="5" fill="#173b25" opacity=".25"/><path d="M-16 -36 H16 L13 2 H-13Z" fill="#3b9ae1"/><rect x="-18" y="-42" width="36" height="7" rx="3" fill="#2a86c3"/><path d="M-12 -34 V0" stroke="#fff" stroke-width="1.6" opacity=".25"/><path d="M0 -26 l6 10 h-12Z M-2 -20 l-6 -2 M2 -20 l6 -2" stroke="#fff" stroke-width="2.4" fill="none" stroke-linejoin="round" stroke-linecap="round"/></g>';
+    o += '<g transform="translate(262 236)"><ellipse cx="0" cy="3" rx="20" ry="4.6" fill="#173b25" opacity=".25"/><path d="M-16 0 Q-22 -26 -6 -34 L-4 -42 H4 L6 -34 Q22 -26 16 0Z" fill="#1f2937"/><path d="M-10 -8 Q-12 -22 -4 -28" stroke="#fff" stroke-width="2.4" fill="none" opacity=".25" stroke-linecap="round"/><path d="M-4 -42 Q0 -50 4 -42" stroke="#ef4444" stroke-width="3" fill="none"/></g>';
+    o += kid({ x: 118, y: 244, s: .98, top: '#fff', vest: '#ffd23f', bottom: '#34567a', hairStyle: 'pony', hair: '#2b2f45', pose: 'hold' }) +
+      kid({ x: 226, y: 246, s: .96, top: '#fff', vest: '#ffd23f', bottom: '#1d3350', hair: '#7a4a2a', skin: ['#ffdcc0', '#eca97f'], pose: 'wave' });
+    o += heart(180, 96, 1.4) + sparkle(148, 100, .9, 0) + sparkle(214, 108, .8, .8) + sparkle(100, 130, .7, 1.4);
+    return scene(o);
+  }
+
+  /* ----- Grade 8 scenes ----- */
+  function leisure() {
+    var o = sun(310, 42, 14) + cloud(80, 44, 1, 36) + cloud(220, 70, .7, 44) + hills() + '<rect y="196" width="360" height="54" fill="url(#aGrass)"/>';
+    o += tree(32, 206, 1.05) + tree(336, 206, .95) + '<path d="M0 234 Q130 204 250 222 T360 214 V250 H0Z" fill="url(#aPath)"/>';
+    /* kite */
+    o += '<g class="bob"><path d="M150 54 L176 82 L150 128 L124 82Z" fill="#ff6b8b"/><path d="M150 54 L176 82 L150 82Z" fill="#ffd23f"/><path d="M150 82 L176 82 L150 128Z" fill="#4fb3f0"/><path d="M150 54 V128 M124 82 H176" stroke="#fff" stroke-width="1.4" opacity=".8"/><path d="M150 128 Q140 150 160 170 T150 205" stroke="#d4bd8a" stroke-width="1.2" fill="none"/><path d="M150 140 l-9 8 9 -3 9 3Z M154 160 l-9 8 9 -3 9 3Z" fill="#ffd23f"/></g>';
+    /* bicycle */
+    o += '<g transform="translate(262 232)"><ellipse cx="0" cy="3" rx="46" ry="5" fill="#173b25" opacity=".25"/><circle cx="-26" cy="-14" r="16" fill="none" stroke="#1f2937" stroke-width="3.4"/><circle cx="26" cy="-14" r="16" fill="none" stroke="#1f2937" stroke-width="3.4"/><circle cx="-26" cy="-14" r="2.4" fill="#a99a70"/><circle cx="26" cy="-14" r="2.4" fill="#a99a70"/><path d="M-26 -14 L-6 -14 L8 -38 H26 M-6 -14 L-12 -38 H8 M8 -38 L26 -14 M-12 -38 H-18 M26 -14 L22 -44 H30" stroke="#ef4444" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="-6" cy="-14" r="5" fill="none" stroke="#34567a" stroke-width="2"/></g>';
+    /* football */
+    o += '<g transform="translate(206 238)"><ellipse cx="0" cy="3" rx="11" ry="3" fill="#173b25" opacity=".3"/><circle cy="-9" r="9" fill="#fff" stroke="#1d3350" stroke-width="1.2"/><path d="M0 -14 l5 4 -2 6 h-6 l-2 -6Z" fill="#1d3350"/></g>';
+    o += kid({ x: 96, y: 240, s: .95, top: '#22b07d', bottom: '#1d3350', hair: '#2b2f45', pose: 'wave' }) + kid({ x: 150, y: 244, s: .85, top: '#ff7a59', bottom: '#34567a', hairStyle: 'pony', hair: '#7a4a2a', pose: 'jump', skin: ['#ffdcc0', '#eca97f'] });
+    o += flowers([[48, 226, '#ff7a8a', 1.1], [62, 232, '#fff', 1.1], [330, 236, '#ffd166', 1.1]]) + heart(210, 90, 1.1) + sparkle(110, 70, .9, 0) + sparkle(250, 100, .8, .8) + sparkle(190, 56, .7, 1.4);
+    return scene(o);
+  }
+
+  function countryside() {
+    var o = sun(58, 44, 15) + cloud(250, 40, 1.05, 38) + cloud(150, 66, .7, 46);
+    o += '<path d="M0 138 L50 96 L98 124 L158 82 L222 126 L284 94 L360 136 V190 H0Z" fill="url(#aMount)"/><path d="M0 160 Q70 128 150 152 T300 142 T360 150 V200 H0Z" fill="url(#aMount2)"/>';
+    /* terraced rice fields */
+    o += '<path d="M0 168 Q90 150 180 166 T360 158 V250 H0Z" fill="#9bd16b"/><path d="M0 184 Q90 166 180 182 T360 174 V250 H0Z" fill="#7cc24f"/><path d="M0 202 Q90 186 180 200 T360 192 V250 H0Z" fill="#a8d86f"/><path d="M0 222 Q100 208 200 220 T360 212 V250 H0Z" fill="#6fbf4a"/>';
+    var rows = ''; for (var i = 0; i < 18; i++) { rows += '<path d="M' + (8 + i * 20) + ' 172 q4 -9 8 0 M' + (4 + i * 20) + ' 196 q4 -9 8 0 M' + (12 + i * 20) + ' 228 q4 -9 8 0" stroke="#4d9c32" stroke-width="1.6" fill="none" stroke-linecap="round"/>'; }
+    o += rows;
+    /* farmhouse */
+    o += '<g transform="translate(268 168)"><rect x="0" y="-30" width="48" height="30" fill="#f6d9a8"/><polygon points="-6,-30 24,-56 54,-30" fill="url(#aRoof)"/><rect x="18" y="-18" width="12" height="18" fill="#8a5a3a"/><rect x="5" y="-24" width="9" height="9" fill="url(#aLit)"/><rect x="34" y="-24" width="9" height="9" fill="url(#aLit)"/></g>';
+    o += tree(24, 206, .9) + tree(120, 176, .55);
+    /* buffalo */
+    o += '<g transform="translate(178 224)"><ellipse cx="0" cy="3" rx="38" ry="5" fill="#173b25" opacity=".28"/><rect x="-28" y="-20" width="8" height="22" rx="3" fill="#4b5563"/><rect x="-12" y="-20" width="8" height="22" rx="3" fill="#374151"/><rect x="10" y="-20" width="8" height="22" rx="3" fill="#4b5563"/><rect x="24" y="-20" width="8" height="22" rx="3" fill="#374151"/><ellipse cx="0" cy="-30" rx="38" ry="19" fill="#5b6575"/><ellipse cx="-6" cy="-36" rx="22" ry="8" fill="#fff" opacity=".1"/><ellipse cx="38" cy="-34" rx="14" ry="11" fill="#4b5563"/><path d="M34 -44 Q22 -62 12 -52 M42 -44 Q54 -62 62 -52" stroke="#e5e7eb" stroke-width="4" fill="none" stroke-linecap="round"/><circle cx="43" cy="-37" r="1.8" fill="#111827"/><path d="M-38 -34 Q-48 -26 -44 -10" stroke="#374151" stroke-width="3" fill="none"/></g>';
+    o += kid({ x: 100, y: 240, s: .9, top: '#22b07d', bottom: '#34567a', hair: '#2b2f45', hat: true, pose: 'wave', skin: ['#ffdcc0', '#eca97f'] });
+    o += '<g class="flt"><ellipse cx="226" cy="112" rx="4" ry="2.6" fill="#ffd23f" transform="rotate(-30 226 112)"/><ellipse cx="231" cy="112" rx="4" ry="2.6" fill="#fff" transform="rotate(30 231 112)"/></g>' + flowers([[40, 236, '#ffd166', 1.1], [330, 232, '#ff7a8a', 1.1], [310, 240, '#fff', 1]]) + sparkle(130, 80, .8, .2) + sparkle(300, 70, .7, 1);
+    return scene(o);
+  }
+
+  function club() {
+    var o = '<rect width="360" height="250" fill="#fdebc8"/><rect y="170" width="360" height="80" fill="url(#aWood)"/><path d="M0 170 H360" stroke="#9a6a3a" stroke-width="3"/>';
+    for (var x = 0; x < 360; x += 40) o += '<path d="M' + x + ' 170 V250" stroke="#b57a45" stroke-width="1.2"/>';
+    /* window with sunlight */
+    o += '<rect x="22" y="26" width="86" height="82" rx="4" fill="url(#aGlass)" stroke="#fff" stroke-width="5"/><path d="M65 26 V108 M22 67 H108" stroke="#fff" stroke-width="3"/>' + sun(86, 52, 10).replace(/aSun/, 'aSun') + '<path d="M108 108 L170 170 H60Z" fill="#fff6c4" opacity=".28"/>';
+    /* notice board */
+    o += '<rect x="136" y="30" width="108" height="72" rx="5" fill="#b5835a" stroke="#8a5a3a" stroke-width="4"/><rect x="142" y="36" width="96" height="60" fill="#e9c79a"/><rect x="148" y="42" width="30" height="22" fill="#fff" transform="rotate(-4 163 53)"/><rect x="184" y="44" width="28" height="22" fill="#ffd23f" transform="rotate(3 198 55)"/><rect x="152" y="68" width="34" height="22" fill="#9ed8f7" transform="rotate(2 169 79)"/><rect x="194" y="70" width="36" height="20" fill="#ffb3c1" transform="rotate(-3 212 80)"/><circle cx="163" cy="44" r="2" fill="#ef4444"/><circle cx="198" cy="46" r="2" fill="#ef4444"/>';
+    /* music notes + paint palette + book stack */
+    o += '<g class="bob" fill="#9a78e0"><circle cx="268" cy="62" r="6"/><circle cx="292" cy="54" r="6"/><path d="M274 62 V34 L298 28 V54" stroke="#9a78e0" stroke-width="3.2" fill="none"/><path d="M274 34 L298 28" stroke="#9a78e0" stroke-width="5"/></g>';
+    o += '<g transform="translate(300 158)"><ellipse cx="0" cy="4" rx="36" ry="5" fill="#000" opacity=".15"/><rect x="-34" y="-10" width="68" height="10" rx="2" fill="#ef4444"/><rect x="-30" y="-20" width="60" height="10" rx="2" fill="#3b9ae1"/><rect x="-32" y="-30" width="64" height="10" rx="2" fill="#22b07d"/><rect x="-26" y="-40" width="52" height="10" rx="2" fill="#ffd23f"/></g>';
+    /* easel */
+    o += '<g transform="translate(236 236)"><path d="M-22 0 L-6 -78 M22 0 L6 -78 M0 0 V-60" stroke="#8a5a3a" stroke-width="4" stroke-linecap="round"/><rect x="-26" y="-92" width="52" height="40" rx="2" fill="#fff" stroke="#8a5a3a" stroke-width="3"/><path d="M-22 -58 Q-8 -80 6 -64 T24 -72 V-56 H-22Z" fill="#7cc24f"/><circle cx="12" cy="-80" r="5" fill="#ffd23f"/></g>';
+    /* guitar */
+    o += '<g transform="translate(34 236) rotate(-14)"><ellipse cx="0" cy="-22" rx="17" ry="20" fill="#d9822b"/><ellipse cx="0" cy="-46" rx="12" ry="14" fill="#c4701f"/><circle cx="0" cy="-30" r="6" fill="#3f2a1d"/><rect x="-3" y="-110" width="6" height="64" fill="#5b3a21"/><rect x="-5" y="-120" width="10" height="12" rx="2" fill="#3f2a1d"/><path d="M-1 -100 V-26 M1 -100 V-26" stroke="#f1f5f9" stroke-width=".8"/></g>';
+    o += kid({ x: 128, y: 242, s: .98, top: '#ff7a59', bottom: '#1d3350', hairStyle: 'pony', hair: '#2b2f45', pose: 'wave' }) + kid({ x: 188, y: 244, s: .94, top: '#3b9ae1', bottom: '#34567a', hair: '#7a4a2a', skin: ['#ffdcc0', '#eca97f'], pose: 'jump' });
+    o += heart(160, 130, .9) + sparkle(100, 112, .8, 0) + sparkle(210, 120, .7, .9) + sparkle(330, 100, .7, .4);
+    return scene(o);
+  }
+
+  window.SQ_ART = { school: school(), home: home(), friends: friends(), hobbies: hobbies(), health: health(), community: community(), leisure: leisure(), countryside: countryside(), club: club() };
+})();
+</script>
+<script>
+"use strict";
+const DATA = {"meta": {"id": "g6-u4-topic3-which-route", "topicNo": 3, "title": "Which Route Would You Take?", "subtitle": "Compare two routes on a digital map and choose one.", "grade": "Grade 6", "unit": "Unit 4 – Supplementary (Lesson 11)", "art": "community", "emoji": "📍", "sheetUrl": "https://script.google.com/macros/s/AKfycbxuS7x2_efCsPWm7JGAqTidAP1nHJ2znmWw_Ri4vbJe1_iBtmNwWvMMopzAjOzd7NuC/exec", "token": "sp6-VSxxEp8px8kqhovyocI", "author": "Nguyen Thi Thu Thuy"}, "task": {"instruction": "Imagine a digital map shows two routes between two PUBLIC places (for example SCHOOL → LIBRARY). Give a 45–60 second talk to compare them and choose one. Do not use your home address.", "requirements": ["Have 3 parts: Introduction → Main points (answer ALL the clues) → Conclusion", "Use at least TWO comparative adjectives (shorter, faster, safer, busier, quieter …)", "Give a reason with because", "Last about 45–60 seconds; use keywords, not a full script"], "usefulLanguage": ["Route A starts at … and goes to …", "Route A is shorter / faster / safer than Route B.", "For a student who wants …, I choose Route … because …", "A digital map helps me, but I still check …"]}, "clues": [{"id": 1, "text": "What does the map show? Say the start, the destination and the time or distance.", "vi": "Bản đồ cho biết gì? Nói điểm xuất phát, điểm đến, thời gian hoặc khoảng cách.", "groups": ["\\b(start|starts|from|begin)\\b", "\\b(destination|to the|library|park|school|bus stop|station|museum|market)\\b", "\\b(minutes?|kilometres?|km|metres?|meters?|distance|time|bus|walk|walking|bike)\\b"], "min": 2, "scaffold": {"A1": "Route A starts at ____. It is ____ minutes.", "A2": "Route A goes from … to … It takes … minutes by …", "B1": "start + destination + time / distance + transport for each route", "B2": "start + destination + time + distance + transport, for both routes"}}, {"id": 2, "text": "Compare Route A and Route B.", "vi": "So sánh Route A và Route B.", "groups": ["\\broute (a|b)\\b", "\\b(shorter|longer|faster|slower|simpler|safer|busier|quieter|easier|more difficult|more dangerous|more crowded|more convenient|more expensive|cheaper)\\b", "\\bthan\\b"], "min": 2, "scaffold": {"A1": "Route A is ____ than Route B.", "A2": "Route A is … than Route B. Route B is … than Route A.", "B1": "two comparisons using different adjectives (shorter / safer / busier)", "B2": "two or more comparisons + one stretch sentence: Although Route …, Route … is …"}}, {"id": 3, "text": "Choose ONE route for a traveller and say why.", "vi": "Chọn MỘT tuyến cho một người đi đường và giải thích vì sao.", "groups": ["\\b(i choose|i would choose|i would take|i will take|i recommend|choose|take route|better)\\b", "\\bbecause\\b", "\\b(traveller|traveler|student|simplest|fastest|safe|safest|public transport)\\b"], "min": 2, "scaffold": {"A1": "I choose Route ____ because it is ____.", "A2": "For a student, I choose Route … because it is … and …", "B1": "choose for a stated traveller + a reason from the map", "B2": "choose + reason from the map evidence + why the other route is not as good"}}, {"id": 4, "text": "What must you still check before you follow a map suggestion?", "vi": "Em vẫn phải kiểm tra gì trước khi làm theo gợi ý của bản đồ?", "groups": ["\\b(check|look at|look around|be careful|make sure|follow)\\b", "\\b(surroundings|traffic|traffic rules|real|street|road|destination|map|route|safe|safely)\\b", "\\b(before|still|also|but|however)\\b"], "min": 2, "scaffold": {"A1": "I check the ____ and the street.", "A2": "A map helps me, but I check the … before I go.", "B1": "a map helps + what you check (destination, route, surroundings) + why", "B2": "a map helps, but … + two things you check + why it keeps you safe"}}], "cues": {"intro": "Hello everyone. Today I’m going to talk about two routes from … to …", "center": "Which Route?", "nodes": [{"label": "Start · destination", "words": ["from … to …", "minutes · distance"]}, {"label": "Compare A and B", "words": ["shorter / faster", "safer / busier than"]}, {"label": "My choice", "words": ["I choose Route …", "because …"]}, {"label": "Map check", "words": ["check surroundings", "real traffic rules"]}], "conclusion": "In short, … That’s all. Thank you for listening."}, "wordBank": {"nouns": ["route", "destination", "distance", "public transport route", "AI navigation", "route suggestion", "traveller"], "verbs": ["choose", "compare", "check", "follow"], "adjectives": ["shorter", "longer", "faster", "slower", "simpler", "safer", "busier", "quieter", "more difficult"], "prepositions": ["from … to …", "than", "by bus", "on foot"], "phrases": ["Route A is … than Route B.", "I choose Route … because …", "A map helps me, but I still check …"]}, "topicWords": {"A1": ["map", "bus", "walk", "bike", "long", "short", "fast", "slow", "safe", "busy", "quiet"], "A2": ["minutes", "kilometres", "easy", "difficult", "dangerous", "crowded", "traffic", "car", "road", "travel", "student"], "B1": ["distance", "evidence", "suggestion", "navigation", "convenient", "reliable", "surroundings", "cheaper", "compare"], "B2": ["efficient", "responsible", "digital", "technology", "safely", "alternative", "journey"]}, "pronFocus": [{"word": "route", "ipa": "/ruːt/", "tip": "Đọc /ruːt/ (vần với “boot”), không đọc “rao”."}, {"word": "distance", "ipa": "/ˈdɪstəns/", "tip": "DIS-təns; nhấn âm 1."}, {"word": "destination", "ipa": "/ˌdestɪˈneɪʃn/", "tip": "Nhấn âm 3: des-ti-NAY-shn."}, {"word": "navigation", "ipa": "/ˌnævɪˈɡeɪʃn/", "tip": "na-vi-GAY-shn; nhấn âm 3."}, {"word": "dangerous", "ipa": "/ˈdeɪndʒərəs/", "tip": "DEIN-jə-rəs; đọc ba âm tiết."}, {"word": "surroundings", "ipa": "/səˈraʊndɪŋz/", "tip": "sə-RAUN-dingz; nhấn âm 2."}], "samples": {"A1": [{"part": "intro", "text": "Hello. Today I'm going to talk about two routes from my school to the library."}, {"part": "main", "text": "Route A starts at my school. It is ten minutes by bus. Route B is fifteen minutes on foot."}, {"part": "main", "text": "Route A is faster than Route B. Route B is safer than Route A."}, {"part": "main", "text": "I choose Route B because it is safe."}, {"part": "main", "text": "I check the street and the traffic."}, {"part": "conclusion", "text": "That's all. Thank you for listening."}], "A2": [{"part": "intro", "text": "Hello everyone. Today I'm going to talk about two routes from my school to the library."}, {"part": "main", "text": "First, Route A goes from my school to the library. It takes ten minutes by bus. Route B takes fifteen minutes on foot."}, {"part": "main", "text": "Route A is faster than Route B, but Route B is quieter and safer than Route A."}, {"part": "main", "text": "For a student who wants the simplest safe route, I choose Route B because it is easy to follow."}, {"part": "main", "text": "A map helps me, but I check the street and the traffic before I go."}, {"part": "conclusion", "text": "That's all. Thank you for listening."}], "B1": [{"part": "intro", "text": "Good afternoon, everyone. Today I'm going to talk about two routes from my school to the city library."}, {"part": "main", "text": "First, Route A starts at my school and goes to the library. It is three kilometres, and it takes ten minutes by bus. Route B is shorter, but it takes fifteen minutes on foot."}, {"part": "main", "text": "Second, Route A is faster and more convenient than Route B. However, Route B is quieter and safer than Route A."}, {"part": "main", "text": "For a student who wants the simplest safe route, I choose Route B because there are fewer cars and it is easy to follow."}, {"part": "main", "text": "Finally, a digital map helps me, but I still check my surroundings and follow the traffic rules before I go."}, {"part": "conclusion", "text": "In short, Route B is better for me. That's all. Thank you for listening."}], "B2": [{"part": "intro", "text": "Good afternoon, everyone. Today I'm going to talk about two routes from my school to the city library."}, {"part": "main", "text": "First, Route A starts at my school and goes to the library. It is three kilometres, and it takes ten minutes by bus. Route B is shorter, but it takes fifteen minutes on foot."}, {"part": "main", "text": "Second, Route A is faster and more convenient than Route B. Although it is faster, Route A is busier and more dangerous, while Route B is quieter and safer."}, {"part": "main", "text": "For a student who wants the simplest safe route, I choose Route B because there are fewer cars and it is easier to follow than Route A."}, {"part": "main", "text": "Finally, a digital map helps me, but I still check the destination and my surroundings, and I follow the real traffic rules before I go."}, {"part": "conclusion", "text": "In short, Route B is better for me. That's all. Thank you for listening."}]}};
+const E = window.SpeakingEngine;
+const $ = (s, r) => (r || document).querySelector(s);
+const $$ = (s, r) => Array.from((r || document).querySelectorAll(s));
+const LV_INFO = {
+  A1: { c: '#55cdea', cl: 'rgba(80,200,235,.18)', d: 'Starter · Nói câu ngắn, có khung câu gợi ý đầy đủ. Mục tiêu ≥ 25 giây, ~55 từ.' },
+  A2: { c: '#8fa8f8', cl: 'rgba(143,168,248,.18)', d: 'Elementary · Nói theo mẫu câu mở đầu. Mục tiêu ≥ 35 giây, ~80 từ.' },
+  B1: { c: '#b99cf0', cl: 'rgba(185,156,240,.18)', d: 'Intermediate · Chỉ có từ khoá, tự tạo câu. Mục tiêu ≥ 45 giây, ~105 từ.' },
+  B2: { c: '#ee8a4a', cl: 'rgba(238,138,74,.18)', d: 'Upper-Inter. · Thử thách: câu phức, ví dụ, ≥ 50 giây, ~125 từ.' }
+};
+const S = { name: '', cls: '', level: 'A2', rec: false, segs: [], interim: '', sound: true, t0: 0, frames: [], stream: null, ctx: null, an: null, mr: null, chunks: [], sr: null, srOk: false, timer: null, raf: 0, typed: false, lastReport: null, lastAudio: null, started: false, srBlocked: false, srRestarts: 0, idle: 0 };
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : v; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch (e) { } }
+};
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const FILE_MODE = location.protocol === 'file:';
+/* EXAM BUILD: true only in the separate exam build (build_speaking.py --exam). The practice build has no exam code at all. */
+const EXAM = /*__EXAM__*/false;
+/* Speaking only: typing a talk is OFF for students. Teachers can test with ?type=1 (or meta.allowTyping). */
+const ALLOW_TYPING = new URLSearchParams(location.search).has('type') || !!(DATA.meta && DATA.meta.allowTyping);
+const TYPE_OR = ALLOW_TYPING ? ', or type your talk' : '';
+let EMBED_MODE = ['about:', 'blob:', 'data:'].indexOf(location.protocol) >= 0;
+try { if (window.top !== window.self) EMBED_MODE = true; } catch (e) { EMBED_MODE = true; }
+/* Phone detection: in-app browsers (Zalo, Messenger, Facebook, TikTok…) and every iPhone browser except Safari cannot do speech recognition. */
+const UA = navigator.userAgent || '';
+const IS_IOS = /iPhone|iPad|iPod/.test(UA) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const IN_APP = /Zalo|FBAN|FBAV|FB_IAB|Instagram|Messenger|Line\/|TikTok|musical_ly|MicroMessenger|Snapchat|Twitter|; wv\)/i.test(UA) || (IS_IOS && !/Safari\//.test(UA));
+const IOS_NOT_SAFARI = IS_IOS && /CriOS|FxiOS|EdgiOS|OPiOS|coc_coc/i.test(UA);
+const PHONE_BAD = IN_APP || IOS_NOT_SAFARI;
+function phoneHelp() {
+  return IS_IOS
+    ? '<b>📱 This window cannot listen to your voice.</b><span>On iPhone the microphone only works in <b>Safari</b>. Tap <b>⋯</b> (top right) → <b>“Open in Safari”</b> – or copy the link below, open <b>Safari</b> and paste it. Then tap <b>Allow</b> once. (If Safari still cannot listen: Settings → Siri → turn on <i>Listen for “Hey Siri”/Press Side Button</i>, and Settings → General → Keyboard → <i>Enable Dictation</i>.)</span>'
+    : '<b>📱 This window cannot listen to your voice.</b><span>Zalo / Messenger / Facebook windows block the microphone. Tap <b>⋯</b> (top right) → <b>“Open in browser / Open in Chrome”</b> – or copy the link below, open <b>Chrome</b> and paste it. Then tap <b>Allow</b> once.</span>';
+}
+function copyLinkBtn() {
+  return '<button class="btn" id="btnOpenOut" style="margin-top:6px">🚀 ' + (IS_IOS ? 'Open in Safari' : 'Open in Chrome') + ' (1 tap)</button><button class="linkbtn" id="btnCopyLink" style="margin-top:4px">📋 …or copy the link</button>';
+}
+function openOutside() {
+  const u = location.href.split('#')[0];
+  if (IS_IOS) { location.href = 'x-safari-' + u; }
+  else { const m = u.match(/^https?:\/\/([^?#]+)(.*)$/); if (m) location.href = 'intent://' + m[1] + m[2] + '#Intent;scheme=' + u.split(':')[0] + ';package=com.android.chrome;end'; }
+  setTimeout(() => toast('If nothing happened, tap ⋯ → Open in browser, or copy the link', 5000), 1800);
+}
+
+/* ---------- helpers ---------- */
+function toast(m, ms) { const t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), ms || 2600); }
+function show(id) { $$('.screen').forEach(s => s.classList.toggle('active', s.id === id)); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+function fmt(t) { t = Math.max(0, Math.floor(t)); return Math.floor(t / 60) + ':' + String(t % 60).padStart(2, '0'); }
+function setLevel(l) {
+  S.level = l; store.set('sq_level', l);
+  $$('.lvbtn').forEach(b => b.classList.toggle('on', b.dataset.l === l));
+  $('#lvDesc').textContent = LV_INFO[l].d;
+  const p = $('#lvPill'); p.textContent = 'Level ' + l; p.style.setProperty('--lv', LV_INFO[l].c); p.style.setProperty('--lv-l', LV_INFO[l].cl);
+  if ($('#s-stage').classList.contains('active')) { renderClues(); $('#stageLv').textContent = 'LEVEL ' + l + ' · ' + E.LEVELS[l].name; }
+}
+let voice = null;
+function pickVoice() { const v = (window.speechSynthesis && speechSynthesis.getVoices()) || []; voice = v.find(x => /en-GB/i.test(x.lang)) || v.find(x => /^en/i.test(x.lang)) || null; }
+if (window.speechSynthesis) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+function speak(text, rate, onend) {
+  if (!S.sound || !window.speechSynthesis) { onend && onend(); return; }
+  const u = new SpeechSynthesisUtterance(text); u.lang = 'en-GB'; if (voice) u.voice = voice; u.rate = rate || 0.9;
+  u.onend = () => onend && onend(); u.onerror = () => onend && onend();
+  speechSynthesis.speak(u);
+}
+
+/* ---------- welcome / stage setup ---------- */
+function initWelcome() {
+  const m = DATA.meta;
+  $('#brandSub').textContent = (m.grade ? m.grade + ' · ' : '') + (m.unit || '');
+  if (MAXS !== 60) { $('#tTarget').textContent = '/ ' + fmt(MAXS) + ' · target ' + fmt(Math.round(MAXS * 0.75)) + '–' + fmt(MAXS); }
+  if (m.author) { const a = esc(m.author); $('#brandSub').insertAdjacentHTML('beforeend', ' · by ' + a); const cr = document.createElement('div'); cr.className = 'credit'; cr.id = 'credit'; cr.innerHTML = '© ' + new Date().getFullYear() + ' <b>' + a + '</b> · Speaking Quest'; document.body.appendChild(cr); document.title += ' · ' + m.author; }
+  const art = $('#heroArt');
+  if (m.image) { art.innerHTML = '<img alt="' + esc(m.title) + '" src="' + m.image + '">'; }
+  else art.innerHTML = (window.SQ_ART[m.art] || window.SQ_ART.school).replace('<svg ', '<svg preserveAspectRatio="xMidYMid slice" ');
+  $('#eyTopic').textContent = 'Topic ' + m.topicNo + ' · ' + DATA.task.instruction;
+  $('#hTitle').textContent = m.emoji + ' ' + m.title;
+  $('#hSub').textContent = m.subtitle;
+  $('#reqList').innerHTML = DATA.task.requirements.map(r => '<li>' + esc(r) + '</li>').join('');
+  /* names are never remembered: the fields stay empty and only the faint placeholder example is shown (shared devices, privacy) */
+  $('#inName').value = ''; $('#inClass').value = '';
+  ['inName', 'inClass'].forEach(id => { const el = $('#' + id); el.setAttribute('autocomplete', 'off'); el.setAttribute('autocorrect', 'off'); el.setAttribute('name', 'sq_' + id + '_' + Math.random().toString(36).slice(2, 7)); });
+
+  { const gm = String((DATA.meta && DATA.meta.grade) || '').match(/\d+/); if (gm) { $('#inClass').placeholder = 'e.g. ' + gm[0] + 'A1'; if (($('#inClass').value || '').trim().charAt(0) !== gm[0]) $('#inClass').value = ''; } }   /* a class remembered from another grade (e.g. 6A1 in a Grade 7 game) is not pre-filled */
+  const sup = $('#support');
+  if (SR) { sup.className = 'support ok'; sup.textContent = '✅ Speech recognition is available – you can be scored automatically.'; }
+  else { sup.className = 'support warn'; sup.textContent = '⚠️ This browser cannot listen to your speaking. Please open this game in Google Chrome or Microsoft Edge.'; }
+  if (PHONE_BAD && !FILE_MODE) {
+    const w = $('#fileWarn'); w.style.display = 'flex';
+    w.innerHTML = phoneHelp() + copyLinkBtn();
+    $('#btnOpenOut').onclick = openOutside;
+    $('#btnCopyLink').onclick = () => { const u = location.href.split('#')[0]; const done = () => toast('✅ Link copied – paste it into Safari / Chrome'); (navigator.clipboard ? navigator.clipboard.writeText(u).then(done, () => prompt('Copy this link:', u)) : prompt('Copy this link:', u)); };
+  } else if (EMBED_MODE) {
+    const w = $('#fileWarn'); w.style.display = 'flex';
+    w.innerHTML = '<b>🪟 You are viewing the game in a preview window.</b><span>Previews and embedded frames cannot use the microphone. <b>Open the game in its own Chrome or Edge tab</b> (double-click <code>start-local</code>, or open the web link directly) to record your voice.</span>';
+  } else if (FILE_MODE) {
+    const w = $('#fileWarn'); w.style.display = 'flex';
+    w.innerHTML = '<b>⚠️ You opened this game from a file on your computer.</b><span>The browser cannot remember microphone permission for files, so it may ask again and again. <b>Fix:</b> open it from a web address – double-click <code>start-local</code> in the games folder (opens <code>http://localhost:8000</code>) or upload the folder to Netlify / GitHub Pages. Then click <b>“Allow while visiting the site”</b> once.</span>';
+  }
+  setLevel('A2');   // default A2; students pick another level themselves
+  $$('.lvbtn').forEach(b => b.onclick = () => setLevel(b.dataset.l));
+  
+  $('#btnStart').onclick = () => {
+    const n = $('#inName').value.trim(); if (!n) { toast('Please type your name first 😊'); $('#inName').focus(); return; }
+    S.name = n; S.cls = $('#inClass').value.trim(); store.set('sq_name', ''); store.set('sq_class', '');
+
+    
+    openStage();
+  };
+}
+function renderClues() {
+  $('#clues').innerHTML = DATA.clues.map((c, i) => {
+    const sc = (c.scaffold || {})[S.level] || '';
+    return `<div class="clue" data-i="${i}"><div class="lantern">${c.id}</div><div><div class="q">${esc(c.text)}</div><div class="vi">${esc(c.vi || '')}</div>${sc ? '<div class="sc">💡 ' + esc(sc) + '</div>' : ''}</div></div>`;
+  }).join('');
+  updateLive('');
+}
+function autoCues() {
+  return { intro: "Hello everyone. Today I'm going to talk about …", center: DATA.meta.title, conclusion: "In short, … That's all. Thank you for listening.",
+    nodes: DATA.clues.map(c => ({ label: 'Clue ' + c.id, words: [((c.scaffold || {}).B1 || '').split('+')[0].trim()].filter(Boolean) })) };
+}
+function renderCue() {
+  const c = DATA.cues || autoCues(), n = c.nodes.length, pos = [];
+  const start = n === 4 ? -135 : -90;
+  for (let i = 0; i < n; i++) { const a = (start + i * 360 / n) * Math.PI / 180; pos.push(n === 4 ? [50 + (Math.cos(a) > 0 ? 25 : -25), 50 + (Math.sin(a) > 0 ? 30 : -30)] : [50 + 34 * Math.cos(a), 50 + 36 * Math.sin(a)]); }
+  const lines = pos.map((p, i) => `<line data-i="${i}" x1="50" y1="50" x2="${p[0]}" y2="${p[1]}"/>`).join('');
+  const nodes = c.nodes.map((nd, i) => `<div class="mm-node" data-i="${i}" style="left:${pos[i][0]}%;top:${pos[i][1]}%"><div class="n">${i + 1}</div><b>${esc(nd.label)}</b><span>${nd.words.map(esc).join(' · ')}</span></div>`).join('');
+  $('#viewCue').innerHTML = `
+    <div class="cue-box" id="cueIntro"><span class="cue-n">1</span><div><b>INTRODUCTION</b><p>${esc(c.intro)}</p></div></div>
+    <div class="cue-h"><span class="cue-n">2</span><b>MAIN POINTS · cue words only</b></div>
+    <div class="mm"><svg viewBox="0 0 100 100" preserveAspectRatio="none">${lines}</svg>${nodes}<div class="mm-center">${esc(c.center)}</div></div>
+    <div class="cue-box" id="cueConc"><span class="cue-n">3</span><div><b>CONCLUSION</b><p>${esc(c.conclusion)}</p></div></div>`;
+}
+function setCueMode(on) {
+  if (on) renderCue();
+  $('#viewCue').style.display = on ? 'block' : 'none'; $('#viewPrep').style.display = on ? 'none' : 'block';
+  $('#step1H').textContent = on ? 'CUE CARD · SPEAK FREELY' : 'READ THE ' + DATA.clues.length + ' CLUES';
+  if (on) updateLive(S.interim || '');
+}
+function renderBank() {
+  const b = DATA.wordBank, names = { nouns: 'Nouns', verbs: 'Verbs', adjectives: 'Adjectives', prepositions: 'Prepositions', phrases: 'Phrases' };
+  const keys = Object.keys(names).filter(k => (b[k] || []).length);
+  $('#bankTabs').innerHTML = keys.map((k, i) => `<button class="tab${i ? '' : ' on'}" data-k="${k}">${names[k]}</button>`).join('');
+  const draw = k => { $('#bankWords').innerHTML = b[k].map(w => `<button class="w" data-w="${esc(w)}">${esc(w)}</button>`).join(''); $$('#bankWords .w').forEach(x => x.onclick = () => speak(x.dataset.w.replace(/…/g, ''), .85)); };
+  draw(keys[0]);
+  $$('#bankTabs .tab').forEach(t => t.onclick = () => { $$('#bankTabs .tab').forEach(x => x.classList.toggle('on', x === t)); draw(t.dataset.k); });
+  $('#useful').innerHTML = DATA.task.usefulLanguage.map(u => '<div>' + esc(u) + '</div>').join('');
+}
+function openStage() {
+  resetRec(); setCueMode(false); renderClues(); renderBank();
+  $('#stageLv').textContent = 'LEVEL ' + S.level + ' · ' + E.LEVELS[S.level].name;
+  $('#lvPill').style.display = ''; $('#typedBox').style.display = 'none';
+  show('s-stage');
+}
+
+/* ---------- live feedback ---------- */
+function updateLive(extra) {
+  const full = S.segs.map(s => s.text).join(' ') + ' ' + (extra || '');
+  const cov = E.clueCoverage(full, DATA), st = E.structure(full);
+  $$('#clues .clue').forEach((el, i) => el.classList.toggle('lit', !!(cov[i] && cov[i].covered)));
+  const any = cov.some(c => c.covered);
+  $('.step[data-s=intro]').classList.toggle('on', st.intro);
+  $('.step[data-s=main]').classList.toggle('on', any);
+  $('.step[data-s=concl]').classList.toggle('on', st.conclusion);
+  if ($('#cueIntro')) {
+    $('#cueIntro').classList.toggle('on', st.intro); $('#cueConc').classList.toggle('on', st.conclusion);
+    $$('#viewCue .mm-node').forEach((el, i) => el.classList.toggle('lit', !!(cov[i] && cov[i].covered)));
+    $$('#viewCue .mm svg line').forEach((el, i) => el.classList.toggle('lit', !!(cov[i] && cov[i].covered)));
+  }
+}
+function paintLive() {
+  $('#live').innerHTML = esc(S.segs.map(s => s.text).join(' ')) + (S.interim ? ' <span class="interim">' + esc(S.interim) + '</span>' : '');
+  $('#live').scrollTop = 1e6;
+  updateLive(S.interim);
+}
+
+/* ---------- recording ---------- */
+/* Talk length in seconds: 60 on students' own devices. On the TEACHER's machine (?station=1) it comes from the on-screen panel (saved on that device) or the link (&time=60/90/120). */
+let MAXS = (function () { const q = new URLSearchParams(location.search); if (!q.has('station')) return 60; let v = parseInt(q.get('time'), 10); if (!v) { try { v = parseInt(localStorage.getItem('sq_station_time'), 10); } catch (e) { } } return [60, 90, 120].reduce((best, t) => Math.abs(t - (v || 60)) < Math.abs(best - (v || 60)) ? t : best, 60); })();
+const CIRC = 2 * Math.PI * 54;
+function setRing(p) { $('#ringFg').style.strokeDashoffset = String(CIRC * (1 - Math.min(1, p))); }
+function initRing() {
+  $('#ringFg').style.strokeDasharray = CIRC; setRing(0);
+  const ok = $('#ringOk'); ok.style.strokeDasharray = (CIRC * 0.25) + ' ' + CIRC; ok.style.strokeDashoffset = String(-CIRC * 0.75);
+}
+async function micTest() {
+  if (S.rec) return;
+  const msg = $('#testMsg'), bar = $('#testBar'), lvl = $('#testLvl');
+  msg.textContent = '🎙️ Say “Hello, my name is …” for 4 seconds';
+  let ctx;
+  try {
+    await getStream(); ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if (ctx.state === 'suspended') await ctx.resume();
+    const an = ctx.createAnalyser(); an.fftSize = 1024; ctx.createMediaStreamSource(S.stream).connect(an);
+    const label = (S.stream.getAudioTracks()[0] || {}).label || 'default microphone';
+    bar.style.display = 'block'; let peak = 0; const t0 = performance.now(), a = new Uint8Array(an.fftSize);
+    await new Promise(res => { (function loop() {
+      an.getByteTimeDomainData(a); let sum = 0; for (let i = 0; i < a.length; i++) { const v = (a[i] - 128) / 128; sum += v * v; }
+      const rms = Math.sqrt(sum / a.length); peak = Math.max(peak, rms); lvl.style.width = Math.min(100, rms * 400) + '%';
+      if (performance.now() - t0 < 4000) requestAnimationFrame(loop); else res(); })(); });
+    msg.textContent = peak < 0.01 ? '🔇 I hear almost nothing from “' + label + '”. Check: mic muted? wrong input device? Move closer.'
+      : peak < 0.04 ? '🔉 Mic works but is QUIET (“' + label + '”). Speak louder / move closer / raise the input volume.'
+      : peak > 0.6 ? '📢 Very loud – move the mic a little away to avoid distortion.' : '✅ Microphone is good (“' + label + '”). You can start!';
+  } catch (e) {
+    showMicError(e, msg);
+  } finally { try { ctx && ctx.close(); } catch (e) { } setTimeout(() => { bar.style.display = 'none'; lvl.style.width = 0; }, 1500); }
+}
+function resetRec() {
+  stopAll(true); S.segs = []; S.interim = ''; S.frames = []; S.chunks = []; S.lastAudio = null; S.lastBlob = null;
+  $('#live').innerHTML = ''; $('#tNow').textContent = '0:00'; setRing(0);
+  $('#status').textContent = 'Tap the microphone and start talking!'; $('#btnMic').textContent = '🎤'; $('#btnMic').classList.remove('rec');
+  updateLive('');
+}
+function micErrorMsg(e) {
+  const n = (e && e.name) || '';
+  if (EMBED_MODE && (!navigator.mediaDevices || n === 'NotAllowedError' || n === 'SecurityError')) return '🪟 This game is running inside a PREVIEW / EMBEDDED window, which blocks the microphone. Open the game in its own Chrome / Edge tab instead (double-click start-local, or open the web link directly). If it is embedded in Google Sites or an LMS, the embed must allow the microphone – simplest is to open the link in a new tab.';
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return '🚫 This page may not use the microphone (it must be opened from https:// or http://localhost). Use the web link in Chrome or Edge' + TYPE_OR + '.';
+  if (n === 'NotAllowedError' || n === 'SecurityError') return '🚫 Microphone permission is OFF for this page. Click the 🔒 icon next to the address → Microphone → Allow, then reload. On Mac also check System Settings → Privacy & Security → Microphone → turn on your browser.';
+  if (n === 'NotFoundError' || n === 'OverconstrainedError') return '🎙️ No microphone found. Plug in a microphone or headset (or choose one in the browser), then try again.';
+  if (n === 'NotReadableError' || n === 'AbortError') return '🎙️ The microphone is busy or not readable. Close Zoom/Meet/other tabs that use it, then try again.';
+  return '🚫 Cannot open the microphone (' + (n || 'unknown error') + '). Reload the page and try again' + (ALLOW_TYPING ? ', or type your talk.' : '.');
+}
+async function showMicError(e, el) {
+  el.textContent = micErrorMsg(e);
+  let st = '';
+  try { const q = await navigator.permissions.query({ name: 'microphone' }); st = ' [site permission: ' + q.state + ' · error: ' + ((e && e.name) || '?') + ' · ' + location.protocol + '//]'; }
+  catch (x) { st = ' [error: ' + ((e && e.name) || '?') + ' · ' + location.protocol + '//]'; }
+  el.textContent += st;
+}
+async function getStream() {
+  if (S.stream && S.stream.getTracks().some(t => t.readyState === 'live')) return S.stream;
+  S.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } });
+  return S.stream;
+}
+function releaseStream() { try { S.stream && S.stream.getTracks().forEach(t => t.stop()); } catch (e) { } S.stream = null; }
+window.addEventListener('pagehide', releaseStream);
+async function startRec() {
+  if (PHONE_BAD && !FILE_MODE) { openOutside(); $('#status').textContent = IS_IOS ? '📱 Open this link in Safari to use the microphone (see the yellow note on the first screen).' : '📱 Open this link in Chrome to use the microphone (see the yellow note on the first screen).'; toast('Open in ' + (IS_IOS ? 'Safari' : 'Chrome'), 4000); return; }
+  if (S.rec) return;
+  resetRec();
+  if (S.typed) { $('#typedTxt').focus(); return; }
+  if (!SR && !ALLOW_TYPING) { $('#status').textContent = '🎤 This browser cannot listen to your speaking. Please open the game in Google Chrome or Microsoft Edge.'; return; }
+  clearTimeout(S.idle); S.srBlocked = false; S.srRestarts = 0;
+  try { await getStream(); }
+  catch (e) {
+    showMicError(e, $('#status')); showTyped(true); return;
+  }
+  try {
+    S.ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const src = S.ctx.createMediaStreamSource(S.stream); S.an = S.ctx.createAnalyser(); S.an.fftSize = 1024; src.connect(S.an);
+  } catch (e) { S.an = null; }
+  try {
+    const mt = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4'].find(t => window.MediaRecorder && MediaRecorder.isTypeSupported(t));
+    S.mr = new MediaRecorder(S.stream, Object.assign(mt ? { mimeType: mt } : {}, EXAM ? { audioBitsPerSecond: 24000 } : {})); S.chunks = [];
+    S.mr.ondataavailable = ev => { if (ev.data.size) S.chunks.push(ev.data); };
+    S.mr.start(500);
+  } catch (e) { S.mr = null; }
+  S.srOk = false;
+  if (SR) startSR();
+  else { $('#status').textContent = '🎙️ Recording… (this browser will not show live text)'; }
+  S.rec = true; S.t0 = performance.now(); S.frames = []; setCueMode(true);
+  $('#btnMic').textContent = '⏹'; $('#btnMic').classList.add('rec');
+  $('#status').textContent = SR ? '🔴 Listening… speak clearly!' : $('#status').textContent;
+  S.timer = setInterval(tick, 100); drawWave();
+}
+function startSR() {
+  const r = new SR(); r.lang = 'en-GB'; r.continuous = true; r.interimResults = true; r.maxAlternatives = 1;
+  r.onresult = ev => {
+    S.srOk = true; let interim = '';
+    for (let i = ev.resultIndex; i < ev.results.length; i++) {
+      const res = ev.results[i];
+      if (res.isFinal) { const t = res[0].transcript.trim(); if (t) S.segs.push({ text: t, conf: res[0].confidence }); }
+      else interim += res[0].transcript;
+    }
+    S.interim = interim; paintLive();
+  };
+  r.onerror = ev => {
+    if (ev.error === 'not-allowed' || ev.error === 'service-not-allowed') srFail('blocked');
+    else if (ev.error === 'network') srFail('network');
+  };
+  r.onend = () => {
+    if (!S.rec || S.srBlocked || S.sr !== r) return;
+    /* On a web address the permission is remembered, so restarting is silent. From file:// every start() asks again, so we do NOT restart there. */
+    if (!FILE_MODE && S.srRestarts < 40) { S.srRestarts++; setTimeout(() => { if (S.rec && S.sr === r) { try { r.start(); } catch (e) { } } }, 250); }
+    else if (FILE_MODE) $('#status').textContent = '⏸ Recognition paused by the browser – tap ⏹ to see your score.';
+  };
+  S.sr = r; try { r.start(); } catch (e) { }
+}
+function srFail(kind) {
+  if (S.srBlocked) return; S.srBlocked = true;
+  const had = S.segs.length > 0;
+  stopAll();
+  $('#btnMic').textContent = '🎤'; $('#btnMic').classList.remove('rec'); setRing(0); $('#tNow').textContent = '0:00';
+  if (had) { return finish((performance.now() - S.t0) / 1000, S.frames.slice()); }
+  $('#status').textContent = kind === 'network'
+    ? '🌐 Speech recognition is not available here. Use Google Chrome or Microsoft Edge with internet' + TYPE_OR + '.'
+    : IS_IOS ? '🚫 Speech recognition is blocked. On iPhone open the link in Safari, and turn on Dictation (Settings → General → Keyboard → Enable Dictation).'
+    : '🚫 The browser blocked speech recognition. Open the game from the web link in Chrome or Edge' + TYPE_OR + '.';
+  showTyped(true);
+}
+function tick() {
+  if (!S.rec) return;
+  const el = (performance.now() - S.t0) / 1000;
+  $('#tNow').textContent = fmt(el); setRing(el / MAXS);
+  if (S.an) {
+    const a = new Uint8Array(S.an.fftSize); S.an.getByteTimeDomainData(a);
+    let s = 0; for (let i = 0; i < a.length; i++) { const v = (a[i] - 128) / 128; s += v * v; }
+    S.frames.push(Math.sqrt(s / a.length));
+  }
+  
+  if (el >= MAXS) stopRec();
+}
+function drawWave() {
+  const cv = $('#wave'), g = cv.getContext('2d'), w = cv.width, h = cv.height;
+  const buf = S.an ? new Uint8Array(S.an.frequencyBinCount) : null;
+  (function loop() {
+    g.clearRect(0, 0, w, h);
+    if (S.rec && buf) {
+      S.an.getByteFrequencyData(buf); const n = 48, bw = w / n;
+      for (let i = 0; i < n; i++) { const v = buf[Math.floor(i * 1.6)] / 255, bh = Math.max(4, v * h * .95); g.fillStyle = i % 2 ? '#55cdea' : '#ffc94d'; g.beginPath(); g.roundRect ? g.roundRect(i * bw + 3, (h - bh) / 2, bw - 6, bh, 4) : g.rect(i * bw + 3, (h - bh) / 2, bw - 6, bh); g.fill(); }
+      S.raf = requestAnimationFrame(loop);
+    } else { g.fillStyle = '#34567a'; for (let i = 0; i < 48; i++) g.fillRect(i * (w / 48) + 3, h / 2 - 2, w / 48 - 6, 4); }
+  })();
+}
+function stopAll(silent) {
+  S.rec = false; setCueMode(false); clearInterval(S.timer); cancelAnimationFrame(S.raf);
+  try { S.sr && (S.sr.onend = null, S.sr.stop()); } catch (e) { } S.sr = null;
+  try { S.mr && S.mr.state !== 'inactive' && S.mr.stop(); } catch (e) { }
+  clearTimeout(S.idle);  S.idle = setTimeout(releaseStream, 180000);
+  try { S.ctx && S.ctx.close(); } catch (e) { } S.ctx = null; S.an = null;
+  if (!silent) drawWave();
+}
+function stopRec() {
+  if (!S.rec) return;
+  const total = (performance.now() - S.t0) / 1000, frames = S.frames.slice();
+  stopAll(); $('#btnMic').textContent = '🎤'; $('#btnMic').classList.remove('rec'); $('#status').textContent = '⏳ Scoring your talk…';
+  setTimeout(() => finish(total, frames), 900);
+}
+function voiceStats(frames, total) {
+  if (frames.length < 10) return { dur: total, sr: null };
+  const sorted = frames.slice().sort((a, b) => a - b), floor = sorted[Math.floor(sorted.length * .1)];
+  const thr = Math.max(0.012, floor * 2.2);
+  let first = frames.findIndex(v => v >= thr), last = frames.length - 1 - frames.slice().reverse().findIndex(v => v >= thr);
+  if (first < 0 || last <= first) return { dur: total, sr: null };
+  const span = frames.slice(first, last + 1), silent = span.filter(v => v < thr).length;
+  return { dur: span.length / 10 + 0.5, sr: silent / span.length };
+}
+function finish(total, frames) {
+  const txt = S.segs.map(s => s.text).join(' ').trim();
+  
+  if (!txt) {
+    if (SR) { $('#status').textContent = '😕 I could not hear any words. Check your microphone and try again.'; }
+    showTyped(true); return;
+  }
+  const v = voiceStats(frames, total);
+  const rep = E.analyze({ data: DATA, level: S.level, segments: S.segs.map(s => ({ text: s.text, conf: s.conf })), duration: v.dur, silenceRatio: v.sr, typed: false });
+  if (S.chunks.length) { try { S.lastBlob = new Blob(S.chunks, { type: (S.mr && S.mr.mimeType) || 'audio/webm' }); S.lastAudio = URL.createObjectURL(S.lastBlob); } catch (e) { } }
+  
+  showResult(rep);
+}
+function showTyped(on) { $('#typedBox').style.display = on && ALLOW_TYPING ? 'block' : 'none'; }
+function scoreTyped() {
+  const t = $('#typedTxt').value.trim(); if (t.split(/\s+/).length < 5) { toast('Please type at least a few sentences.'); return; }
+  S.lastAudio = null;
+  const rep = E.analyze({ data: DATA, level: S.level, segments: [{ text: t, conf: null }], duration: 0, typed: true });
+  showResult(rep);
+}
+
+/* ---------- result ---------- */
+const CRIT_COL = { gv: '#8fa8f8', dm: '#b99cf0', pr: '#ee8a4a', ic: '#55cdea' };
+
+
+function showResult(rep) {
+  
+  S.lastReport = rep;
+  const m = DATA.meta, C = rep.criteria, segs = S.typed || rep.typed ? [{ text: $('#typedTxt').value.trim(), conf: null }] : S.segs;
+  const circ = 2 * Math.PI * 80;
+  const crit = k => { const c = C[k]; const sc = c.score; return `<div class="crit"><div class="h"><b>${c.name[0]} <span class="muted" style="font-size:.85rem;font-family:var(--body)">· ${c.name[1]}</span></b><span class="sc" style="color:${CRIT_COL[k]}">${sc == null ? '–' : sc}<small class="muted" style="font-size:.9rem">/5</small></span></div><div class="bar"><i style="width:${sc == null ? 0 : sc / 5 * 100}%;background:${CRIT_COL[k]}"></i></div><p>${esc(c.desc[1])}</p><p class="en">${esc(c.desc[0])}</p></div>`; };
+
+  const cefrHtml = (() => {
+    const cf = rep.cefr; if (!cf) return '';
+    const order = ['A1', 'A2', 'B1', 'B2'];
+    if (!cf.enough) return '<div class="cefr"><div class="eyebrow">🪜 CEFR · Khung năng lực</div><p style="font-weight:700">Bài nói còn quá ngắn nên chưa đủ dữ liệu để ước lượng trình độ. Hãy nói đủ thời gian rồi thử lại.</p></div>';
+    const pos = Math.max(0.5, Math.min(4, cf.pos)), pct = (pos - 0.5) / 4 * 100 + 0;   /* centre of each step = i+1 */
+    const idx = cf.level === 'Pre-A1' ? 0 : order.indexOf(cf.level) + 1;
+    const steps = order.map((l, i) => `<div class="st ${i + 1 < idx ? 'done' : i + 1 === idx ? 'here' : ''}">${l}<small>${['Starter', 'Elementary', 'Intermediate', 'Upper-Inter.'][i]}</small></div>`).join('');
+    const pinLeft = ((Math.max(1, Math.min(4.99, cf.pos)) - 1) / 4 + 0.125) * 100;
+    const headline = cf.level === 'Pre-A1' ? 'Chưa đạt A1 – cùng luyện từng bước nhé' : `Em đang ở trình độ ${cf.level}${cf.top ? ' (rất vững, sẵn sàng cao hơn)' : cf.rising ? ' – đang tiến gần ' + order[Math.min(3, order.indexOf(cf.level) + 1)] : ' (đang củng cố)'}`;
+    const rows = cf.aspects.map(k => { const c = cf.crit[k]; const nm = cf.names[k]; if (!c) return `<div class="row"><div class="lv">–<small>${nm[1]}<br>${nm[0]}</small></div><div><p class="nx">Chưa chấm được tiêu chí này (cần nhận diện giọng nói bằng Safari/Chrome).</p></div></div>`; return `<div class="row"><div class="lv">${c.level}${c.rising ? '→' : ''}<small>${nm[1]}<br>${nm[0]}</small></div><div><p class="can">✅ Em làm được: ${esc(c.can[1])}</p><p class="en" style="color:var(--dim);font-size:.82rem;font-style:italic;margin:0 0 4px">${esc(c.can[0])}</p>${c.next ? `<p class="nx">🎯 Để lên ${c.next.level}: ${esc(c.next.text[1])}</p>` : '<p class="nx">🎯 Em đã chạm mức cao nhất của thang này ở tiêu chí này.</p>'}</div></div>`; }).join('') + `<div class="row"><div class="lv" style="color:var(--dim)">–<small>${cf.names.interaction[1]}<br>${cf.names.interaction[0]}</small></div><div><p class="nx" style="color:var(--dim)">Tiêu chí này cần hỏi – đáp, nhường lượt với người đối thoại nên chưa chấm trong bài nói một mình.</p></div></div>`;
+    const focus = cf.focus ? `<p style="margin-top:12px;font-weight:800">🔭 Ưu tiên luyện: <span style="color:#ffc94d">${esc(cf.names[cf.focus][1])}</span> – tiêu chí đang thấp nhất.</p>` : '';
+    return `<div class="cefr"><div class="eyebrow">🪜 CEFR · Em đang ở đâu?</div><h3>${headline}</h3>
+      <div class="ladder">${steps}<span class="pin" style="left:${pinLeft}%">Em ở đây</span></div>
+      <div class="rows">${rows}</div>${focus}
+      <p class="note">Nhận xét dành riêng cho bài nói này của em, theo 5 tiêu chí của Hội đồng châu Âu (CEFR – bảng Qualitative aspects of spoken language use: Range, Accuracy, Fluency, Coherence + Phonology). Mô tả tiếng Anh lấy từ bảng chuẩn, dịch tiếng Việt. Muốn chắc chắn ở level cao hơn, em hãy chọn level đó và nói lại.</p></div>`;
+  })();
+
+  const tipsHtml = rep.tips.length ? rep.tips.map(t => `<div class="tip"><div class="ic">${t.icon}</div><div><b>${t.area}</b>${esc(t.vi)}${t.ex ? '<div class="ex">' + esc(t.ex) + '</div>' : ''}</div></div>`).join('') : '<div class="good">🎉 Không có điểm cần sửa lớn – hãy thử level cao hơn!</div>';
+  const goodHtml = rep.strengths.map(s => `<div class="good">👍 ${esc(s)}</div>`).join('');
+  const covHtml = rep.coverage.map((c, i) => `<div class="${c.covered ? 'y' : 'n'}">${c.covered ? '💡' : '🌑'} Clue ${c.id}</div>`).join('');
+  const stars = [1, 2, 3].map(i => `<span class="${i <= rep.stars ? '' : 'off'}">⭐</span>`).join('');
+  $('#resultBody').innerHTML = `
+  <div class="card">
+    <div class="res-top">
+      <div class="ring-score"><svg viewBox="0 0 190 190"><circle cx="95" cy="95" r="80" fill="none" stroke="#1d3350" stroke-width="14"/><circle id="scRing" cx="95" cy="95" r="80" fill="none" stroke="url(#g1)" stroke-width="14" stroke-linecap="round" stroke-dasharray="${circ}" stroke-dashoffset="${circ}" style="transition:stroke-dashoffset 1.2s ease"/><defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#55cdea"/><stop offset="1" stop-color="#ffc94d"/></linearGradient></defs></svg><div class="num"><b>${rep.score10}</b><span>/ 10</span></div></div>
+      <div>
+        <div class="eyebrow">${esc(m.title)} · Level ${rep.level}</div>
+        <h2 style="margin:4px 0">${rep.rank[1]} ${rep.rank[0]}</h2>
+        <div class="stars">${stars}</div>
+        <div class="rankline"><span class="chip" style="background:var(--gold-l);color:#ffd873">✨ ${rep.xp} XP</span><span class="chip" style="background:var(--sky-l);color:#b3c4fa">Cambridge-style ${rep.total20}/20</span><span class="chip" style="background:var(--violet-l);color:#d8b4fe">${rep.words} words${rep.wpm ? ' · ' + rep.wpm + ' wpm' : ''}${rep.duration ? ' · ' + rep.duration + 's' : ''}</span></div>
+        <div class="fit ${rep.levelFit.code}">${esc(rep.levelFit.vi)}</div>
+        <div class="sheetst" id="sheetSt"></div>
+      </div>
+    </div>
+    <div class="mini-cl">${covHtml}</div>
+    ${rep.criteria.pr.score == null ? '<p class="muted" style="font-weight:700;margin-top:12px">ℹ️ Điểm Phát âm chưa được chấm (không có dữ liệu nhận diện giọng). Tổng điểm được quy đổi từ 3 tiêu chí còn lại.</p>' : ''}
+  </div>
+  ${cefrHtml}
+  <div class="crits">${['gv', 'dm', 'pr', 'ic'].map(crit).join('')}</div>
+  <div class="grid2">
+    <div class="card"><div class="eyebrow">🎯 Cần cải thiện · To improve</div><div style="margin-top:12px">${tipsHtml}</div></div>
+    <div class="card"><div class="eyebrow" style="color:var(--mint)">🌟 Điểm mạnh · Strengths</div><div style="margin-top:12px">${goodHtml}</div>
+      <div class="eyebrow" style="margin-top:16px;color:var(--violet)">Pronunciation focus</div>
+      <div class="words" style="margin-top:8px">${(DATA.pronFocus || []).map(p => `<button class="w" data-w="${esc(p.word)}" title="${esc(p.tip || '')}">${esc(p.word)} <small>${esc(p.ipa || '')}</small></button>`).join('')}</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:18px">
+    <div class="eyebrow">📝 Your talk</div>
+    <div class="legend"><span class="hl-link">linking words</span><span class="hl-bank">word-bank words</span><span class="hl-err">grammar to fix</span><span style="text-decoration:underline wavy #ee8a4a;text-underline-offset:4px">unclear to the computer</span></div>
+    <div class="trans">${E.highlight(segs, DATA, rep.errors)}</div>
+    ${S.lastAudio ? '<audio controls src="' + S.lastAudio + '"></audio>' : ''}
+  </div>
+  <div class="bottom-actions">
+    <button class="btn btn-primary btn-lg" id="rvModel">📖 Model talk · Bài nói mẫu</button>
+    <button class="btn btn-coral" id="rvAgain">🔁 Try again</button>
+    <button class="btn btn-ghost" id="rvLevel">🎚 Change level</button>
+    <button class="btn btn-ghost" id="rvRetry" style="display:none">📤 Resend score</button>
+  </div>`;
+  $$('#resultBody .w').forEach(x => x.onclick = () => speak(x.dataset.w, .8));
+  $('#rvModel').onclick = () => openSample(rep.level);
+  $('#rvAgain').onclick = () => { openStage(); };
+  $('#rvLevel').onclick = () => { show('s-welcome'); };
+  $('#rvRetry').onclick = () => sendScore(rep, true);
+  show('s-result');
+  setTimeout(() => { const r = $('#scRing'); if (r) r.style.strokeDashoffset = circ * (1 - rep.score10 / 10); }, 120);
+  if (rep.stars >= 2) confetti();
+  sendScore(rep, false);
+}
+
+/* ---------- model talk ---------- */
+let sampleLv = 'A1', speaking = false;
+function sampleHtml(lv) {
+  const linkRe = new RegExp('\\b(' + E.LINKERS.map(l => l.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')\\b', 'gi');
+  const tag = { intro: 'Introduction', main: 'Main points', conclusion: 'Conclusion' };
+  return (DATA.samples[lv] || []).map((p, i) => `<p class="${p.part}" data-i="${i}"><small>${tag[p.part] || p.part}</small>${esc(p.text).replace(linkRe, '<mark>$1</mark>')}</p>`).join('');
+}
+function openSample(lv) {
+  sampleLv = lv || S.level;
+  const words = (DATA.samples[sampleLv] || []).reduce((a, p) => a + p.text.split(/\s+/).length, 0);
+  $('#sampleSheet').innerHTML = `<button class="btn btn-ghost close" data-close="mSample">✕</button>
+    <div class="eyebrow">Model talk · Bài nói mẫu</div><h2 style="margin:4px 0 12px">${esc(DATA.meta.emoji + ' ' + DATA.meta.title)}</h2>
+    <div class="tabs" id="smTabs">${['A1', 'A2', 'B1', 'B2'].map(l => `<button class="tab${l === sampleLv ? ' on' : ''}" data-l="${l}">${l}</button>`).join('')}</div>
+    <p class="muted" style="margin:0 0 12px;font-weight:700">${words} words · about ${Math.round(words / 1.8)} seconds. <mark style="background:var(--sky-l);color:#b3c4fa;border-radius:6px;padding:0 4px">Linking words</mark> are highlighted.</p>
+    <div class="sample" id="smBody">${sampleHtml(sampleLv)}</div>
+    <div class="actions" style="justify-content:flex-start"><button class="btn btn-primary" id="smPlay">🔊 Listen</button><button class="btn btn-ghost" id="smSlow">🐢 Slow</button><button class="btn btn-ghost" data-close="mSample">Close</button></div>`;
+  $$('#smTabs .tab').forEach(t => t.onclick = () => openSample(t.dataset.l));
+  $('#smPlay').onclick = () => playSample(0.92); $('#smSlow').onclick = () => playSample(0.7);
+  $('#mSample').classList.add('open');
+}
+function playSample(rate) {
+  if (!window.speechSynthesis) { toast('This browser cannot read aloud.'); return; }
+  speechSynthesis.cancel(); const ps = $$('#smBody p'), list = DATA.samples[sampleLv]; let i = 0; speaking = true;
+  (function next() {
+    ps.forEach(p => p.classList.remove('speaking'));
+    if (!speaking || i >= list.length) { speaking = false; return; }
+    ps[i].classList.add('speaking'); const k = i++; speak(list[k].text, rate, next);
+  })();
+}
+function closeModal(id) { $('#' + id).classList.remove('open'); if (id === 'mSample') { speaking = false; try { speechSynthesis.cancel(); } catch (e) { } } }
+
+/* ---------- Google Sheet ---------- */
+function sheetToken() { return (new URLSearchParams(location.search).get('key')) || store.get('sq_token', '') || DATA.meta.token || ''; }
+function sheetUrl() { return (new URLSearchParams(location.search).get('sheet')) || store.get('sq_sheet', '') || DATA.meta.sheetUrl || ''; }
+function history() { try { return JSON.parse(store.get('sq_hist', '[]')); } catch (e) { return []; } }
+function payloadOf(rep) {
+  const C = rep.criteria;
+  return { token: sheetToken(), grade: DATA.meta.grade || '', timestamp: new Date().toISOString(), name: S.name, class: S.cls, topic: DATA.meta.title, level: rep.level, grammarVocab: C.gv.score, discourse: C.dm.score, pronunciation: C.pr.score == null ? '' : C.pr.score, interactive: C.ic.score, total20: rep.total20, score10: rep.score10, words: rep.words, seconds: rep.duration, wpm: rep.wpm == null ? '' : rep.wpm, clues: rep.covN + '/' + rep.coverage.length, transcript: (rep.typed ? $('#typedTxt').value : S.segs.map(s => s.text).join(' ')).slice(0, 1500), tips: rep.tips.map(t => t.vi).join(' | ').slice(0, 800), mode: rep.typed ? 'typed' : (EXAM ? 'exam' : 'voice'), attempt: EXAM ? (S.attempt || 0) + 1 : '', unit: DATA.meta.unit || '', gameId: DATA.meta.id || '', cefr: rep.cefr && rep.cefr.enough ? rep.cefr.label : '' };
+}
+async function postRow(p) {
+  const url = sheetUrl(); if (!url) return 'nosheet';
+  try { await fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(p) }); return 'ok'; }
+  catch (e) { return 'fail'; }
+}
+async function sendScore(rep, manual) {
+  const p = payloadOf(rep), st = $('#sheetSt'), rb = $('#rvRetry');
+  if (!manual) { const h = history(); h.push(p); store.set('sq_hist', JSON.stringify(h.slice(-200))); }
+  if (st) { st.textContent = '⏳ Đang lưu điểm vào Google Sheet…'; st.style.color = 'var(--dim)'; }
+  let toSend = p, audioMsg = '';
+  
+  const r = await postRow(toSend);
+  if (!st) return;
+  if (r === 'ok') { st.textContent = (EXAM ? '✅ Đã nộp bài' : '✅ Đã gửi điểm') + audioMsg + ' cho giáo viên.'; st.style.color = '#98e0f3'; rb.style.display = 'none'; }
+  else if (r === 'nosheet') { st.textContent = 'ℹ️ Giáo viên chưa nối Google Sheet – điểm chỉ lưu trên máy này.'; st.style.color = 'var(--dim)'; rb.style.display = 'none'; }
+  else { st.textContent = '⚠️ Chưa gửi được (mất mạng?). Bấm “Resend score”.'; st.style.color = '#fda4af'; rb.style.display = ''; }
+}
+function csv() {
+  const h = history(); if (!h.length) return '';
+  const cols = Object.keys(h[0]), q = v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"';
+  return '﻿' + [cols.join(',')].concat(h.map(r => cols.map(c => q(r[c])).join(','))).join('\r\n');
+}
+function initCfg() {
+  $('#btnCfg').onclick = () => { $('#cfgUrl').value = store.get('sq_sheet', '') || DATA.meta.sheetUrl || ''; $('#cfgToken').value = store.get('sq_token', '') || ''; $('#cfgMsg').textContent = ''; $('#mCfg').classList.add('open'); };
+  $('#cfgSave').onclick = () => { store.set('sq_sheet', $('#cfgUrl').value.trim()); store.set('sq_token', $('#cfgToken').value.trim()); $('#cfgMsg').textContent = '✅ Saved on this device.'; };
+  $('#cfgTest').onclick = async () => { store.set('sq_sheet', $('#cfgUrl').value.trim()); store.set('sq_token', $('#cfgToken').value.trim()); const r = await postRow({ token: sheetToken(), grade: DATA.meta.grade || '', timestamp: new Date().toISOString(), name: '__TEST__', class: 'TEST', topic: DATA.meta.title, level: 'A1', grammarVocab: 3, discourse: 3, pronunciation: 3, interactive: 3, total20: 12, score10: 6, words: 50, seconds: 40, wpm: 75, clues: '4/4', transcript: 'Test row from Speaking Quest', tips: '', mode: 'test', unit: DATA.meta.unit || '', gameId: DATA.meta.id || '' }); $('#cfgMsg').textContent = r === 'ok' ? '✅ Test row sent – check your Google Sheet (tab “Scores”). If it is missing, the secret code may not match.' : r === 'nosheet' ? 'Paste the Web app URL first.' : '⚠️ Could not reach the URL.'; };
+  $('#cfgCsv').onclick = () => { const c = csv(); if (!c) { $('#cfgMsg').textContent = 'No scores stored on this device yet.'; return; } const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([c], { type: 'text/csv' })); a.download = 'speaking-scores.csv'; a.click(); };
+}
+
+/* ---------- confetti ---------- */
+function confetti() {
+  const cv = $('#confetti'), g = cv.getContext('2d'); cv.width = innerWidth; cv.height = innerHeight;
+  const cols = ['#55cdea', '#ee8a4a', '#ffc94d', '#b99cf0', '#8fa8f8'], P = Array.from({ length: 90 }, () => ({ x: Math.random() * cv.width, y: -20 - Math.random() * cv.height * .4, r: 4 + Math.random() * 6, c: cols[Math.floor(Math.random() * 5)], vy: 2 + Math.random() * 3.5, vx: -1.5 + Math.random() * 3 }));
+  let f = 0; (function loop() { g.clearRect(0, 0, cv.width, cv.height); P.forEach(p => { p.y += p.vy; p.x += p.vx; g.fillStyle = p.c; g.fillRect(p.x, p.y, p.r, p.r * 1.6); }); if (++f < 170) requestAnimationFrame(loop); else g.clearRect(0, 0, cv.width, cv.height); })();
+}
+
+/* ---------- wire up ---------- */
+function init() {
+  initWelcome(); initCfg(); initRing(); drawWave();
+  $('#btnMic').onclick = () => S.rec ? stopRec() : startRec();
+  $('#btnReset').onclick = resetRec;
+  $('#btnMicTest').onclick = micTest;
+  $('#btnPeek').onclick = () => openSample(S.level);
+  $('#btnTyped').onclick = scoreTyped;
+  if (!ALLOW_TYPING) $('#btnTypeMode').style.display = 'none';
+  $('#btnTypeMode').onclick = () => { S.typed = !S.typed; showTyped(S.typed); $('#btnTypeMode').textContent = S.typed ? '🎤 Use the microphone instead' : 'Can’t use the microphone? Type instead'; };
+  $('#btnHome').onclick = () => { stopAll(true); releaseStream(); show('s-welcome'); };
+  $('#btnSound').onclick = e => { S.sound = !S.sound; e.currentTarget.textContent = S.sound ? '🔊' : '🔇'; if (!S.sound) { try { speechSynthesis.cancel(); } catch (x) { } } };
+  document.addEventListener('click', e => { const c = e.target.closest('[data-close]'); if (c) closeModal(c.dataset.close); if (e.target.classList.contains('modal')) closeModal(e.target.id); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') ['mSample', 'mCfg'].forEach(closeModal); });
+  window.__sq = { S, showResult, scoreText: (text, dur, level) => { S.name = S.name || 'Demo'; S.level = level || S.level; const rep = E.analyze({ data: DATA, level: S.level, segments: [{ text, conf: 0.85 }], duration: dur || 55, silenceRatio: 0.2 }); S.segs = [{ text, conf: 0.85 }]; showResult(rep); return rep; } };
+}
+init();
+</script>
+</body>
+</html>
